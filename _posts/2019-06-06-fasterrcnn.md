@@ -1,19 +1,18 @@
 ---
 title: faster rcnn 原代码解析
 date: 2019-06-06 20:12:18 +0800
-description: 
+description: 原码的理解都写在注释中了
 author: wilson
 categories: 
     - ai
 tags:
-    - code
+    - code 
+	- note
 ---
 
-# faster rcnn 原代码解析
+## 1 训练 faster RCNN 
 
-## 1 主干
-
-Faster rcnn 的 `train_val.py` 程序的主干如下：
+Faster rcnn 的 `train_val.py` 程序的主干如下，它主要是负责对 `fasterRCNN` 网络进行训练：
 
 ```python
 # 1. 解析参数
@@ -54,6 +53,8 @@ for epoch in range(args.start_epoch, args.max_epochs + 1):
         loss.backward()
         optimizer.step()
 ```
+
+误差函数的计算
 
 ```python
 # _fasterRCNN.forward()得到
@@ -107,7 +108,7 @@ def combined_roidb(imdb_names, training=True):
 
 ### 2.1 get_roidb(s) 的解析
 
-首先，`imdb_names` 来自入参 `args.imdb_name = voc_2007_trainval`
+`imdb_names` 来自入参 `args.imdb_name = voc_2007_trainval`
 
 ```python
 def get_roidb(imdb_name):
@@ -186,8 +187,7 @@ class resnet(_fasterRCNN):
 def set_bn_eval(m):
     classname = m.__class__.__name__
     if classname.find('BatchNorm') != -1:
-        m.eval()       
-
+        m.eval() 
 ```
 
 ## 4 faster rcnn 的训练
@@ -199,7 +199,6 @@ rois, cls_prob, bbox_pred, \
 rpn_loss_cls, rpn_loss_box, \
 RCNN_loss_cls, RCNN_loss_bbox, \
 rois_label = fasterRCNN(im_data, im_info, gt_boxes, num_boxes)
-
 ```
 
 ```python
@@ -215,7 +214,6 @@ class resnet(_fasterRCNN):
     def _head_to_tail(self, pool5):
         fc7 = self.RCNN_top(pool5).mean(3).mean(2)
         return fc7
-
 ```
 
 下面重要的是 `_fasterRCNN` 类，其初始化如下，主要是定义了 `rpn` 网络和 `roi pool` 层
@@ -235,7 +233,6 @@ class _fasterRCNN(nn.Module):
         self.RCNN_proposal_target = _ProposalTargetLayer(self.n_classes)
 		# 定义 roi pool 层
         self.RCNN_roi_pool = ROIPool((cfg.POOLING_SIZE, cfg.POOLING_SIZE), 1.0/16.0)
-
 ```
 
 最重要的是它的 `forward` 函数，大致架构如下（省去了部分细节）：
@@ -245,12 +242,12 @@ class _fasterRCNN(nn.Module):
 def forward(self, im_data, im_info, gt_boxes, num_boxes): 
     # 将图像数据馈送到基础模型以获得基础特征图，RCNN_base是在resnet类的_init_modules中定义的
     # self.RCNN_base = nn.Sequential(resnet.conv1, resnet.bn1,resnet.relu,
-    #  						resnet.maxpool,resnet.layer1,resnet.layer2,resnet.layer3)
+    #  				resnet.maxpool,resnet.layer1,resnet.layer2,resnet.layer3)
     base_feat = self.RCNN_base(im_data)
 
     # 基础特征图送到 RPN 得到 ROIS
     rois, rpn_loss_cls, rpn_loss_bbox 
-    					= self.RCNN_rpn(base_feat, im_info, gt_boxes, num_boxes)
+    = self.RCNN_rpn(base_feat, im_info, gt_boxes, num_boxes)
 
     # 如果是在训练 用ground truth回归
     if self.training:
@@ -277,7 +274,9 @@ def forward(self, im_data, im_info, gt_boxes, num_boxes):
     if self.training and not self.class_agnostic:
         # 根据roi标签选择相应的列
         bbox_pred_view = bbox_pred.view(bbox_pred.size(0), int(bbox_pred.size(1) / 4), 4)
-        bbox_pred_select = torch.gather(bbox_pred_view, 1, rois_label.view(rois_label.size(0), 1, 1).expand(rois_label.size(0), 1, 4))
+        bbox_pred_select = torch.gather(bbox_pred_view, 1, \
+                                        rois_label.view(rois_label.size(0), 1, 1)\
+                                        .expand(rois_label.size(0), 1, 4))
         bbox_pred = bbox_pred_select.squeeze(1)
     bbox_pred = bbox_pred.view(batch_size, rois.size(1), -1)
 
@@ -303,65 +302,57 @@ def forward(self, im_data, im_info, gt_boxes, num_boxes):
 
    ```python
    base_feat = self.RCNN_base(im_data)
-   
    ```
-
+   
 2. 基础特征图送到 RPN 得到 ROIS
 
    ```python
    rois, rpn_loss_cls, rpn_loss_bbox 
        					= self.RCNN_rpn(base_feat, im_info, gt_boxes, num_boxes)
-   
    ```
-
+   
 3. 对 rois 进行精简处理
 
    ```python
    roi_data = self.RCNN_proposal_target(rois, gt_boxes, num_boxes)
    rois, rois_label, rois_target, rois_inside_ws, rois_outside_ws = roi_data
-   
    ```
-
+   
 4. 利用 ROI Pooling 方法，从基础特征图中选取 ROI 部分的池化图
 
    ```python
    pooled_feat = self.RCNN_roi_pool(base_feat, rois.view(-1,5))
-   
    ```
-
+   
 5. 将池化后的候选池化图送入top网络，获得候选区域特征图
 
    ```python
    # self.RCNN_top = nn.Sequential(resnet.layer4)
    # fc7 = self.RCNN_top(pool5).mean(3).mean(2)
    pooled_feat = self._head_to_tail(pooled_feat)
-   
    ```
-
+   
 6. 利用候选区域特征图预估候选框的偏移
 
    ```python
    bbox_pred = self.RCNN_bbox_pred(pooled_feat)
    # self.RCNN_bbox_pred = nn.Linear(2048, 4)
-   
    ```
-
+   
 7. 利用候选区域特征图预估物体类别
 
    ```python
    cls_score = self.RCNN_cls_score(pooled_feat)
    cls_prob = F.softmax(cls_score, 1)
    # self.RCNN_cls_score = nn.Linear(2048, self.n_classes)
-   
    ```
-
+   
 8. 计算分类误差和回归误差
 
    ```python
    RCNN_loss_cls = F.cross_entropy(cls_score, rois_label)
    RCNN_loss_bbox = _smooth_l1_loss(bbox_pred, rois_target, 
                                     rois_inside_ws, rois_outside_ws)
-   
    ```
 
 我们继续追进去，看看具体细节的实现
@@ -370,9 +361,8 @@ def forward(self, im_data, im_info, gt_boxes, num_boxes):
 
 ```python
 rois, rpn_loss_cls, rpn_loss_bbox 
-    					= self.RCNN_rpn(base_feat, im_info, gt_boxes, num_boxes)
+= self.RCNN_rpn(base_feat, im_info, gt_boxes, num_boxes)
 # self.RCNN_rpn = _RPN(self.dout_base_model)
-
 ```
 
 ##### RPN的初始化，大体架构：
@@ -412,7 +402,6 @@ class _RPN(nn.Module):
 
         self.rpn_loss_cls = 0
         self.rpn_loss_box = 0
-
 ```
 
 这里出现了几个关键层：`_ProposalLayer` 候选区域层和 `_AnchorTargetLayer` 锚框目标层，让我们来看看它们是什么
@@ -431,7 +420,8 @@ class _AnchorTargetLayer(nn.Module):
     6. 计算从anchors变到gtbox要修正的变化量，记为 bbox_targets
     7. 只有前景类内部权重才非0，参与回归
     8. 外部权重初始化 bbox_outside_weights[labels == 1] = positive_weights
-    9. 将label立体化为特征图的长宽，这样每个label对应特征图的一个像素, 也就是给每一个anchor都打上前景或背景的label。有了labels，你就可以对RPN进行训练使它对任意输入都具备识别前景、背景的能力
+    9. 将label立体化为特征图的长宽，这样每个label对应特征图的一个像素, 也就是给每一个anchor都打上前景或背景的label。
+    有了labels，你就可以对RPN进行训练使它对任意输入都具备识别前景、背景的能力
 
     返回值：
         outputs = [labels, bbox_targets, bbox_inside_weights, bbox_outside_weights]
@@ -448,8 +438,9 @@ class _AnchorTargetLayer(nn.Module):
         ).float()
     
     def forward(self, input):
-        
-
+      """
+      省略
+      """
 ```
 
 2. 候选区域层 ProposalLayer
@@ -489,7 +480,6 @@ class _ProposalLayer(nn.Module):
         im_info = input[2]
         # 是training还是test
         cfg_key = input[3]
-
 ```
 
 ##### RPN 的前向传播
@@ -532,7 +522,7 @@ def forward(self, base_feat, im_info, gt_boxes, num_boxes):
         # 计算分类损失
         # 返回rpn网络判断的anchor前后景分数
         rpn_cls_score = rpn_cls_score_reshape.permute(0, 2, 3, 1)\
-        									.contiguous().view(batch_size, -1, 2)
+        .contiguous().view(batch_size, -1, 2)
         # 返回每个anchor属于前景还是后景的ground truth
         rpn_label = rpn_data[0].view(batch_size, -1)
         
@@ -560,7 +550,6 @@ def forward(self, base_feat, im_info, gt_boxes, num_boxes):
                                             rpn_bbox_outside_weights, sigma=3, dim=[1,2,3])
 
         return rois, self.rpn_loss_cls, self.rpn_loss_box
-
 ```
 
 这样就得到了faster训练所需的rpn误差值
@@ -588,7 +577,6 @@ def _smooth_l1_loss(bbox_pred, bbox_targets, bbox_inside_weights,
       loss_box = loss_box.sum(i)
     loss_box = loss_box.mean()
     return loss_box
-
 ```
 
 
@@ -642,6 +630,5 @@ def _smooth_l1_loss(bbox_pred, bbox_targets, bbox_inside_weights,
         (relu): ReLU(inplace)
       )
     )
-
 ```
 
