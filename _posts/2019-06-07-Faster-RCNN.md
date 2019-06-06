@@ -1,5 +1,4 @@
 ---
-layout: ai
 title: "faster RCNN 原码解析"
 image: 
   path: /assets/computer-vision.jpeg
