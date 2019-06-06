@@ -1,13 +1,13 @@
 ---
 title: "faster RCNN 原码解析"
 image: 
-  path: /images/ai/computer-vision.jpeg
-  thumbnail: /images/ai/computer-vision.jpeg
+  path: /assets/computer-vision.jpeg
+  thumbnail: /assets/computer-vision.jpeg
+categories: [智能, 编程]
+tags: [代码解析, it]
 ---
 
-# faster RCNN 原码解析
-
-## 1 训练 faster RCNN 
+# 1 训练 faster RCNN 
 
 Faster rcnn 的 `train_val.py` 程序的主干如下，它主要是负责对 `fasterRCNN` 网络进行训练：
 
@@ -77,7 +77,7 @@ self.rpn_loss_box = _smooth_l1_loss(rpn_bbox_pred, rpn_bbox_targets,
 
 
 
-## 2 通过voc整合多个训练集数据
+# 2 通过voc整合多个训练集数据
 
 首先 `combined_roidb` 函数的架构如下：
 
@@ -164,7 +164,7 @@ def prepare_roidb(imdb):
     	roidb[i]['max_overlaps'] = max_overlaps # 第i图每个roi与真实框的最大重合度
 ```
 
-## 3 冻结部分resnet网络
+# 3 冻结部分resnet网络
 
 因为只需要训练部分resnet网络，所以要对网络的head部分进行冻结
 
@@ -628,4 +628,3 @@ def _smooth_l1_loss(bbox_pred, bbox_targets, bbox_inside_weights,
       )
     )
 ```
-
