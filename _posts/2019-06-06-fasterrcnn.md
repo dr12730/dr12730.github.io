@@ -1,5 +1,5 @@
 ---
-title: faster rcnn 原代码解析
+title: faster RCNN 原码解析
 date: 2019-06-06 20:12:18 +0800
 description: 原码的理解都写在注释中了
 author: wilson
@@ -9,6 +9,8 @@ tags:
     - code 
 	- note
 ---
+
+# faster RCNN 原码解析
 
 ## 1 训练 faster RCNN 
 
@@ -308,7 +310,7 @@ def forward(self, im_data, im_info, gt_boxes, num_boxes):
 
    ```python
    rois, rpn_loss_cls, rpn_loss_bbox 
-       					= self.RCNN_rpn(base_feat, im_info, gt_boxes, num_boxes)
+   = self.RCNN_rpn(base_feat, im_info, gt_boxes, num_boxes)
    ```
    
 3. 对 rois 进行精简处理
