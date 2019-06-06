@@ -3,13 +3,10 @@ title: faster rcnn 原代码解析
 date: 2019-06-06 20:12:18 +0800
 description: 
 author: wilson
-image:      
-    path: 
-    thumbnail: 
 categories: 
-    - 
+    - ai
 tags:
-    - 
+    - code
 ---
 
 # faster rcnn 原代码解析
