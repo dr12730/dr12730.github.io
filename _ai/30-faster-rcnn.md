@@ -3,11 +3,6 @@ title: "faster RCNN 原码解析"
 image: 
   path: /images/ai/computer-vision.jpeg
   thumbnail: /images/ai/computer-vision.jpeg
-categories: 
-    - ai
-tags:
-    - code 
-	- note
 ---
 
 # faster RCNN 原码解析
