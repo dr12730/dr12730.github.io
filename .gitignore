@@ -5,4 +5,4 @@ Gemfile
 Gemfile.lock
 temp
 .vim.*
-.DS_Store
+*.DS_Store
