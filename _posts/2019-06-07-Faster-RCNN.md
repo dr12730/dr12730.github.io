@@ -1,10 +1,10 @@
 ---
-title: "faster RCNN 原码解析"
+title: "faster RCNN 源码解析"
 image: 
   path: /assets/images/2019-06-07.jpg
   thumbnail: /assets/images/2019-06-07.jpg
-categories: [智能, 编程]
-tags: [代码解析, it]
+categories: [深度学习, 编程]
+tags: [源码解析]
 ---
 
 # 1 训练 faster RCNN 
