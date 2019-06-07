@@ -1,11 +1,11 @@
 # Site navigation links
 
-- title: 随笔
+- title: 博文
   url: /posts/
-- title: 智能
-  url: /ai/
-- title: 编程
-  url: /it/
+# - title: 智能
+  # url: /ai/
+# - title: 编程
+  # url: /it/
 - title: 分类
   url: /categories/
 - title: 标签
