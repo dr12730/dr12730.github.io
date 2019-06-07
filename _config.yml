@@ -14,8 +14,8 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-#theme: jekyll-theme-so-simple
-remote_theme: mmistakes/so-simple-theme
+theme: jekyll-theme-so-simple
+#remote_theme: mmistakes/so-simple-theme
 
 head_scripts:
   - /assets/js/kity.min.js
@@ -24,10 +24,10 @@ footer_scripts:
 
 locale: zh-CN
 title: "Wilson"
-description: "语默动静体安然"
+description: "对知识的深信，是一切勇气的来源"
 baseurl: ""
 url: "https://dr12730.github.io"
-logo: "/images/mac.jpeg"
+logo: "/assets/images/city.jpg"
 date_format: "%b %-d, %Y"
 read_time: false
 words_per_minute: # 200
@@ -139,7 +139,7 @@ defaults:
 # Site Author
 author:
   name: wilson
-  picture: /images/delicious.jpg
+  picture: /assets/images/delicious.jpeg
   email:
   twitter:
   links:

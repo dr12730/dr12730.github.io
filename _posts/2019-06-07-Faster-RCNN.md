@@ -1,8 +1,8 @@
 ---
 title: "faster RCNN 原码解析"
 image: 
-  path: /assets/computer-vision.jpeg
-  thumbnail: /assets/computer-vision.jpeg
+  path: /assets/images/2019-06-07.jpg
+  thumbnail: /assets/images/2019-06-07.jpg
 categories: [智能, 编程]
 tags: [代码解析, it]
 ---
