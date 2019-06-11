@@ -61,7 +61,8 @@ category_archive_path: "/categories/#"
 tag_archive_path: "/tags/#"
 
 # Exclude from processing.
-# The following items will not be processed, by default. Create a custom list # to override the default setting.
+# The following items will not be processed, by default. Create a custom list 
+# to override the default setting.
 # exclude:
 #   - Gemfile
 #   - Gemfile.lock
