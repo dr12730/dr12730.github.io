@@ -1,9 +1,10 @@
-dr12730:
-  name: wilson
-  picture: /images/delicious.jpeg
+wKevin:
+  name: Wilson
+  picture: /assets/images/delicious.jpg
+  twitter: 
   links:
     - title: Weibo
-      url: 
+      url: https://weibo.com/dr12730
       icon: fab fa-weibo
     - title: Twitter
       url: 

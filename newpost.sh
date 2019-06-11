@@ -18,7 +18,7 @@ if [ ! -f $fn ]; then
     echo "title: ">>$fn
     echo "date: "`date +'%Y-%m-%d %H:%M:%S'`" +0800" >>$fn
     echo "description: " >>$fn
-    echo "author: wilson" >>$fn
+    echo "author: wKevin" >>$fn
     echo "image:      " >>$fn
     echo "    path: " >>$fn
     echo "    thumbnail: " >>$fn
