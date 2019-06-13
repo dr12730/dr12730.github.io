@@ -23,11 +23,11 @@ head_scripts:
 footer_scripts:
 
 locale: zh-CN
-title: "Wilson"
-description: "对知识的深信，是一切勇气的来源"
+title: "Kevin Wang"
+description: "语默动静体安然"
 baseurl: ""
-url: "https://dr12730.github.io"
-logo: "/assets/images/city.jpg"
+url: "https://wkevin.github.io"
+logo: "/images/mac.jpeg"
 date_format: "%b %-d, %Y"
 read_time: false
 words_per_minute: # 200
@@ -38,6 +38,8 @@ google_fonts:
   - name: "Lora"
     weights: "400,400i,700,700i"
 google_analytics: "UA-2011187-2"
+twitter:
+  username: "wkevin27"
 
 # Liquid
 liquid:
@@ -139,31 +141,31 @@ defaults:
 
 # Site Author
 author:
-  name: wilson
-  picture: /assets/images/delicious.jpeg
+  name: wKevin
+  picture: /images/angry.bird.jpg
   email:
-  twitter:
+  twitter: "@wkevin27"
   links:
     - title: Weibo
-      url: 
+      url: https://weibo.com/wkevin27
       icon: fab fa-weibo
     - title: Twitter
-      url: 
+      url: https://twitter.com/wkevin27
       icon: fab fa-twitter-square
     - title: GitHub
-      url: https://github.com/dr12730
+      url: https://github.com/wkevin
       icon: fab fa-github-square
 
 # Footer Links
 footer_links:
   - title: Weibo
-    url: 
+    url: https://weibo.com/wkevin27
     icon: fab fa-weibo
   - title: Twitter
-    url: 
+    url: https://twitter.com/wkevin27
     icon: fab fa-twitter-square
   - title: GitHub
-    url: https://github.com/dr12730
+    url: https://github.com/wkevin
     icon: fab fa-github-square
   - title: Feed
     url: atom.xml
