@@ -1,5 +1,9 @@
 # Kevin's Blog
 
+- use
+    - 执行 `setmode l` 将 Gemfile, _config.yml 设置为本地文件
+    - 再执行 `bundle exec jekyll server` 进行本地编译，浏览网页效果
+    - 执行 `setmode r` 修改 Gemfile, _config.yml 后，再执行 `git push` 上传网站
 - Github Pages base on Jekyll
 - Init
     - `gem install jekyll bundle`
