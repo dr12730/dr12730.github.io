@@ -14,7 +14,6 @@ fi
 mkdir "assets/images/posts/"$date-$name
 imagedir="assets/images/posts/"$date-$name 
 pic=$imagedir"/"$picname
-echo $pic
 
 fn="_posts/"$date-$name".md"
 echo "will creat file:" $fn
