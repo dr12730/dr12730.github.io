@@ -7,7 +7,14 @@ if [ $# -gt 0 ]; then
     name=$1
 fi
 
+if [ $2 ]; then
+    picname=$2
+fi
+
 mkdir "assets/images/posts/"$date-$name
+imagedir="assets/images/posts/"$date-$name 
+pic=$imagedir"/"$picname
+echo $pic
 
 fn="_posts/"$date-$name".md"
 echo "will creat file:" $fn
@@ -20,8 +27,8 @@ if [ ! -f $fn ]; then
     echo "description: " >>$fn
     echo "author: wilson" >>$fn
     echo "image:      " >>$fn
-    echo "    path: " >>$fn
-    echo "    thumbnail: " >>$fn
+    echo "    path: $pic " >>$fn
+    echo "    thumbnail: $pic " >>$fn
     echo "categories: " >>$fn
     echo "    - " >>$fn
     echo "tags:" >>$fn
