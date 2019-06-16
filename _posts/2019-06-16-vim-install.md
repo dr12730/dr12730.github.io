@@ -4,8 +4,8 @@ date: 2019-06-16 15:45:04 +0800
 description:
 author: wilson
 image:
-    path: assets/images/posts/2019-06-14-vim/cover.jpg
-    thumbnail: assets/images/posts/2019-06-14-vim/cover.jpg
+    path: assets/images/posts/2019-06-16-vim-install/cover.jpg
+    thumbnail: assets/images/posts/2019-06-16-vim-install/cover.jpg
 categories:
     - it
 tags:
