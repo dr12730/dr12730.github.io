@@ -108,7 +108,7 @@ some text.
 
 现在你输入新的句子 "Another line.":
 
-```shell
+```
 Hello there.  Another line.  Just 
 some text. 
 ```
@@ -171,9 +171,9 @@ CTRL-Vjjww"by
 | 13 | :splitbelow | 当前窗口下打开新窗口 |
 | 14 | :splitright | 当前窗口右侧开新窗口 | 
 
-> 另一种新开窗口的方法：
-> 前置“s”，如“:tag”跳转到一个标记，用“:stag”成分割新窗口再跳转到标记
-> 前置 CTRL-w 开新窗口，比如 `CTRL-w CTRL-^` 新开窗口编辑轮换文件
+> 另一种新开窗口的方法：  
+> 前置“s”，如“:tag”跳转到一个标记，用“:stag”成分割新窗口再跳转到标记  
+> 前置 CTRL-w 开新窗口，比如 `CTRL-w CTRL-^` 新开窗口编辑轮换文件  
 
 # 9. 比较文件差异
 
@@ -221,8 +221,8 @@ vim 用垂直窗口打开两个文件
 4. 用 "@{register}" 执行宏
 
 对于  
-```shell
- stdio.h 
+```
+stdio.h 
 fcntl.h 
 unistd.h 
 stdlib.h 

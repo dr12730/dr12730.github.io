@@ -81,23 +81,25 @@ make
 sudo make install
 ```
 
-> 其中参数说明如下：
-> –with-features = huge：支持最大特性
-> –enable-multibyte：多字节支持可以在 Vim 中输入中文
-> –enable-rubyinterp：启用 Vim 对 ruby 编写的插件的支持
-> –enable-pythoninterp：启用 Vim 对 python2 编写的插件的支持
-> –enable-python3interp: 启用 Vim 对 python3 编写的插件的支持
-> –enable-luainterp：启用 Vim 对于 lua 编写的插件的支持
-> –enable-perlinterp：启用 Vim 对 perl 编写的插件的支持
-> –enable-cscope：Vim 对 cscope 支持
-> –with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu : 指定 python 路径
-> –enable-gui = gtk2：gtk2 支持，也可以使用 gnome，表示生成 gvim
-> -prefix = / usr：编译安装路径
+> 其中参数说明如下：  
+> –with-features = huge：支持最大特性  
+> –enable-multibyte：多字节支持可以在 Vim 中输入中文  
+> –enable-rubyinterp：启用 Vim 对 ruby 编写的插件的支持  
+> –enable-pythoninterp：启用 Vim 对 python2 编写的插件的支持  
+> –enable-python3interp: 启用 Vim 对 python3 编写的插件的支持  
+> –enable-luainterp：启用 Vim 对于 lua 编写的插件的支持  
+> –enable-perlinterp：启用 Vim 对 perl 编写的插件的支持  
+> –enable-cscope：Vim 对 cscope 支持  
+> –with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu : 指定 python 路径  
+> –enable-gui = gtk2：gtk2 支持，也可以使用 gnome，表示生成 gvim  
+> -prefix = / usr：编译安装路径  
 
 至此，vim 安装完成，在终端输入 `vim` 验证安装是否完整，也可以执行 `vim --version` 查看它的版本号
 
 
 # 2. 插件与配置
+
+## 2.1 vundle 插件管理器
 vim 有许多好用的插件，这些插件的管理和安装可以通过 vundle 来完成；而 vim 自身的各种特性，则由 `~/.vimrc` 来配置
 
 关于插件的安装，推荐直接下载 [wKevin](https://github.com/wkevin/DotVim) 的配置，很方便，执行如下命令：
@@ -123,7 +125,7 @@ ln -s $PWD/tools/callgraph /usr/local/bin/
 ln -s $PWD/tools/tree2dotx /usr/local/bin/
 ```
 
-** 说明 **：
+**说明**：
 
 1. 从 github 下载 vundle 插件管理器
 2. 将 vim 的配置文件软连接为 DotVim 目录下的 .vimrc 配置文件
@@ -135,7 +137,7 @@ ln -s $PWD/tools/tree2dotx /usr/local/bin/
 
 这样再进入 vim 就与之前不一样了
 
-## vim-plug 插件管理器
+## 2.2 vim-plug 插件管理器
 
 - 安装
     ```shell
@@ -150,7 +152,7 @@ ln -s $PWD/tools/tree2dotx /usr/local/bin/
     call plug#end()
     ```
 - 安装插件
-    保存. vimrc 后，重进 vim，再执行 `:PlugInstall` 安装插件
+    保存 `.vimrc` 后，重进 vim，再执行 `:PlugInstall` 安装插件
 
 
 
@@ -162,21 +164,21 @@ set background=dark
 colorscheme herald
 ```
 
-**herald 主题 **
+**herald 主题**
 
 ![herald](/assets/images/posts/2019-06-14-vim/herald.png)
 
 
-**zellner 主题 **
+**zellner 主题**
 
 ![zellner](/assets/images/posts/2019-06-14-vim/zellner.png)
 
-**lucius 主题 **
+**lucius 主题**
 
 ![lucius](/assets/images/posts/2019-06-14-vim/lucius.png)
 
 
-**moria 主题 **
+**moria 主题**
 
 ![moria](/assets/images/posts/2019-06-14-vim/moria.png)
 
