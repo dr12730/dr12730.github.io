@@ -1,5 +1,7 @@
 ---
 title: VIM 之安装与配置篇
+date: 2019-06-16 15:45:04 +0800
+description:
 image:
     path: assets/images/posts/2019-06-16-vim-install/cover.jpg
     thumbnail: assets/images/posts/2019-06-16-vim-install/cover.jpg
@@ -7,12 +9,9 @@ categories:
     - it
 tags:
     - vim
-date: 2019-06-16 15:45:04 +0800
-description:
-author: wilson
 ---
 
-测试一下修改标题顺序，是否有影响
+只删除author，是否有影响
 
 vim 是一个优秀的文本编辑器，它可以在手不离开键盘的条件下完成大部分的工作，而且在没有图形界面的服务器端也可以使用。这篇博文主要记录在 linux 环境下 vim 的安装与配置。
 
