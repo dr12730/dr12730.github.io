@@ -166,21 +166,21 @@ colorscheme herald
 
 **herald 主题**
 
-![herald](/assets/images/posts/2019-06-14-vim/herald.png)
+![herald](/assets/images/posts/2019-06-16-vim-install/herald.png)
 
 
 **zellner 主题**
 
-![zellner](/assets/images/posts/2019-06-14-vim/zellner.png)
+![zellner](/assets/images/posts/2019-06-16-vim-install/zellner.png)
 
 **lucius 主题**
 
-![lucius](/assets/images/posts/2019-06-14-vim/lucius.png)
+![lucius](/assets/images/posts/2019-06-16-vim-install/lucius.png)
 
 
 **moria 主题**
 
-![moria](/assets/images/posts/2019-06-14-vim/moria.png)
+![moria](/assets/images/posts/2019-06-16-vim-install/moria.png)
 
 # 3. vim8 的中文手册
 感谢 yianwillis 对 vim 手册的翻译，我们可以在他的 [github](https://github.com/yianwillis/vimcdoc) 上找到对应的中文文档源文件
