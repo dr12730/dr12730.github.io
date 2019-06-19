@@ -1,8 +1,8 @@
 ---
 title: "faster RCNN 源码解析"
 image: 
-  path: /assets/images/posts/2019-06-07-faster-rcnn/nick.jpg
-  thumbnail: /assets/images/2019-06-07.jpg
+  path: /assets/images/posts/2019-06-07-faster-rcnn/cover.jpg
+  thumbnail: /assets/images/posts/2019-06-07-faster-rcnn/thumb.jpg
 categories: [深度学习, 编程]
 tags: [源码解析]
 ---

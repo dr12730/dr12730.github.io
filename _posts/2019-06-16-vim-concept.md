@@ -4,7 +4,7 @@ date: 2019-06-16 15:55:36 +0800
 description: 
 image:      
     path: assets/images/posts/2019-06-16-vim-concept/cover.jpg 
-    thumbnail: assets/images/posts/2019-06-16-vim-concept/cover.jpg
+    thumbnail: assets/images/posts/2019-06-16-vim-concept/thumb.jpg
 categories: 
     - it
 tags:
