@@ -380,7 +380,7 @@ qA 或 "A 表示启用 A 寄存器，但也会将后面的 `/word<Enter>` 追加
 |:---:|---|---|
 | 1 | `:.,$write tempo` | 写入当前位置到文件末的全部行到文件 "tempo" 中 |
 | 2 | `:.write collection` | 把当前行写入文件 collection |
-| 3 | `:.write >>collection` | ">>" 通知 Vim 把内容添加到文件 "collection" 的后面 |
+| 3 | `:.write >> collection` | ">>" 通知 Vim 把内容添加到文件 "collection" 的后面 |
 | 4 | `:write !wc` | 把文本写入到命令，wc是字符统计的程序 |
 
 ### 11.6.2 排版
@@ -509,7 +509,7 @@ q             #  中止记录。
 
 ## 15.4 预览窗口
 
-`:ptag write_char`：打开一个预览窗口来显示函数 "write_char"
+`:ptag write_char`：打开一个预览窗口来显示函数 `write_char`
 
 `CTRL-W }`：预览窗口中得到光标下函数的定义
 
@@ -522,8 +522,8 @@ q             #  中止记录。
 设置属性用 `set`，比如 `set number` 是让vim显示行号，`set nonumber`关闭行号
 映射是`map`和`noremap`(非递归映射)
 `let mapleader=" "`，让vim的leader变为空格，
-`noremap \<LEADER\>\<CR\> :nohlsearch`：让空格+回国取消搜索高亮，vim的leader默认为反斜杠
-`:colorscheme \<tab\>`：选择主题  
+`noremap <leader><cr> :nohlsearch`：让空格+回国取消搜索高亮，vim的leader默认为反斜杠
+`:colorscheme <tab>`：选择主题  
 
 
 | 序号 | 属性项 | 功能 |
@@ -531,7 +531,6 @@ q             #  中止记录。
 | 1 | relativenumber | 相对行号 |
 | 2 | number | 行号 |
 | 3 | cursorline | 鼠标线 |
-| 4 | wrap | 自动换行 |
 | 5 | wildmenu | 输入命令时，`tab`显示候选菜单 |
 | 6 | syntax | 语法高亮 |
 | 7 | hlsearch | 搜索高亮 |

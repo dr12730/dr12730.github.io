@@ -96,14 +96,14 @@ sudo make install
 至此，vim 安装完成，在终端输入 `vim` 验证安装是否完整，也可以执行 `vim --version` 查看它的版本号
 
 
-# 2. 插件与配置
+# 1.4 插件管理器
 
-## 2.1 vundle 插件管理器
+## 1.4.1 vundle 插件管理器
 vim 有许多好用的插件，这些插件的管理和安装可以通过 vundle 来完成；而 vim 自身的各种特性，则由 `~/.vimrc` 来配置
 
 关于插件的安装，推荐直接下载 [wKevin](https://github.com/wkevin/DotVim) 的配置，很方便，执行如下命令：
 
-```shell
+```python
 # 下载 DotVim 配置
 git clone https://github.com/wkevin/DotVim.git
 
@@ -114,7 +114,7 @@ sh deploy.sh
 ```
 
 下面，我们对这个部署命令 `deploy.sh` 的内容进行一下说明，因为有几个命令我稍作了修改，所以和 `deploy.sh` 有点区别：
-```shell
+```python
 git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 ln -s $PWD/.vimrc ~/
 vim +BundleInstall +BundleClean! +qa
@@ -136,33 +136,36 @@ ln -s $PWD/tools/tree2dotx /usr/local/bin/
 
 这样再进入 vim 就与之前不一样了
 
-## 2.2 vim-plug 插件管理器
+### 1.4.2 vim-plug 插件管理器
 
--vim 
-    - 安装
+vim-plug 是新一代的插件管理器，现在大有超越 vundle 的趋势
+
+- vim   
+    - 安装  
     ```shell
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     ```
-    - 管理插件
-    在. vimrc 中写入要安装的插件名称
+    - 管理插件  
+    在. vimrc 中写入要安装的插件名称  
     ```shell
     call plug#begin('~/.vim/plugged')
     Plug 'vim-airline/vim-airline'
     call plug#end()
     ```
-    - 安装插件
+    - 安装插件  
     保存 `.vimrc` 后，重进 vim，再执行 `:PlugInstall` 安装插件
 
-- Neovim
-    - 安装
+- Neovim  
+    - 安装  
     ```
-        curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     ```
 
 
-## 2.2 主题
+### 1.5 主题设置
+
 通过修改 `.vimrc` 中的 `colorscheme` 可以修改主题，修改的部分如下：
 
 ```shell
@@ -188,7 +191,7 @@ colorscheme herald
 
 ![moria](/assets/images/posts/2019-06-16-vim-install/moria.png)
 
-# 3. vim8 的中文手册
+### 1.6 安装 vim8 的中文手册
 感谢 yianwillis 对 vim 手册的翻译，我们可以在他的 [github](https://github.com/yianwillis/vimcdoc) 上找到对应的中文文档源文件
 
 也可以通过 vundle 直接安装，方法是在 `.vimrc` 中添加：
@@ -201,3 +204,80 @@ Plugin "yianwillis/vimcdoc"
 也可以进入 yianwillis 的 [网站](http://yianwillis.github.io/vimcdoc/doc/help.html) 直接阅读手册。
 
 现在 vim 的基本安装和配置就完成了
+
+# 2 vim 的配置
+
+通过对 vim 的配置，可以打开许多 vim 特有的功能，让使用更加方便
+
+
+## 2.1 vimrc 的编写
+
+vimrc 是 vim 的配置文件，再它打开之前，会先加载这个文件，根据 vimrc 决定编译器自身各类属性的设置以及各种功能的开启和关闭。现在我们来看看这个 vimrc 怎么编写。
+首先，在 Linux 下 vimrc 的存放路径是 `~/.vimrc` 或者 `~/.vim/vimrc`，如果没有就自行创建一个
+
+```python
+mkdir ~/.vim      # 创建.vim 目录
+vim ~/.vim/vimrc  # 打开空的 vimrc 文件
+```
+
+
+这样就通过 vim 打开了一个 vimrc 配置文件，下面是一个配置的部分示例：
+
+```python
+
+" 编辑器设置
+set nocompatible    " 不兼容 vi
+filetype on         " 打开文件类型识别
+filetype indent on  " 根据文件类型设置缩进
+filetype plugin on
+filetype plugin indent on
+
+set encoding=utf-8
+
+" 设置 vim 的 leader 键为空格
+let mapleader=" "
+" 打开语法高亮
+syntax on
+set number
+set relativenumber
+set wrap
+set wildmenu
+set hlsearch
+exec "nohlsearch"
+set incsearch
+set ignorecase
+
+" 空格 + 回车，取消搜索高亮
+noremap <LEADER><CR> :nohlsearch<CR>
+
+.......
+```
+
+下面，我们对配置文件的一些基本概念做一些解释。
+
+### 2.1.1 基本映射
+
+映射就是为一些操作创建新的快捷方式，它的格式为：
+
+```
+map 新操作 旧操作
+map jj <Esc> # 把 Esc 映射为 jj
+```
+
+- 用 nmap/vmap/imap 定义只在 normal/visual/insert 模式下有效的映射  
+- `:vmap \ U` 在 visual 模式下把选中的文本进行大小写转换 (u/U 转换大小写)  
+- `:imap <c-d> <esc>ddi` 在 insert 模式下删除一行
+
+#### 递归与非递归映射
+
+递归映射的问题：
+
+1. `map` 是递归映射，比如 `map - dd` 和 `map \ -`，使用 `\` 后会删除一行  
+2. 多个插件间的映射会混乱
+
+解决方法：  
+使用非递归映射，`nnoremap/vnoremap/inoremap`，所以为了自己和插件作者，**我们在任何时候都应该使用非递归映射 `noremap`**
+
+推荐一本书：[《笨方法学 VimScript》](https://www.kancloud.cn/kancloud/learn-vimscript-the-hard-way/49321)
+
+有了这些基本知识，我们就可以自己编写 vimrc 的配置了，也可以参考各个大神写的配置文件，拿来自己用。
