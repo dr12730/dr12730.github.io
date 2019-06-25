@@ -140,21 +140,28 @@ ln -s $PWD/tools/tree2dotx /usr/local/bin/
 
 ## 2.2 vim-plug 插件管理器
 
-- 安装
+-vim 
+    - 安装
     ```shell
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     ```
-- 管理插件
+    - 管理插件
     在. vimrc 中写入要安装的插件名称
     ```shell
     call plug#begin('~/.vim/plugged')
     Plug 'vim-airline/vim-airline'
     call plug#end()
     ```
-- 安装插件
+    - 安装插件
     保存 `.vimrc` 后，重进 vim，再执行 `:PlugInstall` 安装插件
 
+- Neovim
+    - 安装
+    ```
+        curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    ```
 
 
 ## 2.2 主题
