@@ -207,12 +207,15 @@ Plugin "yianwillis/vimcdoc"
 
 # 2 vim 的配置
 
-通过对 vim 的配置，可以打开许多 vim 特有的功能，让使用更加方便
+通过对 vim 的配置，可以打开许多 vim 特有的功能，让使用更加方便。vimrc 是 vim 的配置文件，再它打开之前，会先加载这个文件，根据 vimrc 决定编译器自身各类属性的设置以及各种功能的开启和关闭。 
 
 
-## 2.1 vimrc 的编写
+vim 的配置文件 vimrc 基本内容就是设置选项的开关状态或数值，还有自定义操作的映射，以及之后安装的各类插件的设置三大部分。
 
-vimrc 是 vim 的配置文件，再它打开之前，会先加载这个文件，根据 vimrc 决定编译器自身各类属性的设置以及各种功能的开启和关闭。现在我们来看看这个 vimrc 怎么编写。
+
+那么，现在我们来看看这个 vimrc 怎么编写。
+
+
 首先，在 Linux 下 vimrc 的存放路径是 `~/.vimrc` 或者 `~/.vim/vimrc`，如果没有就自行创建一个
 
 ```python
@@ -223,39 +226,40 @@ vim ~/.vim/vimrc  # 打开空的 vimrc 文件
 
 这样就通过 vim 打开了一个 vimrc 配置文件，下面是一个配置的部分示例：
 
-```python
+```vimrc
 
-" 编辑器设置
-set nocompatible    " 不兼容 vi
-filetype on         " 打开文件类型识别
-filetype indent on  " 根据文件类型设置缩进
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+" =>  Vim/NeoVim 编辑器设置
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 打开文件类型识别
+filetype on
+" 根据文件类型设置缩进
+filetype indent on
 filetype plugin on
 filetype plugin indent on
 
 set encoding=utf-8
 
-" 设置 vim 的 leader 键为空格
-let mapleader=" "
-" 打开语法高亮
-syntax on
-set number
-set relativenumber
-set wrap
-set wildmenu
-set hlsearch
-exec "nohlsearch"
-set incsearch
-set ignorecase
-
 " 空格 + 回车，取消搜索高亮
 noremap <LEADER><CR> :nohlsearch<CR>
+" 保存文件
+noremap <leader>w :w<cr>
+map R :source ~/.config/nvim/init.vim<CR>
 
-.......
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+" =>  Vim/NeoVim 其他设置
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 ```
 
-下面，我们对配置文件的一些基本概念做一些解释。
+#### 基本映射 map
 
-### 2.1.1 基本映射
+我们在上面的 vimrc中看到了**状态开关**、**状态值**和**自定义映射**三类设置方式，这里介绍一下 vim 映射的概念。
 
 映射就是为一些操作创建新的快捷方式，它的格式为：
 
@@ -270,14 +274,15 @@ map jj <Esc> # 把 Esc 映射为 jj
 
 #### 递归与非递归映射
 
-递归映射的问题：
+使用 `map` 进行的映射会有递归映射的问题：
 
 1. `map` 是递归映射，比如 `map - dd` 和 `map \ -`，使用 `\` 后会删除一行  
 2. 多个插件间的映射会混乱
 
-解决方法：  
+解决方法：
+
 使用非递归映射，`nnoremap/vnoremap/inoremap`，所以为了自己和插件作者，**我们在任何时候都应该使用非递归映射 `noremap`**
 
 推荐一本书：[《笨方法学 VimScript》](https://www.kancloud.cn/kancloud/learn-vimscript-the-hard-way/49321)
 
-有了这些基本知识，我们就可以自己编写 vimrc 的配置了，也可以参考各个大神写的配置文件，拿来自己用。
+了解了 vimrc 的映射，我们就可以自己编写 vimrc 的配置了，也可以参考各个大神写的配置文件，拿来自己用。

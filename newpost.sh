@@ -21,8 +21,8 @@ if [ ! -f $fn ]; then
     echo "date: "`date +'%Y-%m-%d %H:%M:%S'`" +0800" >>$fn
     echo "description: " >>$fn
     echo "image:      " >>$fn
-    echo "    path: $imagedir/cover.jpg " >>$fn
-    echo "    thumbnail: $imagedir/thumb.jpg " >>$fn
+    echo "    path: /$imagedir/cover.jpg " >>$fn
+    echo "    thumbnail: /$imagedir/thumb.jpg " >>$fn
     echo "categories: " >>$fn
     echo "    - " >>$fn
     echo "tags:" >>$fn
