@@ -46,7 +46,7 @@ tags:
 Shell 终端解释器负责执行输入终端的各种指令，查看当前系统的命令行终端解释器指令为：
 
 ```bash
-[root@linuxprobe ~]# echo $SHELL
+>>> echo $SHELL
 /bin/bash
 ```
 
@@ -55,7 +55,7 @@ Shell 终端解释器负责执行输入终端的各种指令，查看当前系�
 首先创建一个脚本 `ex.sh`
 
 ```bash
-[root@linuxprobe ~]# vim example.sh
+>>> vim example.sh
 #!/bin/bash
 #For Example BY linuxprobe.com
 pwd
@@ -83,7 +83,7 @@ Shell 脚本语言内设了用于接收参数的变量，含义如下：
 例如：
 
 ```bash
-[root@linuxprobe ~]# vim example.sh
+>>> vim example.sh
 #!/bin/bash
 echo "当前脚本名称为$0"
 echo "总共有$#个参数，分别是$*。"
@@ -93,7 +93,7 @@ echo "第1个参数为$1，第5个为$5。"
 执行结果：
 
 ```bash
-[root@linuxprobe ~]# sh example.sh one two three four five six
+>>> sh example.sh one two three four five six
 当前脚本名称为example.sh
 总共有6个参数，分别是one two three four five six。
 第1个参数为one，第5个为five。
@@ -125,32 +125,32 @@ Shell 脚本中的条件测试语法可以判断表达式是否成立，若条�
 1. 测试 `/etc/fstab` 是否为目录，并通过解释器的内设变量 `$?` 显示上一条语句执行的返回值，为 0 则目录存在，非零则不存在。
 
 ```bash
-[root@linuxprobe ~]# [ -d /etc/fstab ]
-[root@linuxprobe ~]# echo $?
+>>> [ -d /etc/fstab ]
+>>> echo $?
 1
 ```
 
 2. 再判断 `/etc/fstab` 是否为文件，为 0 则是，非 0 则不是
 
 ```bash
-[root@linuxprobe ~]# [ -f /etc/fstab ]
-[root@linuxprobe ~]# echo $?
+>>> [ -f /etc/fstab ]
+>>> echo $?
 0
 ```
 
 3. 判断 `/etc/cdrom` 文件是否存在，存在则输出 "存在"。这里利用了逻辑运算 `&&` 的特性
 
 ```bash
-[root@linuxprobe ~]# [ -e /etc/cdrom ] && echo "存在"
+>>> [ -e /etc/cdrom ] && echo "存在"
 ```
 
 4. 判断当前用户是否是管理员
 
 ```bash
 # 前面的命令失败后，才会执行后面的命令
-[root@linuxprobe ~]# [ $USER = root ] || echo "user"
-[root@linuxprobe ~]# su - wilson
-[root@linuxprobe ~]# [ $USER = root ] || echo "user"
+>>> [ $USER = root ] || echo "user"
+>>> su - wilson
+>>> [ $USER = root ] || echo "user"
 user
 # 逻辑非
 [root@linuxprobe root]# [ $USER != root ] || echo "administrator"
@@ -188,27 +188,27 @@ $ 0
 获取当前系统可用的内存量信息，当可用量小于 1024 时显示内存不足：
 
 ```bash
-[root@linuxprobe ~]# free -m
+>>> free -m
             total     used     free     shared     buffers     cached
 Mem:        1826      1244     582      9          1           413
 -/+ buffers/cache:    830 996
 Swap:       2047      0        2047
 
-[root@linuxprobe ~]# free -m | grep Mem:
+>>> free -m | grep Mem:
 Mem:        1826      1244     582      9
 
-[root@linuxprobe ~]# free -m | grep Mem: | awk '{print $4}'
+>>> free -m | grep Mem: | awk '{print $4}'
 582
 
-[root@linuxprobe ~]# FreeMem=`free -m | grep Mem: | awk '{print $4}'`
-[root@linuxprobe ~]# echo $FreeMem
+>>> FreeMem=`free -m | grep Mem: | awk '{print $4}'`
+>>> echo $FreeMem
 582
 ```
 
 显示内存不足：
 
 ```bash
-[root@linuxprobe ~]# [ $FreeMem -lt 1024] && echo "内存不足"
+>>> [ $FreeMem -lt 1024] && echo "内存不足"
 ```
 
 ### 1.3.3 字符串比较
@@ -224,15 +224,15 @@ Mem:        1826      1244     582      9
 比如判断是否定义了变量 `String`：
 
 ```bash
-[root@linuxprobe ~]# [ -z $String ]
-[root@linuxprobe ~]# echo $?
+>>> [ -z $String ]
+>>> echo $?
 0
 ```
 
 当前环境不是英语时，显示非英语环境：
 
 ```bash
-[root@linuxprobe ~]# [ $LANG != "en.US" ] && echo "非英语环境"
+>>> [ $LANG != "en.US" ] && echo "非英语环境"
 ```
 
 ## 1.4 流程控制语句
@@ -241,21 +241,22 @@ Mem:        1826      1244     582      9
 
 #### 语法格式
 
-if 作为判断语句，格式如下：
+if 作为判断语句，格式如下:
 
-    ```bash
-    if 条件判断; then
-        执行语句
-    elif 条件判断; then
-        执行语句
-    else
-        执行语句
-    fi
-    ```
+```bash
+if 条件判断; then
+    执行语句
+elif 条件判断; then
+    执行语句
+else
+    执行语句
+fi
+```
 
 #### 示例
 
 1.  判断 `~/workSpace/test` 目录是否存在，不存在创建
+
     ```bash
     #!/bin/bash
     DIR="$HOME/workSpace/test"
@@ -265,6 +266,7 @@ if 作为判断语句，格式如下：
         mkdir -p $DIR
     fi
     ```
+
 2.  判断主机是否在线
 
     ```bash
@@ -286,16 +288,16 @@ if 作为判断语句，格式如下：
     执行结果：
 
     ```bash
-    [root@linuxprobe ~]# bash chkhost.sh 192.168.10.10
+    >>> bash chkhost.sh 192.168.10.10
     192.168.10.10 On-line.
-    [root@linuxprobe ~]# bash chkhost.sh 192.168.10.20
+    >>> bash chkhost.sh 192.168.10.20
     192.168.10.20 Off-line.
     ```
 
 3.  读取输入分数，判断成绩
 
     ```bash
-    [root@linuxprobe ~]# vim chkscore.sh
+    >>> vim chkscore.sh
     #!/bin/bash read -p "Enter your score（0-100）：" GRADE
     if [ $GRADE -ge 85 ] && [ $GRADE -le 100 ] ; then
         echo "$GRADE is Excellent"
@@ -308,15 +310,15 @@ if 作为判断语句，格式如下：
 
     > read 读取输入，-p 显示提示信息
 
-        ```bash
-        #!/bin/bash
-        [root@linuxprobe ~]# bash chkscore.sh
-        Enter your score（0-100）：88
-        88 is Excellent
-        [root@linuxprobe ~]# bash chkscore.sh
-        Enter your score（0-100）：80
-        80 is Pass
-        ```
+    ```bash
+    #!/bin/bash
+    >>> bash chkscore.sh
+    Enter your score（0-100）：88
+    88 is Excellent
+    >>> bash chkscore.sh
+    Enter your score（0-100）：80
+    80 is Pass
+    ```
 
 ### 1.4.2 for 语句
 
@@ -459,7 +461,7 @@ if 作为判断语句，格式如下：
 非交互式执行临时任务：
 
 ```bash
-[root@linuxprobe ~]# echo "systemctl restart httpd" | at 23:30
+>>> echo "systemctl restart httpd" | at 23:30
 job 4 at Mon Apr 27 23:30:00 2015
 ```
 
