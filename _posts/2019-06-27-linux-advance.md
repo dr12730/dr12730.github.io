@@ -3,15 +3,13 @@ title: Linux 进阶篇
 date: 2019-06-27 16:42:29 +0800
 description:
 image:
-  path: /assets/images/posts/2019-06-27-linux-advance/cover.jpg
-  thumbnail: /assets/images/posts/2019-06-27-linux-advance/thumb.jpg
+path: /assets/images/posts/2019-06-27-linux-advance/cover.jpg
+thumbnail: /assets/images/posts/2019-06-27-linux-advance/thumb.jpg
 categories:
   - it
 tags:
-  - linux
-  - 编程
-  - shell
-  - 脚本
+  - [linux, 编程, shell, 脚本]
+---
 
 <!-- vim-markdown-toc GFM -->
 
@@ -114,11 +112,11 @@ Shell 脚本中的条件测试语法可以判断表达式是否成立，若条�
 ### 1.3.1 文件测试
 
 |--------|------------------------------|
-| 操作符 | 作用                         |
+| 操作符 | 作用 |
 | :----: | ---------------------------- |
-|   -d   | 文件是否为目录               |
-|   -f   | 是否为一般文件               |
-|   -e   | 文件是否存在                 |
+| -d | 文件是否为目录 |
+| -f | 是否为一般文件 |
+| -e | 文件是否存在 |
 | -r/w/x | 当前用户是否有读/写/执行权限 |
 |--------|------------------------------|
 
@@ -169,14 +167,14 @@ user
 整数比较运算符只能对整数生效，不能面对字符串、文件。因为 `>`、`<`、`=` 都另有它用，所以只能用规范的运算符
 
 |--------|----------------|
-| 操作符 | 作用           |
+| 操作符 | 作用 |
 | :----: | -------------- |
-|  -eq   | 是否等于       |
-|  -ne   | 是否不等于     |
-|  -gt   | 是否大于       |
-|  -lt   | 是否小于       |
-|  -le   | 是否等于或小于 |
-|  -ge   | 是否大于或等于 |
+| -eq | 是否等于 |
+| -ne | 是否不等于 |
+| -gt | 是否大于 |
+| -lt | 是否小于 |
+| -le | 是否等于或小于 |
+| -ge | 是否大于或等于 |
 |--------|----------------|
 
 举例：
@@ -216,11 +214,11 @@ Mem:        1826      1244     582      9
 ### 1.3.3 字符串比较
 
 |--------|--------------------|
-| 操作答 | 功能               |
+| 操作答 | 功能 |
 | :----: | ------------------ |
-|  `=`   | 字符串内容是否相同 |
-|  `!=`  | 字符串不同         |
-|  `-z`  | 字符串是否为空     |
+| `=` | 字符串内容是否相同 |
+| `!=` | 字符串不同 |
+| `-z` | 字符串是否为空 |
 |--------|--------------------|
 
 比如判断是否定义了变量 `String`：
@@ -268,6 +266,7 @@ if 作为判断语句，格式如下：
     fi
     ```
 2.  判断主机是否在线
+
     ```bash
     #!/bin/bash
     ping -c 3 -i 0.2 -W 3 $1 &> /dev/null
@@ -277,21 +276,35 @@ if 作为判断语句，格式如下：
         echo "$1 off-line"
     fi
     ```
+
     > ping 的参数说明：
     >
     > - `-c` 规定尝试的次数
     > - `-i` 数据包的发送间隔
     > - `-W` 等待超时时间
-    ````
+
     执行结果：
+
     ```bash
     [root@linuxprobe ~]# bash chkhost.sh 192.168.10.10
     192.168.10.10 On-line.
     [root@linuxprobe ~]# bash chkhost.sh 192.168.10.20
     192.168.10.20 Off-line.
-    ````
+    ```
+
 3.  读取输入分数，判断成绩
-    `bash [root@linuxprobe ~]# vim chkscore.sh #!/bin/bash read -p "Enter your score（0-100）：" GRADE if [ $GRADE -ge 85 ] && [ $GRADE -le 100 ] ; then echo "$GRADE is Excellent" elif [ $GRADE -ge 70 ] && [ $GRADE -le 84 ] ; then echo "$GRADE is Pass" else echo "$GRADE is Fail" fi`
+
+    ```bash
+    [root@linuxprobe ~]# vim chkscore.sh
+    #!/bin/bash read -p "Enter your score（0-100）：" GRADE
+    if [ $GRADE -ge 85 ] && [ $GRADE -le 100 ] ; then
+        echo "$GRADE is Excellent"
+    elif [ $GRADE -ge 70 ] && [ $GRADE -le 84 ] ; then
+        echo "$GRADE is Pass"
+    else
+        echo "$GRADE is Fail"
+    fi
+    ```
 
     > read 读取输入，-p 显示提示信息
 
@@ -319,7 +332,24 @@ if 作为判断语句，格式如下：
 #### 示例
 
 1. 根据用户列表 user.txt，读取用户输入密码，创建用户
-   `bash #!/bin/bash read -p "请输入密码：" PASSWD for UNAME in $(cat user.txt); do id $UNAME &> /dev/null if [ $? -eq 0 ]; then echo "用户已存在" else useradd $UNAME &> /dev/null echo "$PASSWD" | passwd --stdin $UNAME &> /dev/null if [ $? -eq 0 ]; then echo "$UNAME 创建成功" else echo "$UNAME 创建失败" fi fi done`
+
+   ```bash
+   #!/bin/bash
+   read -p "请输入密码：" PASSWD
+   for UNAME in $(cat user.txt); do
+       id $UNAME &> /dev/null
+       if [ $? -eq 0 ]; then
+           echo "用户已存在"
+       else useradd $UNAME &> /dev/null
+           echo "$PASSWD" | passwd --stdin $UNAME &> /dev/null
+           if [ $? -eq 0 ]; then
+               echo "$UNAME 创建成功"
+           else
+               echo "$UNAME 创建失败"
+           fi
+       fi
+   done`
+   ```
 
    > - id 用户名：查看用户信息
 
