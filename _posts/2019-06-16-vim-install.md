@@ -286,3 +286,10 @@ map jj <Esc> # 把 Esc 映射为 jj
 推荐一本书：[《笨方法学 VimScript》](https://www.kancloud.cn/kancloud/learn-vimscript-the-hard-way/49321)
 
 了解了 vimrc 的映射，我们就可以自己编写 vimrc 的配置了，也可以参考各个大神写的配置文件，拿来自己用。
+
+# Vim 的高阶配置
+
+```vim
+" 总是显示屏幕最下面的5行
+set scrolloff=5
+```

@@ -1,19 +1,19 @@
 ---
 title: Linux 进阶篇
 date: 2019-06-27 16:42:29 +0800
-description: 
+description:
 image:
-    path: /assets/images/posts/2019-06-27-linux-advance/cover.jpg 
-    thumbnail: /assets/images/posts/2019-06-27-linux-advance/thumb.jpg 
-categories: 
-    - it
+  path: /assets/images/posts/2019-06-27-linux-advance/cover.jpg
+  thumbnail: /assets/images/posts/2019-06-27-linux-advance/thumb.jpg
+categories:
+  - it
 tags:
-    - linux
+  - linux
 ---
 
 # 1. 编写 Shell 脚本
 
-Shell终端解释器负责执行输入终端的各种指令，查看当前系统的命令行终端解释器指令为：
+Shell 终端解释器负责执行输入终端的各种指令，查看当前系统的命令行终端解释器指令为：
 
 ```bash
 [root@linuxprobe ~]# echo $SHELL
@@ -26,27 +26,28 @@ Shell终端解释器负责执行输入终端的各种指令，查看当前系统
 
 ```bash
 [root@linuxprobe ~]# vim example.sh
-#!/bin/bash 
-#For Example BY linuxprobe.com 
-pwd 
+#!/bin/bash
+#For Example BY linuxprobe.com
+pwd
 ls -al
 ```
-- 第一行的脚本声明（#!）用来告诉系统使用哪种Shell解释器来执行该脚本
+
+- 第一行的脚本声明（#!）用来告诉系统使用哪种 Shell 解释器来执行该脚本
 - 第二行是注释
 - 第三、四行是脚本
 
 ## 1.2 接收参数
 
-Shell脚本语言内设了用于接收参数的变量，含义如下：
+Shell 脚本语言内设了用于接收参数的变量，含义如下：
 
 |------|-------------------------------|
-| 变量 | 功能                          |
+| 变量 | 功能 |
 |------|-------------------------------|
-| `$0` | 当前Shell脚本程序的名称       |
-| `$#` | 总共有几个参数                |
-| `$*` | 所有位置的参数值              |
-| `$?` | 显示上一次命令的执行返回值    |
-| `$N` | 第N个位置的参数值，如 `$1,$2` |
+| `$0` | 当前 Shell 脚本程序的名称 |
+| `$#` | 总共有几个参数 |
+| `$*` | 所有位置的参数值 |
+| `$?` | 显示上一次命令的执行返回值 |
+| `$N` | 第 N 个位置的参数值，如 `$1,$2` |
 |------|-------------------------------|
 
 例如：
@@ -70,7 +71,7 @@ echo "第1个参数为$1，第5个为$5。"
 
 ## 1.3 判断输入
 
-Shell脚本中的条件测试语法可以判断表达式是否成立，若条件成立则返回数字0，否则便返回其他随机数值。条件判断句的格式为：
+Shell 脚本中的条件测试语法可以判断表达式是否成立，若条件成立则返回数字 0，否则便返回其他随机数值。条件判断句的格式为：
 
 ```bash
 [ 条件表达式 ]
@@ -80,33 +81,39 @@ Shell脚本中的条件测试语法可以判断表达式是否成立，若条件
 
 ### 1.3.1 文件测试
 
-| 操作符 | 作用 |
-|:---:|---|
-| -d | 文件是否为目录 |
-| -f | 是否为一般文件 |
-| -e | 文件是否存在 |
-| -r/w/x | 当前用户是否有读/写/执行权限 | 
-
+| 操作符 | 作用                         |
+| :----: | ---------------------------- |
+|   -d   | 文件是否为目录               |
+|   -f   | 是否为一般文件               |
+|   -e   | 文件是否存在                 |
+| -r/w/x | 当前用户是否有读/写/执行权限 |
 
 比如，
 
 1. 测试 `/etc/fstab` 是否为目录，并通过解释器的内设变量 `$?` 显示上一条语句执行的返回值，为 0 则目录存在，非零则不存在。
+
 ```bash
 [root@linuxprobe ~]# [ -d /etc/fstab ]
 [root@linuxprobe ~]# echo $?
 1
 ```
+
 2. 再判断 `/etc/fstab` 是否为文件，为 0 则是，非 0 则不是
+
 ```bash
 [root@linuxprobe ~]# [ -f /etc/fstab ]
 [root@linuxprobe ~]# echo $?
 0
 ```
-3. 判断 `/etc/cdrom` 文件是否存在，存在则输出 "存在"`。这里利用了逻辑运算 `&&` 的特性
+
+3. 判断 `/etc/cdrom` 文件是否存在，存在则输出 "存在"`。这里利用了逻辑运算`&&` 的特性
+
 ```bash
 [root@linuxprobe ~]# [ -e /etc/cdrom ] && echo "存在"
 ```
+
 4. 判断当前用户是否是管理员
+
 ```bash
 # 前面的命令失败后，才会执行后面的命令
 [root@linuxprobe ~]# [ $USER = root ] || echo "user"
@@ -116,7 +123,9 @@ user
 # 逻辑非
 [root@linuxprobe root]# [ $USER != root ] || echo "administrator"
 ```
+
 5. 判断是否为 root 用户，是输出 root 否输出 user
+
 ```bash
 [root@linuxprobe root]# [ $USER != root ] && echo "user" || echo "root"
 ```
@@ -125,14 +134,14 @@ user
 
 整数比较运算符只能对整数生效，不能面对字符串、文件。因为 `>`、`<`、`=` 都另有它用，所以只能用规范的运算符
 
-| 操作符	| 作用 |
-|:---:|---|
-| -eq		| 是否等于 |
-| -ne		| 是否不等于 |
-| -gt		| 是否大于 |
-| -lt		| 是否小于 |
-| -le		| 是否等于或小于 |
-| -ge		| 是否大于或等于 |
+| 操作符 | 作用           |
+| :----: | -------------- |
+|  -eq   | 是否等于       |
+|  -ne   | 是否不等于     |
+|  -gt   | 是否大于       |
+|  -lt   | 是否小于       |
+|  -le   | 是否等于或小于 |
+|  -ge   | 是否大于或等于 |
 
 举例：
 
@@ -152,13 +161,13 @@ Mem:        1826      1244     582      9          1           413
 Swap:       2047      0        2047
 
 [root@linuxprobe ~]# free -m | grep Mem:
-Mem:        1826      1244     582      9 
+Mem:        1826      1244     582      9
 
 [root@linuxprobe ~]# free -m | grep Mem: | awk '{print $4}'
 582
 
 [root@linuxprobe ~]# FreeMem=`free -m | grep Mem: | awk '{print $4}'`
-[root@linuxprobe ~]# echo $FreeMem 
+[root@linuxprobe ~]# echo $FreeMem
 582
 ```
 
@@ -170,11 +179,11 @@ Mem:        1826      1244     582      9
 
 ### 1.3.3 字符串比较
 
-| 操作答 | 功能 |
-|:---:|---|
-| `=` | 字符串内容是否相同 |
-| `!=` | 字符串不同 |
-| `-z` | 字符串是否为空 |
+| 操作答 | 功能               |
+| :----: | ------------------ |
+|  `=`   | 字符串内容是否相同 |
+|  `!=`  | 字符串不同         |
+|  `-z`  | 字符串是否为空     |
 
 比如判断是否定义了变量 `String`：
 
@@ -187,7 +196,7 @@ Mem:        1826      1244     582      9
 当前环境不是英语时，显示非英语环境：
 
 ```bash
-[root@linuxprobe ~]# [ $LANG != "en.US" ] && echo "非英语环境" 
+[root@linuxprobe ~]# [ $LANG != "en.US" ] && echo "非英语环境"
 ```
 
 ## 1.4 流程控制语句
