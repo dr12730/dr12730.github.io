@@ -2,12 +2,12 @@
 
 - title: 随笔
   url: /posts/
-- title: 工程
-  url: /projs/
-- title: linux
-  url: /linux/
-- title: 编程
-  url: /it/
+  #- title: 工程
+  #  url: /projs/
+  #- title: linux
+  #  url: /linux/
+  #- title: 编程
+  #  url: /it/
 - title: 分类
   url: /categories/
 - title: 标签
