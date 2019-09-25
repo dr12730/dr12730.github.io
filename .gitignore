@@ -8,3 +8,4 @@ temp
 .vim.*
 *.DS_Store
 .ropeproject
+*.un~
