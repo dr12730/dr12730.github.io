@@ -496,7 +496,7 @@ $$\prod_{m=1}^M Z_m = \prod_{m=1}^M 2 \sqrt{e_m(1-e_m)} = \prod_{m=1}^M \sqrt{1-
 
      $$ \begin{aligned}\alpha_m, G_m(x) & = \mathop{\arg\min}\limits_{a, G} \sum\limits_{i=1}^N \exp \bigg[ -y_i \big(f_{m-1}(x_i) + \alpha G(x_i)\big)\bigg] \\ & = \arg\min\limits_{\alpha, G}\sum\limits_{i=1}^N \bar{w}_{mi} \exp \bigg[-y_i \alpha G(x_i)\bigg]\end{aligned}$$
 
-     > - $\bar{w}_{mi} = \exp [-y_i f_{m-1}(x_i)]$ ，不依赖 $\alpha$ 和 $G$，所以与最小化无关。
+     > - $\bar{w}_{mi} = \exp [-y_i f_{m-1}(x_i)]$，不依赖 $\alpha$ 和 $G$，所以与最小化无关。
      > - $y_i G(x) \in {-1, +1}$
      > - M1：分类正确的数据集
      > - M2：分类错误的数据集
