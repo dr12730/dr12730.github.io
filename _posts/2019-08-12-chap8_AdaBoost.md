@@ -3,8 +3,8 @@ title: 第8章 提升方法
 date: 2019-08-12 19:46:46 +0800
 description:
 image:
-  path: /assets/images/posts/2019-08-12-schap8/cover.jpg
-  thumbnail: /assets/images/posts/2019-08-12-schap8/thumb.jpg
+  path: /assets/images/posts/2019-08-12-chap8_AdaBoost/cover.jpg
+  thumbnail: /assets/images/posts/2019-08-12-chap8_AdaBoost/thumb.jpg
 categories:
   - it
 tags:
