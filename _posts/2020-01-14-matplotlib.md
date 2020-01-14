@@ -38,39 +38,39 @@ tags:
 
 1. 创建画布
 
-```python
-fig, ax = plt.subplots(figsize=(14, 7))
-```
+    ```python
+    fig, ax = plt.subplots(figsize=(14, 7))
+    ```
 
-创建了大小为 (14, 7) 的画布，并把句柄给 fig，同时还在画布上创建了一个轴域 axes，赋值给 ax。今后 `fig.xxx` 是对这个画布的操作；`ax.xxx` 是对轴域的操作。
+    创建了大小为 (14, 7) 的画布，并把句柄给 fig，同时还在画布上创建了一个轴域 axes，赋值给 ax。今后 `fig.xxx` 是对这个画布的操作；`ax.xxx` 是对轴域的操作。
 
-> `fig, axes = plt.subplots(2, 1, figsize=(14, 7))`
-> 创建的两个轴域，那么用 axes[0], axes[1] 来表示两个轴域
+    > `fig, axes = plt.subplots(2, 1, figsize=(14, 7))`
+    > 创建的两个轴域，那么用 axes[0], axes[1] 来表示两个轴域
 
 2. 绘制数据
 
-我们的图像是在轴域中绘制的，所以用 `ax.plot` 来绘图
+    我们的图像是在轴域中绘制的，所以用 `ax.plot` 来绘图
 
-```python
-A = np.arange(1, 5)
-B = A ** 2
-C = A ** 3
+    ```python
+    A = np.arange(1, 5)
+    B = A ** 2
+    C = A ** 3
 
-ax.plot(A, B)
-ax.plot(B, A)
-```
+    ax.plot(A, B)
+    ax.plot(B, A)
+    ```
 
-这样在轴域中绘制了两条曲线，剩下的是绘制辅助部分
+    这样在轴域中绘制了两条曲线，剩下的是绘制辅助部分
 
 3. 添加标题和坐标轴
 
-```python
-ax.set_title("标题", fontsize=18)
-ax.set_xlabel("x 轴", fontsize=18, fontfamily='sans-serif')
-ax.set_ylabel("y 轴", fontsize='x-large', fontstyle='oblique')
-ax.legend()
-plt.show()
-```
+    ```python
+    ax.set_title("标题", fontsize=18)
+    ax.set_xlabel("x 轴", fontsize=18, fontfamily='sans-serif')
+    ax.set_ylabel("y 轴", fontsize='x-large', fontstyle='oblique')
+    ax.legend()
+    plt.show()
+    ```
 
 ## 如何显示中文
 
