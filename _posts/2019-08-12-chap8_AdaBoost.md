@@ -1,36 +1,25 @@
 ---
+layout: article
 title: 第8章 提升方法
 date: 2019-08-12 19:46:46 +0800
-description:
-image:
-  path: /assets/images/posts/2019-08-12-chap8_AdaBoost/cover.jpg
-  thumbnail: /assets/images/posts/2019-08-12-chap8_AdaBoost/thumb.jpg
-categories:
-  - it
+cover:  /assets/images/posts/2019-08-12-chap8_AdaBoost/cover.jpg
+mathjax: true
+header:
+  theme: dark
+  background: 'linear-gradient(135deg, rgb(34, 139, 87), rgb(139, 34, 139))'
+article_header:
+  type: overlay
+  theme: dark
+  background_color: '#203028'
+  background_image:
+    gradient: 'linear-gradient(135deg, rgba(34, 139, 87 , .4), rgba(139, 34, 139, .4))'
+    src: /assets/images/posts/2019-08-12-chap8_AdaBoost/header_image.jpg
 tags:
   - 统计学习方法
 ---
 
-<!-- vim-markdown-toc GFM -->
 
-* [1 前言](#1-前言)
-    * [1.1 本意概要](#11-本意概要)
-    * [1.2 目录](#12-目录)
-* [2 读书笔记](#2-读书笔记)
-    * [2.1 提升方法 AdaBoost](#21-提升方法-adaboost)
-        * [2.1.1 基本思路](#211-基本思路)
-        * [2.1.2 AdaBoost 算法](#212-adaboost-算法)
-        * [2.1.3 应用](#213-应用)
-        * [2.1.3 代码实战](#213-代码实战)
-    * [2.2 AdaBoost 算法训练误差分析](#22-adaboost-算法训练误差分析)
-        * [2.2.1 AdaBoost 的训练误差边界](#221-adaboost-的训练误差边界)
-    * [2.3 AdaBoost 算法的解释](#23-adaboost-算法的解释)
-        * [2.3.1 前向分步算法](#231-前向分步算法)
-            * [算法](#算法)
-        * [2.3.2 前向分步算法与 AdaBoost](#232-前向分步算法与-adaboost)
-    * [3 编程](#3-编程)
-
-<!-- vim-markdown-toc -->
+<!--more-->
 
 # 1 前言
 

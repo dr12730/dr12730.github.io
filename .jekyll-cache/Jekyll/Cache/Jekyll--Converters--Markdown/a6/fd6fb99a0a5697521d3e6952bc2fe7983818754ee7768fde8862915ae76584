@@ -1,0 +1,111 @@
+I"�<h2 id="基本概念">基本概念</h2>
+
+<ol>
+  <li>
+    <p><code class="highlighter-rouge">Figure fig = plt.figure()</code></p>
+
+    <p>fig 理解为画布，在这个画布上加入各种元素</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">Axes ax = fig.add_subplot(111)</code></p>
+
+    <p>轴域，由 x, y 轴构成的区域。如果画布上只有一张图，那么轴域 axes 就只有一个；如果画布 fig 上有多个子图 subplot，那么就有多个轴域 axes</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">Axis ax.xaxis/ax.yaxis</code></p>
+
+    <p>x、y 坐标轴。每个坐标轴实际上也是由竖线和数字组成的，每一个竖线其实也是一个axis的subplot，因此ax.xaxis也存在axes这个对象。对这个axes进行编辑就会修改xaxis图像上的表现。</p>
+  </li>
+</ol>
+
+<h2 id="图像组成">图像组成</h2>
+
+<p>下面是图像各个组件的名称</p>
+
+<p><img src="/assets/images/posts/2020-01-14-matplotlib/figure.jpg" alt="图像组成" /></p>
+
+<h2 id="画图实战">画图实战</h2>
+
+<ol>
+  <li>
+    <p>创建画布</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+</code></pre></div>    </div>
+
+    <p>创建了大小为 (14, 7) 的画布，并把句柄给 fig，同时还在画布上创建了一个轴域 axes，赋值给 ax。今后 <code class="highlighter-rouge">fig.xxx</code> 是对这个画布的操作；<code class="highlighter-rouge">ax.xxx</code> 是对轴域的操作。</p>
+
+    <blockquote>
+      <p><code class="highlighter-rouge">fig, axes = plt.subplots(2, 1, figsize=(14, 7))</code>
+创建的两个轴域，那么用 axes[0], axes[1] 来表示两个轴域</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>绘制数据</p>
+
+    <p>我们的图像是在轴域中绘制的，所以用 <code class="highlighter-rouge">ax.plot</code> 来绘图</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+ <span class="n">B</span> <span class="o">=</span> <span class="n">A</span> <span class="o">**</span> <span class="mi">2</span>
+ <span class="n">C</span> <span class="o">=</span> <span class="n">A</span> <span class="o">**</span> <span class="mi">3</span>
+
+ <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+ <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>这样在轴域中绘制了两条曲线，剩下的是绘制辅助部分</p>
+  </li>
+  <li>
+    <p>添加标题和坐标轴</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"标题"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+ <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">"x 轴"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">fontfamily</span><span class="o">=</span><span class="s">'sans-serif'</span><span class="p">)</span>
+ <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">"y 轴"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s">'x-large'</span><span class="p">,</span> <span class="n">fontstyle</span><span class="o">=</span><span class="s">'oblique'</span><span class="p">)</span>
+ <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+ <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="如何显示中文">如何显示中文</h2>
+
+<ol>
+  <li>
+    <p>下载中文字体</p>
+
+    <p>到 <a href="https://github.com/yakumioto/YaHei-Consolas-Hybrid-1.12">github</a> 上下载 <code class="highlighter-rouge">YaHei Consolas Hybrid 1.12</code> 字体</p>
+  </li>
+  <li>
+    <p>找到 matplotlib 配置文件路径啊</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="o">&gt;&gt;&gt;</span> import matplotlib
+ <span class="o">&gt;&gt;&gt;</span> print<span class="o">(</span>matplotlib.matplotlib_fname<span class="o">())</span>
+ /home/wilson/anaconda3/lib/python3.7/site-packages/matplotlib/mpl-data/matplotlibrc
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>拷贝把 YaHei Consolas Hybrid 1.12.ttf 字体</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span><span class="nb">cp </span>YaHei<span class="se">\ </span>Consolas<span class="se">\ </span>Hybrid<span class="se">\ </span>1.12.ttf /home/wilson/anaconda3/lib/python3.7/site-packages/matplotlib/mpl-data/fonts/ttf
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>修改配置文件</p>
+
+    <p>修改 <code class="highlighter-rouge">/home/wilson/anaconda3/lib/python3.7/site-packages/matplotlib/mpl-data/matplotlibrc</code></p>
+
+    <p>去掉这3项前的注释符</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> font.family: sans-serif
+ font.sans-serif: YaHei Consolas Hybrid, ...
+ axes.unicode_minus: False <span class="c"># 解决负号</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>删除 matplotlib 的字体缓存</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$ </span><span class="nb">rm</span> <span class="nt">-rf</span> ~/.cache/matplotlib
+</code></pre></div>    </div>
+  </li>
+</ol>
+:ET

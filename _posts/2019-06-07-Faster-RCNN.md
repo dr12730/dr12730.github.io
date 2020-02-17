@@ -1,11 +1,22 @@
 ---
+layout: article
 title: "faster RCNN 源码解析"
-image: 
-  path: /assets/images/posts/2019-06-07-faster-rcnn/cover.jpg
-  thumbnail: /assets/images/posts/2019-06-07-faster-rcnn/thumb.jpg
-categories: [深度学习, 编程]
+cover:  /assets/images/posts/2019-06-07-faster-rcnn/cover.jpg
+header:
+  theme: dark
+  background: 'linear-gradient(135deg, rgb(34, 139, 87), rgb(139, 34, 139))'
+article_header:
+  type: overlay
+  theme: dark
+  background_color: '#203028'
+  background_image:
+    gradient: 'linear-gradient(135deg, rgba(34, 139, 87 , .4), rgba(139, 34, 139, .4))'
+    src: /assets/images/posts/2019-06-07-faster-rcnn/header_image.jpg
 tags: [源码解析]
 ---
+
+
+<!--more-->
 
 # 1 训练 faster RCNN 
 

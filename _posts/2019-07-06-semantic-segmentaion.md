@@ -1,36 +1,25 @@
 ---
+layout: article
 title: 应用于语义分割问题的深度学习技术综述
 date: 2019-07-06 17:35:44 +0800
-description:
-image:
-  path: /assets/images/posts/2019-07-06-semantic-segmentaion/cover.jpg
-  thumbnail: /assets/images/posts/2019-07-06-semantic-segmentaion/thumb.png
-categories:
-  - 深度学习
+cover: /assets/images/posts/2019-07-06-semantic-segmentaion/cover.jpg
+header:
+  theme: dark
+  background: 'linear-gradient(135deg, rgb(34, 139, 87), rgb(139, 34, 139))'
+article_header:
+  type: overlay
+  theme: dark
+  background_color: '#203028'
+  background_image:
+    gradient: 'linear-gradient(135deg, rgba(34, 139, 87 , .4), rgba(139, 34, 139, .4))'
+    src: /assets/images/posts/2019-07-06-semantic-segmentaion/header_image.jpg
 tags:
   - 语义分割
 ---
 
-<!-- vim-markdown-toc GFM -->
+*本文是 [A Review on Deep Learning Techniques Applied to Semantic Segmentation](https://arxiv.org/abs/1704.06857) 论文的翻译*
 
-* [摘要](#摘要)
-* [1 引言](#1-引言)
-* [2 术语及背景概念](#2-术语及背景概念)
-	* [2.1 常见的深度网络架构](#21-常见的深度网络架构)
-		* [2.1.1 AlexNet](#211-alexnet)
-		* [2.1.2 VGG](#212-vgg)
-		* [2.1.3 GoogLeNet](#213-googlenet)
-		* [2.1.4 ResNet](#214-resnet)
-		* [2.1.5 ReNet](#215-renet)
-	* [2.2 迁移学习](#22-迁移学习)
-	* [2.3 数据预处理与数据增强](#23-数据预处理与数据增强)
-* [3 数据集及竞赛](#3-数据集及竞赛)
-	* [3.1  2维数据集](#31--2维数据集)
-	* [3.2  2.5维数据集](#32--25维数据集)
-
-<!-- vim-markdown-toc -->
-
-本文是 [A Review on Deep Learning Techniques Applied to Semantic Segmentation](https://arxiv.org/abs/1704.06857) 论文的翻译
+<!--more-->
 
 # 摘要
 

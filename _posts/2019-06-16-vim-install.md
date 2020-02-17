@@ -1,15 +1,23 @@
 ---
+layout: article
 title: VIM 之安装与配置篇
 date: 2019-06-16 15:45:04 +0800
-description:
-image:
-    path: assets/images/posts/2019-06-16-vim-install/cover.jpg
-    thumbnail: assets/images/posts/2019-06-16-vim-install/thumb.jpg
-categories:
-    - it
+cover:  assets/images/posts/2019-06-16-vim-install/cover.jpg
+header:
+  theme: dark
+  background: 'linear-gradient(135deg, rgb(34, 139, 87), rgb(139, 34, 139))'
+article_header:
+  type: overlay
+  theme: dark
+  background_color: '#203028'
+  background_image:
+    gradient: 'linear-gradient(135deg, rgba(34, 139, 87 , .4), rgba(139, 34, 139, .4))'
+    src: assets/images/posts/2019-06-16-vim-install/header_image.jpg
 tags:
     - vim
 ---
+
+<!--more-->
 
 vim 是一个优秀的文本编辑器，它可以在手不离开键盘的条件下完成大部分的工作，而且在没有图形界面的服务器端也可以使用。这篇博文主要记录在 linux 环境下 vim 的安装与配置。
 

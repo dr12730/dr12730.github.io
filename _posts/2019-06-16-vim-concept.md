@@ -1,15 +1,23 @@
 ---
+layout: article
 title: VIM 之基本概念篇
 date: 2019-06-16 15:55:36 +0800
-description: 
-image:      
-    path: assets/images/posts/2019-06-16-vim-concept/cover.jpg 
-    thumbnail: assets/images/posts/2019-06-16-vim-concept/thumb.jpg
-categories: 
-    - it
+cover:  assets/images/posts/2019-06-16-vim-concept/cover.jpg
+header:
+  theme: dark
+  background: 'linear-gradient(135deg, rgb(34, 139, 87), rgb(139, 34, 139))'
+article_header:
+  type: overlay
+  theme: dark
+  background_color: '#203028'
+  background_image:
+    gradient: 'linear-gradient(135deg, rgba(34, 139, 87 , .4), rgba(139, 34, 139, .4))'
+    src: assets/images/posts/2019-06-16-vim-concept/header_image.jpg
 tags:
     - vim
 ---
+
+<!--more-->
 
 # 1. 撤消与回退
 

@@ -1,0 +1,1186 @@
+I"�z<h1 id="1-移动">1 移动</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>hjkl</td>
+      <td>方向键</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td><code class="highlighter-rouge">:q</code></td>
+      <td>退出</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td><code class="highlighter-rouge">$</code></td>
+      <td>至本行最后一个字符</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td>5G</td>
+      <td>跳至第 5 行</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td>5k/j/h/j</td>
+      <td>上/下/左/右移 5 行</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td>w</td>
+      <td>向前 (正向，下同) N 个单词</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">7</td>
+      <td>b</td>
+      <td>向后 (反向，下同) N 个单词</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">8</td>
+      <td>)</td>
+      <td>向前 N 个句子</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">9</td>
+      <td>}</td>
+      <td>向前 N 个段落</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">10</td>
+      <td>5H</td>
+      <td>窗口的顶行向下的第 5 行 (Home)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">11</td>
+      <td>M</td>
+      <td>窗口的中间行 (Middle)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">12</td>
+      <td>5L</td>
+      <td>窗口的底行向上的第 5 行 (Last)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">13</td>
+      <td>ctrl + ]</td>
+      <td>跳转到标签</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">14</td>
+      <td>ctrl - o</td>
+      <td>从标签跳回</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">15</td>
+      <td>fx</td>
+      <td>向前移到本行的字符 x 处（F 为反向移动），<code class="highlighter-rouge">;</code> 重复前移，<code class="highlighter-rouge">,</code> 反向</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">16</td>
+      <td>zz</td>
+      <td>使光标所在行位于屏幕中间</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="2-搜索">2 搜索</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td><code class="highlighter-rouge">N/{pattern}</code></td>
+      <td>向前查找第 N 次出现 {pattern} 的地方</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td><code class="highlighter-rouge">N?{pattern}</code></td>
+      <td>向后查找第 N 次出现 {pattern} 的地方</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td>n</td>
+      <td>重复上次查找</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td>N</td>
+      <td>相反方向重复上次查找</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td>*</td>
+      <td>向前：查找光标下的标识符</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td>#</td>
+      <td>向后：查找光标下的标识符</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="21-查找模式中的特殊字符">2.1 查找模式中的特殊字符</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>含义</th>
+      <th>magic</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>匹配任意单个字符</td>
+      <td><code class="highlighter-rouge">.</code></td>
+    </tr>
+    <tr>
+      <td>匹配行首</td>
+      <td><code class="highlighter-rouge">^</code></td>
+    </tr>
+    <tr>
+      <td>匹配 <EOL></EOL></td>
+      <td><code class="highlighter-rouge">$</code></td>
+    </tr>
+    <tr>
+      <td>匹配单词开始</td>
+      <td><code class="highlighter-rouge">\&lt;</code></td>
+    </tr>
+    <tr>
+      <td>匹配单词结束</td>
+      <td><code class="highlighter-rouge">\&gt;</code></td>
+    </tr>
+    <tr>
+      <td>匹配单个标定范围中的字符</td>
+      <td><code class="highlighter-rouge">[a-z]</code></td>
+    </tr>
+    <tr>
+      <td>匹配单个不在标定范围中的字符</td>
+      <td><code class="highlighter-rouge">[^a-z]</code></td>
+    </tr>
+    <tr>
+      <td>匹配一个标识符字符</td>
+      <td><code class="highlighter-rouge">\i</code></td>
+    </tr>
+    <tr>
+      <td>同上但不包括数字</td>
+      <td><code class="highlighter-rouge">\I</code></td>
+    </tr>
+    <tr>
+      <td>匹配一个关键字字符</td>
+      <td><code class="highlighter-rouge">\k</code></td>
+    </tr>
+    <tr>
+      <td>同上但不包括数字</td>
+      <td><code class="highlighter-rouge">\K</code></td>
+    </tr>
+    <tr>
+      <td>匹配一个文件名字符</td>
+      <td><code class="highlighter-rouge">\f</code></td>
+    </tr>
+    <tr>
+      <td>同上但不包括数字</td>
+      <td><code class="highlighter-rouge">\F</code></td>
+    </tr>
+    <tr>
+      <td>匹配一个可显示的字符</td>
+      <td><code class="highlighter-rouge">\p</code></td>
+    </tr>
+    <tr>
+      <td>同上但不包括数字</td>
+      <td><code class="highlighter-rouge">\P</code></td>
+    </tr>
+    <tr>
+      <td>匹配一个空白字符</td>
+      <td><code class="highlighter-rouge">\s</code></td>
+    </tr>
+    <tr>
+      <td>匹配一个非空白字符</td>
+      <td><code class="highlighter-rouge">\S</code></td>
+    </tr>
+    <tr>
+      <td>匹配  <code class="highlighter-rouge">&lt;Esc&gt;</code></td>
+      <td><code class="highlighter-rouge">\e</code></td>
+    </tr>
+    <tr>
+      <td>匹配  <code class="highlighter-rouge">&lt;Tab&gt;</code></td>
+      <td><code class="highlighter-rouge">\t</code></td>
+    </tr>
+    <tr>
+      <td>匹配  <code class="highlighter-rouge">&lt;CR&gt;</code></td>
+      <td><code class="highlighter-rouge">\r</code></td>
+    </tr>
+    <tr>
+      <td>匹配  <code class="highlighter-rouge">&lt;BS&gt;</code></td>
+      <td><code class="highlighter-rouge">\b</code></td>
+    </tr>
+    <tr>
+      <td>匹配 1 或多个前面的匹配原</td>
+      <td><code class="highlighter-rouge">*</code></td>
+    </tr>
+    <tr>
+      <td>匹配 2 或多个前面的匹配原</td>
+      <td><code class="highlighter-rouge">\+</code></td>
+    </tr>
+    <tr>
+      <td>匹配 1 或 1 个前面的匹配原</td>
+      <td><code class="highlighter-rouge">\=</code></td>
+    </tr>
+    <tr>
+      <td>匹配 3 至 5 个前面的匹配原</td>
+      <td><code class="highlighter-rouge">\{2,5}</code></td>
+    </tr>
+    <tr>
+      <td>隔开两种可替换的匹配</td>
+      <td><code class="highlighter-rouge">\|</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="3-位置标签">3 位置标签</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>m{a-zA-Z}</td>
+      <td>用标记 {a-zA-Z} 记录当前位置</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td><code>`{a-z}</code></td>
+      <td>至当前文件中的标记 {a-z}</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td><code>``</code></td>
+      <td>至上次跳转之前的位置</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td><code>`"</code></td>
+      <td>至上次编辑此文件的位置</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td><code>`.</code></td>
+      <td>至当前文件最后被改动的位置</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td>:makrs</td>
+      <td>列出活动的标记</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">7</td>
+      <td>:ju</td>
+      <td>列出跳转表</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="4-插入模式">4 插入模式</h1>
+
+<p>以下的快捷键是在 insert 模式下起作用的</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>ctrl-c</td>
+      <td>同 ESC</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td>ctrl-h</td>
+      <td>同 Backspace, 删除前一个词</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td>ctrl-y</td>
+      <td>插入光标上方的字符</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td>ctrl-w</td>
+      <td>删除光标前的一个单词</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td>ctrl-t</td>
+      <td>在当前行首插入一个 tab 的缩进</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td>ctrl-d</td>
+      <td>从当前行首删除一个 tab 的缩进</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">7</td>
+      <td>:r [file]</td>
+      <td>将文件 [file] 的内容插入到光标之下</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">8</td>
+      <td>:r! {command}</td>
+      <td>将命令 {command}  的标准输出插入到光标之下</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="5-删除文本">5 删除文本</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>N x/X</td>
+      <td>删除光标之后 / 前的 N 个字符</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td>{visual}d</td>
+      <td>在 visual 模式下，删除高亮的文本</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td>J</td>
+      <td>删除本行的 <code class="highlighter-rouge">&lt;EOL&gt;</code></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td><code class="highlighter-rouge">df:</code></td>
+      <td>删除当前光标到本行<code class="highlighter-rouge">:</code>处的文本</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="6-复制与移动文本">6 复制与移动文本</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td><code class="highlighter-rouge">"{char}</code></td>
+      <td>在接下来的删除、抽出或放置命令中使用寄存器 {char}</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td><code class="highlighter-rouge">:reg</code></td>
+      <td>显示所有寄存器的内容</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td><code class="highlighter-rouge">:reg {num}</code></td>
+      <td>显示寄存器 num 的内容</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td>N yy</td>
+      <td>抽出 N 行至寄存器</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td>N p</td>
+      <td>将一个寄存器的内容放置在光标位置前 (N 次)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td>gp</td>
+      <td>同 p，但将光标留在新文本之后</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="7-改变文本">7 改变文本</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>{visual}c</td>
+      <td>visual 模式下，修改高亮的文本</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td><code class="highlighter-rouge">&gt;&gt;</code></td>
+      <td>向右移动 tab</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td><code class="highlighter-rouge">&lt;&lt;</code></td>
+      <td>向左移动 tab</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td>:[range]ce[nter] [width]</td>
+      <td>将范围 [range] 包括的行居中对齐</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td>:[range]le[ft] [indent]</td>
+      <td>将范围 [range] 中的行靠左对齐 (使用 [indent])</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td>:[range]ri[ght] [width]</td>
+      <td>将范围 [range] 中的行靠右对齐</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">8</td>
+      <td>&amp;</td>
+      <td>在当前行上重复上一次的 “:s” 命令</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="9-搜索并替换">9 搜索并替换</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>:[range]s[ubstitute]/<span class="o">{</span>pattern<span class="o">}</span>/<span class="o">{</span>string<span class="o">}</span>/[g][c]
+</code></pre></div></div>
+<ul>
+  <li>以 {string} 替代范围 [range] 包括的行中的 {pattern}</li>
+  <li>与 [g] 共用，替代所有的出现的 {pattern}；</li>
+  <li>与 [c] 共用，每一次替代时需要手动确认</li>
+</ul>
+
+<h1 id="10-可视模式">10 可视模式</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>V</td>
+      <td>以行方式开始高亮</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td>v</td>
+      <td>以字符方式开始高亮</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td>as</td>
+      <td>选择 “一个句子” (sentence)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td>ap</td>
+      <td>选择 “一个段落” (paragraph)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td><code class="highlighter-rouge">a'</code></td>
+      <td>选择 “一个单引号字符串”</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="11-重复命令">11 重复命令</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>N .</td>
+      <td>重复最近一次改动 (但计数改为 N)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td>q{a-z}</td>
+      <td>记录键入的字符，存入寄存器 {a-z}</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td>q</td>
+      <td>终止记录</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td>@{a-z}</td>
+      <td>执行寄存器 {a-z} 的内容 (N 次)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="12-键盘映射">12 键盘映射</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>:ma[p] {lhs} {rhs}</td>
+      <td>在普通及可视模式下将 {rhs} 映射为 {lhs}</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td>:ma[p]! {lhs} {rhs}</td>
+      <td>在插入及命令行模式下将 {rhs} 映射为 {lhs}</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td>:no[remap][!] {lhs} {rhs}</td>
+      <td>同 “:map”，但不对 {rhs} 重新映射</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td>:unm[ap] {lhs}</td>
+      <td>清除普通及可视模式下 {lhs} 的映射</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td>:ma[p] [lhs]</td>
+      <td>列出普通及可视模式下以 [lhs] 开始的映射</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td>:cmap</td>
+      <td>同 :map, 但仅作用于命令行模式 (Command-line)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">7</td>
+      <td>:mkv[imrc][!]</td>
+      <td>将当前的键盘映射、缩写及设置写入文件, ! 表覆盖</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">8</td>
+      <td>:ab[breviate] {lhs} {rhs}</td>
+      <td>为 {rhs} 加入缩写 {lhs}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="13-设置">13 设置</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>:se[t]</td>
+      <td>显示所有被改动的选项</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td>:se[t] {option}</td>
+      <td>置位布尔选项 (开启)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td>:se[t] no{option}</td>
+      <td>复位布尔选项 (关闭)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td>:se[t] inv{option}</td>
+      <td>逆转布尔选项的值</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td>:se[t] {option}={value}</td>
+      <td>设置字符串 / 数值选项的值为 {value}</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td>:se[t] {option}?</td>
+      <td>显示 {option} 的值</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">7</td>
+      <td>:se[t] {option}&amp;</td>
+      <td>重置 {option} 为其缺省值</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">8</td>
+      <td>:opt[ions]</td>
+      <td>打开一个新窗口，用来参看并设置选项</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="14-撤销">14 撤销</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>u</td>
+      <td>销最近的操作</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td>U</td>
+      <td>恢复最近被改动的行</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td>ctrl-r</td>
+      <td>重做最近被撤销的改动</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="15-外部命令">15 外部命令</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>:sh</td>
+      <td>开启一个 shell 外壳，exit 后返回 vim</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td>:!{command}</td>
+      <td>通过 shell 外壳执行命令</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="16-quickfix-命令">16 Quickfix 命令</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>:cc [nr]</td>
+      <td>显示第 [nr] 个错误 (缺省为同一错误)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td>:cn</td>
+      <td>显示下一个错误</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td>:cp</td>
+      <td>显示上一个错误</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td>:cl</td>
+      <td>列出所有错误</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td>:cf</td>
+      <td>从文件’errorfile’ 读入错误</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td>:make [args]</td>
+      <td>启动 make，读入错误，并跳转到第一个错误</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">7</td>
+      <td>:gr[ep] [args]</td>
+      <td>执行’grepprg’ 程序以找出匹配并跳转到首个匹配</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="17-其他">17 其他</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>ctrl-l</td>
+      <td>清除并重画屏幕</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td>ctrl-g</td>
+      <td>显示当前文件名 (包括路径) 和光标位置</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td>ga</td>
+      <td>以十进制、十六进制和八进制显示光标所在字符的 ASCII 值</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td>ga</td>
+      <td>以十进制、十六进制和八进制显示光标所在字符的对应字节序列</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td>ctrl-c</td>
+      <td>在查找中: 中断查找</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td>:ve</td>
+      <td>显示版本信息</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="18-范围">18 范围</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>,</td>
+      <td>分隔两个行号</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td>;</td>
+      <td>同上，但在解释第二个行号之前先移动光标至第一个行号代表的行</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td>.</td>
+      <td>当前行</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td>$</td>
+      <td>文件的最后一行</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td>%</td>
+      <td>等同于 1,$ (整个文件)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td>*</td>
+      <td>等同于 <code class="highlighter-rouge">'&lt;,'&gt;</code> (可视区域)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">7</td>
+      <td><code class="highlighter-rouge">'t</code> 或 `t</td>
+      <td>位置标记 t 的位置</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">8</td>
+      <td>?{pattern}[?]</td>
+      <td>前一个匹配 {pattern} 的行</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="19-启动-vim">19 启动 vim</h1>
+
+<p>启动 vim 时可以带多个参数，格式为 <code class="highlighter-rouge">vim [options]</code></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>-g</td>
+      <td>启动 GUI (同时允许其他选项)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td>+[num]</td>
+      <td>置光标于第 [num] 行 (缺省: 末行)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td>+{command}</td>
+      <td>载入文件后执行命令 {command}</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td>-R</td>
+      <td>只读模式，隐含 -n</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td>-d</td>
+      <td>比较模式 diff</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td>-r {file} ..</td>
+      <td>恢复中断的编辑</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="20-多窗口命令">20 多窗口命令</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td><code class="highlighter-rouge">&lt;ctrl-w&gt; s</code>  或  :split</td>
+      <td>将窗口分割成两部分          (split)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td>:split {file}</td>
+      <td>分隔窗口并在其中一个编辑 {file}</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td>:vs[plit] {file}</td>
+      <td>同上，但垂直分割</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td>:sf[ind] {file}</td>
+      <td>分割窗口，从 {path} 中找到文件 {file} 并编辑之</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td>ctrl-w ]</td>
+      <td>分割窗口并跳转到光标下的标签</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td>ctrl-w f</td>
+      <td>分割窗口并编辑光标下的文件名 (file)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">7</td>
+      <td>ctrl-w n  或  :new</td>
+      <td>创建新空白窗口              (new)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">8</td>
+      <td>ctrl-w q  或  :q[uit]</td>
+      <td>退出编辑并关闭窗口          (quit)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">9</td>
+      <td>ctrl-w c  或  :cl[ose]</td>
+      <td>隐藏当前缓冲区并关闭窗口    (close)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">10</td>
+      <td>ctrl-w o  或  :on[ly]</td>
+      <td>使当前窗口成为唯一窗口      (only)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">11</td>
+      <td>ctrl-w j</td>
+      <td>跳转到下方窗口</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">12</td>
+      <td>ctrl-w k</td>
+      <td>跳转到上方窗口</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">13</td>
+      <td>ctrl-w ctrl-w</td>
+      <td>移动光标至下方窗口 (折转)   (Wrap)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">14</td>
+      <td>ctrl-w W</td>
+      <td>移动光标至上方窗口 (折转)   (wrap)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">15</td>
+      <td>ctrl-w t</td>
+      <td>跳转到顶端窗口              (top)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">16</td>
+      <td>ctrl-w b</td>
+      <td>跳转到底端窗口              (bottom)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">17</td>
+      <td>ctrl-w p</td>
+      <td>跳转到上一次激活的窗口      (previous)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">18</td>
+      <td>ctrl-w r</td>
+      <td>向下旋转窗口                (rotate)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">19</td>
+      <td>ctrl-w R</td>
+      <td>向上旋转窗口                (Rotate)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">20</td>
+      <td>ctrl-w x</td>
+      <td>将当前窗口与下一个窗口对调  (eXchange)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">21</td>
+      <td>ctrl-w =</td>
+      <td>使所有窗口等高等宽</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">22</td>
+      <td>ctrl-w -</td>
+      <td>减少当前窗口高度</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">23</td>
+      <td>ctrl-w +</td>
+      <td>增加当前窗口高度</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">24</td>
+      <td>ctrl-w _</td>
+      <td>设置当前窗口高度 (缺省: 很高)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">25</td>
+      <td>ctrl-w <code class="highlighter-rouge">&lt;</code></td>
+      <td>减少当前窗口宽度</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">26</td>
+      <td>ctrl-w <code class="highlighter-rouge">&gt;</code></td>
+      <td>增加当前窗口宽度</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">27</td>
+      <td>ctrl-w</td>
+      <td>设置当前窗口宽度 (缺省: 尽可能宽)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">28</td>
+      <td>:e {file}</td>
+      <td>在当前分屏中编辑 file 文件</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="21-折叠">21 折叠</h1>
+
+<p>在某一段落键入 <code class="highlighter-rouge">zfap</code> 会将此段落折叠，其中 <code class="highlighter-rouge">zf</code> 是一个操作符 (fold)，<code class="highlighter-rouge">ap</code> 是一个段落对象 (a paragraph)
+使用 <code class="highlighter-rouge">zo</code> 打开折叠 (open)，<code class="highlighter-rouge">zc</code> 关闭折叠 (close)。
+折叠可以嵌套，所以我们可以折叠每节中的每个段落，然后再折叠一章中的各节。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">序号</th>
+      <th>快捷键</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>set foldmethod=manual</td>
+      <td>手动折叠</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td>set foldmethod=indent</td>
+      <td>按照缩进折叠</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td>set foldmethod=expr</td>
+      <td>按照表达式’foldexpr’ 折叠</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td>set foldmethod=syntax</td>
+      <td>按照语法区域折叠</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td>set foldmethod=marker</td>
+      <td>按照标志’foldmarker’ 折叠</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td>:{range}fold</td>
+      <td>将范围 {range} 包括的行定义为一个折叠</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">7</td>
+      <td>zd</td>
+      <td>删除光标下的一个折叠        (delete)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">8</td>
+      <td>zD</td>
+      <td>删除光标下的所有折叠        (Delete)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">9</td>
+      <td>zo</td>
+      <td>打开光标下的折叠            (open)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">10</td>
+      <td>zO</td>
+      <td>打开光标下的所有折叠        (Open)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">11</td>
+      <td>zc</td>
+      <td>关闭光标下的一个折叠        (close)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">12</td>
+      <td>zC</td>
+      <td>关闭光标下的所有折叠        (Close)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">13</td>
+      <td>zm</td>
+      <td>折起更多: 减少’foldlevel’  (more)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">14</td>
+      <td>zM</td>
+      <td>关闭所有折叠: 置’foldlevel’ 为 0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">15</td>
+      <td>zr</td>
+      <td>减少折叠: 增加’foldlevel’  (reduce)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">16</td>
+      <td>zR</td>
+      <td>打开所有折叠: 置’foldlevel’ 为最大</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">17</td>
+      <td>zn</td>
+      <td>快速禁止折叠功能</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">18</td>
+      <td>zi</td>
+      <td>禁止 / 恢复原来的折叠</td>
+    </tr>
+  </tbody>
+</table>
+:ET

@@ -1,45 +1,24 @@
 ---
+layout: article
 title: Linux 进阶篇
 date: 2019-06-27 16:42:29 +0800
-description:
-image:
-path: /assets/images/posts/2019-06-27-linux-advance/cover.jpg
-thumbnail: /assets/images/posts/2019-06-27-linux-advance/thumb.jpg
-categories:
-  - it
+cover: /assets/images/posts/2019-06-27-linux-advance/cover.jpg
+header:
+  theme: dark
+  background: 'linear-gradient(135deg, rgb(34, 139, 87), rgb(139, 34, 139))'
+article_header:
+  type: overlay
+  theme: dark
+  background_color: '#203028'
+  background_image:
+    gradient: 'linear-gradient(135deg, rgba(34, 139, 87 , .4), rgba(139, 34, 139, .4))'
+    src: /assets/images/posts/2019-06-27-linux-advance/header_image.jpg
 tags:
   - [linux, 编程, shell, 脚本]
 ---
 
-<!-- vim-markdown-toc GFM -->
 
-- [1. 编写 Shell 脚本](#1-编写-shell-脚本)
-  - [1.1 简单的脚本](#11-简单的脚本)
-  - [1.2 接收参数](#12-接收参数)
-  - [1.3 判断输入](#13-判断输入)
-    - [1.3.1 文件测试](#131-文件测试)
-    - [1.3.2 整数比较语句](#132-整数比较语句)
-    - [1.3.3 字符串比较](#133-字符串比较)
-  - [1.4 流程控制语句](#14-流程控制语句)
-    - [1.4.1 if 语句](#141-if-语句)
-      - [语法格式](#语法格式)
-      - [示例](#示例)
-    - [1.4.2 for 语句](#142-for-语句)
-      - [语法格式](#语法格式-1)
-      - [示例](#示例-1)
-    - [1.4.3 while 语句](#143-while-语句)
-      - [语法格式](#语法格式-2)
-      - [示例](#示例-2)
-    - [1.4.4 case 语句](#144-case-语句)
-      - [语法格式](#语法格式-3)
-      - [示例](#示例-3)
-- [2. 计划任务](#2-计划任务)
-  - [2.1 临时任务](#21-临时任务)
-  - [2.2 周期任务](#22-周期任务)
-    - [2.2.1 格式与参数](#221-格式与参数)
-    - [2.2.2 示例](#222-示例)
-
-<!-- vim-markdown-toc -->
+<!--more-->
 
 # 1. 编写 Shell 脚本
 

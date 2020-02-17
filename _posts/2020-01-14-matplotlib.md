@@ -1,16 +1,27 @@
 ---
 title: Matplotlib 使用笔记
+mode: immersive
 date: 2020-01-14 13:35:19 +0800
-description: 
-image:      
-    path: /assets/images/posts/2020-01-14-matplotlib/cover.jpg 
-    thumbnail: /assets/images/posts/2020-01-14-matplotlib/thumb.jpg 
-categories: 
-    - ai
-tags:
-    - 绘图
-    - matplotlib
+key: matplotlib
+layout: article
+cover: /assets/images/posts/2020-01-14-matplotlib/cover.jpg
+header:
+  theme: dark
+  background: 'linear-gradient(135deg, rgb(34, 139, 87), rgb(139, 34, 139))'
+article_header:
+  type: overlay
+  theme: dark
+  background_image:
+    gradient: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0))'
+    src: /assets/images/posts/2020-01-14-matplotlib/post-web.jpg
+ 
+tags: [绘图, matplotlib]
 ---
+
+*如何使用 matplotlib 来快速绘制图像*
+
+
+<!--more-->
 
 ## 基本概念
 

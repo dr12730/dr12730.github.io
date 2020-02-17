@@ -1,0 +1,1135 @@
+I"��<!-- vim-markdown-toc GFM -->
+
+<ul>
+  <li><a href="#1-linux-常用命令">1. Linux 常用命令</a>
+    <ul>
+      <li><a href="#11-linux-系统的进程">1.1 Linux 系统的进程</a>
+        <ul>
+          <li><a href="#111-linux-系统进程的状态">1.1.1 linux 系统进程的状态</a></li>
+          <li><a href="#112-top-任务管理器">1.1.2. top 任务管理器</a></li>
+        </ul>
+      </li>
+      <li><a href="#12-网络状态-ifconfig">1.2 网络状态 ifconfig</a></li>
+      <li><a href="#13-系统内核与版本-uname">1.3 系统内核与版本 uname</a></li>
+      <li><a href="#14-查看系统负载-uptime">1.4 查看系统负载 uptime</a></li>
+      <li><a href="#15-查看内存-free">1.5 查看内存 free</a>
+        <ul>
+          <li><a href="#151-free-与-available-的区别">1.5.1. free 与 available 的区别</a></li>
+          <li><a href="#152-buff-和-cache-的区别">1.5.2. buff 和 cache 的区别</a></li>
+        </ul>
+      </li>
+      <li><a href="#16-用户终端信息-who">1.6 用户终端信息 who</a></li>
+      <li><a href="#17-登录记录-last">1.7 登录记录 last</a></li>
+      <li><a href="#18-历史记录-history">1.8 历史记录 history</a></li>
+      <li><a href="#19-诊断报告-sosreport">1.9 诊断报告 sosreport</a></li>
+    </ul>
+  </li>
+  <li><a href="#2-工作目录切换">2. 工作目录切换</a></li>
+  <li><a href="#3-文件编辑">3. 文件编辑</a>
+    <ul>
+      <li><a href="#31-列提取-cut">3.1 列提取 cut</a></li>
+      <li><a href="#32-比较差异-diff">3.2 比较差异 diff</a></li>
+    </ul>
+  </li>
+  <li><a href="#4-文件目录管理">4. 文件目录管理</a>
+    <ul>
+      <li><a href="#41-dd-命令">4.1 dd 命令</a></li>
+      <li><a href="#42-打包压缩与搜索">4.2 打包压缩与搜索</a>
+        <ul>
+          <li><a href="#421-tar-命令">4.2.1 tar 命令</a></li>
+          <li><a href="#422-grep-命令">4.2.2 grep 命令</a></li>
+          <li><a href="#423-find-命令">4.2.3 find 命令</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#5-重定向">5. 重定向</a>
+    <ul>
+      <li><a href="#51-输入输出描述符">5.1 输入输出描述符</a></li>
+      <li><a href="#52-关于-21-的含义">5.2 关于 2&gt;&amp;1 的含义</a></li>
+      <li><a href="#53-输入重定向">5.3 输入重定向</a></li>
+      <li><a href="#54-输出重定向">5.4 输出重定向</a></li>
+    </ul>
+  </li>
+  <li><a href="#6-管道符">6 管道符</a></li>
+  <li><a href="#7-通配符">7 通配符</a></li>
+  <li><a href="#8-转义字符">8 转义字符</a></li>
+  <li><a href="#9-环境变量">9 环境变量</a>
+    <ul>
+      <li><a href="#91-10-个重要的环境变量">9.1 10 个重要的环境变量</a></li>
+    </ul>
+  </li>
+  <li><a href="#10-配置系统">10 配置系统</a>
+    <ul>
+      <li><a href="#101-配置主机名">10.1 配置主机名</a></li>
+      <li><a href="#102-配置网卡">10.2 配置网卡</a></li>
+      <li><a href="#103-配置-yum-仓库">10.3 配置 YUM 仓库</a></li>
+    </ul>
+  </li>
+</ul>
+
+<!-- vim-markdown-toc -->
+
+<h1 id="1-linux-常用命令">1. Linux 常用命令</h1>
+
+<p>所有命令的详细说明在 <a href="www.linuxcool.com">linuxcool</a> 网站</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">命令</th>
+      <th>说明</th>
+      <th style="text-align: center">命令</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">date</td>
+      <td>显示系统时间</td>
+      <td style="text-align: center">reboot</td>
+      <td>重启系统</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">poweroff</td>
+      <td>关闭系统</td>
+      <td style="text-align: center">wget</td>
+      <td>下载网络文件</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">ps</td>
+      <td>进程状态</td>
+      <td style="text-align: center">top</td>
+      <td>任务管理器</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">pidof</td>
+      <td>查看进程号</td>
+      <td style="text-align: center">kill</td>
+      <td>关闭单个进程</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">killall</td>
+      <td>关闭服务以及其对应的所有进程</td>
+      <td style="text-align: center">ifconfig</td>
+      <td>查看网络信息</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="11-linux-系统的进程">1.1 Linux 系统的进程</h2>
+
+<p>通过<code class="highlighter-rouge">ps</code>指令来查看系统资源状态，可以通过 grep 来抓取进程对应的 pid 号，ps 进程的参数如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>参数</th>
+      <th>作用</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>-a</td>
+      <td>显示所有进程</td>
+    </tr>
+    <tr>
+      <td>-u</td>
+      <td>用户的进程</td>
+    </tr>
+    <tr>
+      <td>-x</td>
+      <td>无控制终端的进程</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="111-linux-系统进程的状态">1.1.1 linux 系统进程的状态</h3>
+
+<ul>
+  <li>R（运行）：进程正在运行或在运行队列中等待。</li>
+  <li>S（中断）：进程处于休眠中，当某个条件形成后或者接收到信号时，则脱离该状态。</li>
+  <li>D（不可中断）：进程不响应系统异步信号，即便用 kill 命令也不能将其中断。</li>
+  <li>Z（僵死）：进程已经终止，但进程描述符依然存在，直到父进程调用 wait4() 系统函数后将进程释放。</li>
+  <li>T（停止）：进程收到停止信号后停止运行。</li>
+</ul>
+
+<blockquote>
+  <p>僵死进程会一直吃系统资源</p>
+</blockquote>
+
+<h3 id="112-top-任务管理器">1.1.2. top 任务管理器</h3>
+
+<p>top 命令用于动态地监视进程活动与系统负载等信息，能够动态地查看系统运维状态，完全将它看作 Linux 中的“强化版的 Windows 任务管理器”。
+top 命令的运行界面如下图所示。</p>
+
+<p><img src="/assets/images/posts/2019-06-19-linux/top.png" alt="top" /></p>
+
+<p>统计信息含义如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">行号</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td>系统时间、运行时间、登录终端数、系统负载（三个数值分别为 1 分钟、5 分钟、15 分钟内的平均值，数值越小意味着负载越低</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td>进程总数、运行中的进程数、睡眠中的进程数、停止的进程数、僵死的进程数。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td>用户占用资源百分比、系统内核占用资源百分比、改变过优先级的进程资源百分比、空闲的资源百分比等。其中数据均为 CPU 数据并以百分比格式显示，例如“97.1 id”意味着有 97.1% 的 CPU 处理器资源处于空闲。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td>物理内存总量、内存使用量、内存空闲量、作为内核缓存的内存量。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td>虚拟内存总量、虚拟内存使用量、虚拟内存空闲量、已被提前加载的内存量</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>说明：</p>
+<ul>
+  <li>第 1 行 up 后的是系统运行时间，user 是指的终端数目，load 是系统负载 [0, 1] 之间是比较好的，最大不要超过 5, 否则系统负载过大，影响响应速度</li>
+  <li>load average：0.1, 0.2, 0.3 指的负载逐渐降低，从右往左看。负载值升高，需要调整程序的设置</li>
+  <li>task：进程总数</li>
+  <li>%cpu ：cpu 的负载情况（平均队列数），第 3 项是空闲情况</li>
+  <li>Kib Mem：真实物理内存的值</li>
+  <li>swap：交换内存的值（临时内存）</li>
+  <li>PID：进程编号</li>
+  <li>PR：优先级，越小越高</li>
+  <li>s：sleeping 等待中</li>
+  <li>%cpu：进程占用 cpu 的百分比</li>
+  <li>%mem：进程占用内存的百分比</li>
+  <li>Time：进程运行时间</li>
+</ul>
+
+<p>要查看 sshd 进程的 pid 时，通过 <code class="highlighter-rouge">pidof sshd</code> 实现
+要查看 sshd 服务的状态，通过 <code class="highlighter-rouge">systemctl status sshd</code> 实现</p>
+
+<blockquote>
+  <p>对于高并发的程序，会有多个进程号，这时用 <code class="highlighter-rouge">killall 服务名称</code> 批量关闭服务，相当于执行了 <code class="highlighter-rouge">systemctl stop sshd</code></p>
+</blockquote>
+
+<h2 id="12-网络状态-ifconfig">1.2 网络状态 ifconfig</h2>
+
+<p>ifconfig 命令用于获取网卡配置与网络状态等信息，格式为 <code class="highlighter-rouge">ifconfig 『网络设备』 『参数』</code>，其中 lo 部分是本地环回地址，主要是用于测试网卡。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>eno1      Link encap: 以太网  硬件地址 aa:bb:cc:cd:c9:c3
+          UP BROADCAST MULTICAST  MTU:1500  跃点数：1
+          接收数据包：0 错误：0 丢弃：0 过载：0 帧数：0
+          发送数据包：0 错误：0 丢弃：0 过载：0 载波：0
+          碰撞：0 发送队列长度：1000
+          接收字节：0 (0.0 B)  发送字节：0 (0.0 B)
+          中断：16 Memory:df100000-df120000
+
+ens2      Link encap: 以太网  硬件地址 00:e0:4c:14:0c:ad
+          inet 地址：10.9.xxx.xxx  广播：10.9.xxx.xxx 掩码：255.255.255.128
+          inet6 地址：xxxx::xxxx:xxxx:xxxx:faxf/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  跃点数：1
+          接收数据包：98449 错误：0 丢弃：0 过载：0 帧数：0
+          发送数据包：46180 错误：0 丢弃：0 过载：0 载波：0
+          碰撞：0 发送队列长度：1000
+          接收字节：61142534 (61.1 MB)  发送字节：6042999 (6.0 MB)
+
+lo        Link encap: 本地环回
+          inet 地址：127.0.0.1  掩码：255.0.0.0
+          inet6 地址：::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  跃点数：1
+          接收数据包：1936 错误：0 丢弃：0 过载：0 帧数：0
+          发送数据包：1936 错误：0 丢弃：0 过载：0 载波：0
+          碰撞：0 发送队列长度：1000
+          接收字节：192827 (192.8 KB)  发送字节：192827 (192.8 KB)
+</code></pre></div></div>
+
+<p>说明：</p>
+<ul>
+  <li>eno1：网卡名称</li>
+  <li>inet：网卡 ip</li>
+  <li>ether: MAC 地址</li>
+  <li>Recv: 接收字节</li>
+  <li>Send：发送字节</li>
+</ul>
+
+<h2 id="13-系统内核与版本-uname">1.3 系统内核与版本 uname</h2>
+<p>uname 命令用于查看系统内核与系统版本等信息，格式为 <code class="highlighter-rouge">uname [-a]</code></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@linuxprobe ~]# <span class="nb">uname</span> <span class="nt">-a</span>
+Linux linuxprobe.com 3.10.0-123.el7.x86_64 <span class="c">#1 SMP Mon May 5 11:16:57 EDT 2017 x86_64 x86_64 x86_64 GNU/Linux</span>
+</code></pre></div></div>
+
+<p>显示信息为：当前系统的内核名称、主机名、内核发行版本、节点名、制作系统时间、硬件名称、硬件平台、处理器类型以及操作系统名称等信息。</p>
+
+<h2 id="14-查看系统负载-uptime">1.4 查看系统负载 uptime</h2>
+
+<p>uptime 用于查看系统的负载信息，就是 top 命令的第 1 行内容</p>
+
+<h2 id="15-查看内存-free">1.5 查看内存 free</h2>
+<p>free 用于显示当前系统中内存的使用量信息，格式为 <code class="highlighter-rouge">free [-h]</code></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wilson@P310:~$ free -h
+
+       内存总量   已用量   空闲量   进程共享的内存量   磁盘缓存的内存量   应用程序可用
+         total     used    free     shared          buff/cache      available
+Mem:       31G     1.7G    27G      127M            1.8G              28G
+Swap:      31G       0B    31G
+</code></pre></div></div>
+
+<h3 id="151-free-与-available-的区别">1.5.1. free 与 available 的区别</h3>
+<p>free 是真正尚未被使用的物理内存数量。
+available 是应用程序认为可用内存数量，available = free + buffer + cache （注：只是大概的计算方法）</p>
+
+<p>Linux 为了提升读写性能，会消耗一部分内存资源缓存磁盘数据，对于内核来说，buffer 和 cache 其实都属于已经被使用的内存。但当应用程序申请内存时，如果 free 内存不够，内核就会回收 buffer 和 cache 的内存来满足应用程序的请求。这就是稍后要说明的 buffer 和 cache。</p>
+
+<h3 id="152-buff-和-cache-的区别">1.5.2. buff 和 cache 的区别</h3>
+<p>buffer 为缓冲，cache 为缓存。
+由于硬件制作工艺上的差别，所以当两种硬件需要交互的时候，会存在速度上的差异。假如接口速率 A = 1000M/s，B = 500M/s，如何解决时间浪费呢？这就是 buffer 和 cache 的作用了。这里用 ab 作为 A 和 B 之间的中间通道。</p>
+
+<p><img src="/assets/images/posts/2019-06-19-linux/ab.png" alt="ab" /></p>
+
+<ul>
+  <li>A 从 B 取 1G 数据
+  A 把需求告诉了 ab，接下来 ab 通过 b 和 B 进行文件传送，同时 ab 都缓存一个拷贝，如果下次 A 或者其他 C 来取 B 的东西，ab 直接就给 A 或 C 一个已有的拷贝，然后把它通过 a 接口给了 A 或 C
+  由于 a 的速率相对接近 A 的接口速率，所以 A 觉得不错为他省了时间，说白了此时的 ab 提供的就是一种缓存能力，即 cache</li>
+  <li>A 发给 B 1G 的数据
+  1000M 通过 a 接口给了 ab ，站在 A 视图上他认为已经把 1000M 的文件给了 B，但对于 ab 并不立即交给 B，而是先缓存下来，除非 B 执行 sync 命令
+  因为 b 的接口速率大于 B 接口速率，所以也不会存在漏洞时间。A 节约了时间干其他的事务，而 ab 此时提供的就是一种缓冲的能力，即 buffer</li>
+</ul>
+
+<h2 id="16-用户终端信息-who">1.6 用户终端信息 who</h2>
+<p>who 用于查看当前登入主机的用户终端信息，格式为 <code class="highlighter-rouge">who 『参数』</code></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>登陆的用户名 	终端设备 	登陆到系统的时间
+root 	          :0 	    2017-08-24 17:52 (:0)
+root 	         pts/0 	    2017-08-24 17:52 (:0)
+</code></pre></div></div>
+
+<h2 id="17-登录记录-last">1.7 登录记录 last</h2>
+<p>last 命令用于查看所有系统的登录记录，格式为 <code class="highlighter-rouge">last 『参数』</code></p>
+
+<h2 id="18-历史记录-history">1.8 历史记录 history</h2>
+
+<p>history 命令用于显示历史执行过的命令，格式为 <code class="highlighter-rouge">history [-c]</code>
+可以自定义 /etc/profile 文件中的 HISTSIZE 变量值。在使用 history 命令时，如果使用 -c 参数则会清空所有的命令历史记录。
+还可以使用“! 数字”的方式来重复执行某一次的命令。
+历史命令保存在 <code class="highlighter-rouge">~/.bash_history</code> 文件中。</p>
+
+<h2 id="19-诊断报告-sosreport">1.9 诊断报告 sosreport</h2>
+
+<p>sosreport 命令用于收集系统配置及架构信息并输出诊断文档，格式为 <code class="highlighter-rouge">sosreport</code>。当系统出现问题时，可以通过此命令将系统诊断信息打包后，发送给红帽公司定位问题。</p>
+
+<h1 id="2-工作目录切换">2. 工作目录切换</h1>
+<p>工作目录指的是用户当前在系统中所处的位置。</p>
+
+<p>主要命令：</p>
+<ul>
+  <li>pwd</li>
+  <li>cd： <code class="highlighter-rouge">cd -</code> 返回上次目录</li>
+  <li>ls</li>
+</ul>
+
+<h1 id="3-文件编辑">3. 文件编辑</h1>
+
+<table>
+  <tbody>
+    <tr>
+      <td>命令</td>
+      <td>说明</td>
+      <td>命令</td>
+      <td>说明</td>
+    </tr>
+    <tr>
+      <td>cat</td>
+      <td>cat -n 带行号的查看</td>
+      <td>more</td>
+      <td>翻页查看</td>
+    </tr>
+    <tr>
+      <td>head</td>
+      <td>head -n N 查看前 N 行</td>
+      <td>tail</td>
+      <td>tail -n；tail -f 实时查看文件</td>
+    </tr>
+    <tr>
+      <td>tr</td>
+      <td>替换字符，『原始字符』 『目标字符』</td>
+      <td>wc</td>
+      <td>统计行数 (-l)、字数 (-w)、字节数 (-c)</td>
+    </tr>
+    <tr>
+      <td>stat</td>
+      <td>具体存储信息和时间等信息</td>
+      <td>cut</td>
+      <td>按“列”提取文本字符。<code class="highlighter-rouge">-f</code>列号，<code class="highlighter-rouge">-d</code>间隔符</td>
+    </tr>
+    <tr>
+      <td>diff</td>
+      <td>比较文件差异</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<blockquote>
+  <p>文件的 3 个时间：</p>
+  <ol>
+    <li>A time：access time，文件最后查看时间</li>
+    <li>M time：modify time，文件内容最后一次的修改时间</li>
+    <li>C time：Change time，文件属性变量的时间</li>
+  </ol>
+</blockquote>
+
+<h2 id="31-列提取-cut">3.1 列提取 cut</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cut</span> <span class="nt">-d</span>: f1 /etc/passwd
+</code></pre></div></div>
+
+<p>以 <code class="highlighter-rouge">:</code> 为分隔符从 /etc/passwd 中提取分割后的第 1 列</p>
+
+<h2 id="32-比较差异-diff">3.2 比较差异 diff</h2>
+
+<ol>
+  <li>
+    <p>判断是否相同 –brief</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="o">[</span>root@linuxprobe ~]# diff <span class="nt">--brief</span> diff_A.txt diff_B.txt
+ Files diff_A.txt and diff_B.txt differ
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>查看不同 -c</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="o">[</span>root@linuxprobe ~]# diff <span class="nt">-c</span> diff_A.txt diff_B.txt
+ <span class="k">***</span> diff_A.txt 2017-08-30 18:07:45.230864626 +0800
+ <span class="nt">---</span> diff_B.txt 2017-08-30 18:08:52.203860389 +0800
+ <span class="k">***************</span>
+ <span class="k">***</span> 1,5 <span class="k">****</span>
+ <span class="o">!</span> Welcome to linuxprobe.com
+ Red Hat certified
+ <span class="o">!</span> Free Linux Lessons
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h1 id="4-文件目录管理">4. 文件目录管理</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>命令</th>
+      <th>参数</th>
+      <th>作用</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>touch [-o] file</td>
+      <td>-a</td>
+      <td>修改读取时间 atime</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-m</td>
+      <td>修改修改时间 mtime</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-d</td>
+      <td>修改 atime 和 mtime</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-</td>
+      <td>创建空白文本文件</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>mkdir [-o] dir</td>
+      <td>-</td>
+      <td>创建目录</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-p</td>
+      <td>递归创建目录</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>cp [-o] scr dst</td>
+      <td>-</td>
+      <td>复制文件</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-r</td>
+      <td>递归复制</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-p</td>
+      <td>保留原始文件属性</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-d</td>
+      <td>复制链接</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>mv scr dst</td>
+      <td>-</td>
+      <td>移动</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>rm [-o] file</td>
+      <td>-f</td>
+      <td>强制删除 （避免二次确认）</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-r</td>
+      <td>递归删除</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>dd [-o]</td>
+      <td>if</td>
+      <td>输入文件名 input</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>of</td>
+      <td>输出文件名 output</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>bs</td>
+      <td>批大小 batchsize</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>count</td>
+      <td>批数目</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>file 文件名</td>
+      <td>-</td>
+      <td>查看文件类型</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="41-dd-命令">4.1 dd 命令</h2>
+
+<ol>
+  <li>从 /dev/zero 设备文件中取出一个大小为 560MB 的数据块，然后保存成名为 560_file 的文件
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@linuxprobe ~]# <span class="nb">dd </span><span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>560_file <span class="nv">count</span><span class="o">=</span>1 <span class="nv">bs</span><span class="o">=</span>560M
+1+0 records <span class="k">in
+</span>1+0 records out
+587202560 bytes <span class="o">(</span>587 MB<span class="o">)</span> copied, 27.1755 s, 21.6 MB/s
+</code></pre></div>    </div>
+  </li>
+  <li>把光驱设备中的光盘制作成 iso 格式的镜像文件
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@linuxprobe ~]# <span class="nb">dd </span><span class="k">if</span><span class="o">=</span>/dev/cdrom <span class="nv">of</span><span class="o">=</span>RHEL-server-7.0-x86_64-LinuxProbe.Com.iso
+7311360+0 records <span class="k">in
+</span>7311360+0 records out
+3743416320 bytes <span class="o">(</span>3.7 GB<span class="o">)</span> copied, 370.758 s, 10.1 MB/s
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="42-打包压缩与搜索">4.2 打包压缩与搜索</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>命令</th>
+      <th>参数</th>
+      <th>作用</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>tar file</td>
+      <td>-c</td>
+      <td>创建压缩文件</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-x</td>
+      <td>解压文件</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-z</td>
+      <td>用 Gzip 压 / 解</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-j</td>
+      <td>用 bzip2 压 / 解</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-v</td>
+      <td>显示过程，防死机</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-f</td>
+      <td>目标名，必须在最后</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-C</td>
+      <td>指定解压路径</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>grep 选项 文件</td>
+      <td>-b</td>
+      <td>搜索二进制文件内容</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-c</td>
+      <td>仅显示目标行数</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-i</td>
+      <td>忽略大小写</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-n</td>
+      <td>显示行号</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-v</td>
+      <td>反向列出无 key 的行</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>find 『路径』 条件 操作</td>
+      <td>-name</td>
+      <td>匹配名称</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-perm</td>
+      <td>匹配权限 -mode：包含即可</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-user</td>
+      <td>匹配所有者</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-m/a/ctime -n +n</td>
+      <td>修改内容时间 (-n: n 天内，+n: n 天前）</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-size</td>
+      <td>匹配文件大小</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td>-exec …{}\;</td>
+      <td>将结果交于 exec 处理</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="421-tar-命令">4.2.1 tar 命令</h3>
+
+<p>把 /etc 目录通过 gzip 格式进行打包压缩，并把文件命名为 etc.tar.gz：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@linuxprobe ~]# <span class="nb">tar </span>czvf etc.tar.gz /etc
+</code></pre></div></div>
+
+<p>解压到 /root/etc 目录中：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@linuxprobe ~]# <span class="nb">mkdir</span> /root/etc
+<span class="o">[</span>root@linuxprobe ~]# <span class="nb">tar </span>xzvf etc.tar.gz <span class="nt">-C</span> /root/etc
+</code></pre></div></div>
+
+<h3 id="422-grep-命令">4.2.2 grep 命令</h3>
+
+<p>grep 命令来查找出当前系统中不允许登录系统的所有用户信息：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@linuxprobe ~]# <span class="nb">grep</span> /sbin/nologin /etc/passwd
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+</code></pre></div></div>
+
+<h3 id="423-find-命令">4.2.3 find 命令</h3>
+
+<p>根据文件系统层次标准（Filesystem Hierarchy Standard）协议，Linux 系统中的配置文件会保存到 /etc 目录中，要想获取到该目录中所有以 host 开头的文件列表，可以执行如下命令：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@linuxprobe ~]# find /etc <span class="nt">-name</span> <span class="s2">"host*"</span> <span class="nt">-print</span>
+/etc/avahi/hosts
+/etc/host.conf
+/etc/selinux/targeted/modules/active/modules/hostname.pp
+/etc/hostname
+</code></pre></div></div>
+
+<p>搜索权限中包括 SUID 权限的所有文件：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@linuxprobe ~]# find / <span class="nt">-perm</span> <span class="nt">-4000</span> <span class="nt">-print</span>
+/usr/bin/fusermount
+/usr/bin/su
+</code></pre></div></div>
+
+<p>在整个文件系统中找出所有归属于 linuxprobe 用户的文件并复制到 /root/findresults 目录，这里的 <code class="highlighter-rouge">-exec {} \;</code> 参数，其中的 <code class="highlighter-rouge">{}</code> 表示 find 命令搜索出的每一个文件，并且命令的结尾必须是 <code class="highlighter-rouge">\;</code></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@linuxprobe ~]# find / <span class="nt">-user</span> linuxprobe <span class="nt">-exec</span> <span class="nb">cp</span> <span class="nt">-a</span> <span class="o">{}</span> /root/findresults/ <span class="se">\;</span>
+</code></pre></div></div>
+
+<h1 id="5-重定向">5. 重定向</h1>
+
+<h2 id="51-输入输出描述符">5.1 输入输出描述符</h2>
+
+<p>重定向就是将输入、输出转到其他位置。Linux 系统默认有 3 个输入输出方向，在系统中 0, 1, 2 对应的就是文件描述符</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>编号</th>
+      <th>操作符</th>
+      <th>Linux 下文件描述符</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>stdin</td>
+      <td>0</td>
+      <td><code class="highlighter-rouge">&lt;</code> 或 <code class="highlighter-rouge">&lt;&lt;</code></td>
+      <td><code class="highlighter-rouge">/dev/stdin -&gt; /proc/self/fd/0 -&gt; /dev/pts/0</code></td>
+    </tr>
+    <tr>
+      <td>stdout</td>
+      <td>1</td>
+      <td><code class="highlighter-rouge">&gt;</code>, <code class="highlighter-rouge">&gt;&gt;</code>, <code class="highlighter-rouge">1&gt;</code>, <code class="highlighter-rouge">1&gt;&gt;</code></td>
+      <td><code class="highlighter-rouge">/dev/stdout -&gt; /proc/self/fd/1 -&gt; /dev/pts/0</code></td>
+    </tr>
+    <tr>
+      <td>stderr</td>
+      <td>2</td>
+      <td><code class="highlighter-rouge">2&gt;</code>, <code class="highlighter-rouge">2&gt;&gt;</code></td>
+      <td><code class="highlighter-rouge">/dev/stderr -&gt; /proc/self/fd/2 -&gt; /dev/pts/0</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>因为 stdout 的描述符 1 可以省略，所以</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"hello"</span> <span class="o">&gt;</span> t.log
+</code></pre></div></div>
+
+<p>可以写成：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"hello"</span> 1&gt; t.log
+</code></pre></div></div>
+
+<h2 id="52-关于-21-的含义">5.2 关于 2&gt;&amp;1 的含义</h2>
+
+<ol>
+  <li><strong>将标准错误输出重定向到标准输出</strong></li>
+  <li><strong>符号》&amp; 是一个整体</strong>，<code class="highlighter-rouge">2&gt;1</code> 的重定向含义是把标准错误输出到文件 2 中，为了区别这个问题，只能在 stdout 的描述符 1 前加入 &amp;</li>
+</ol>
+
+<p>对于 <code class="highlighter-rouge">nohup java -jar app.jar &gt;log 2&gt;&amp;1</code> 这条命令，具体过程如下：</p>
+
+<ol>
+  <li>本来 1—–&gt;屏幕 （1 指向屏幕）</li>
+  <li>执行》log 后， 1—–&gt;log (1 指向 log)</li>
+  <li>执行 2&gt;&amp;1 后， 2—–&gt;1 (2 指向 1，而 1 指向 log, 因此 2 也指向了 log)</li>
+</ol>
+
+<p>对于 <code class="highlighter-rouge">nohup java -jar app.jar 2&gt;&amp;1 &gt;log</code> 这条命令：</p>
+
+<ol>
+  <li>1—–&gt;屏幕</li>
+  <li>2—–&gt;1 (2 指向 1，而 1 指向屏幕，因此 2 也指向了屏幕）</li>
+  <li>1—–&gt;log (1 指向 log，2 还是指向屏幕）</li>
+</ol>
+
+<h2 id="53-输入重定向">5.3 输入重定向</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>符号</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">cmd &lt; file</code></td>
+      <td>文件内容 <code class="highlighter-rouge">-&gt;</code> 命令</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">cmd &lt;&lt; 分界符 </code></td>
+      <td>从 stdin 中读入，直到遇见分界符才停止</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">命令 &lt; 文件 1 &gt; 文件 2</code></td>
+      <td>将文件 1 作为命令的标准输入并将标准输出到文件 2</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>把 readme.txt 文件导入给 wc -l 命令，统计一下文件中的内容行数：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@linuxprobe ~]# <span class="nb">wc</span> <span class="nt">-l</span> &lt; readme.txt
+2
+</code></pre></div></div>
+
+<h2 id="54-输出重定向">5.4 输出重定向</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>符号</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>命令 &gt; 文件</td>
+      <td>标准输出重定向</td>
+    </tr>
+    <tr>
+      <td>命令 2&gt; 文件</td>
+      <td>错误输出重定向</td>
+    </tr>
+    <tr>
+      <td>命令 » 文件</td>
+      <td>追加</td>
+    </tr>
+    <tr>
+      <td>命令 2» 文件</td>
+      <td>追加</td>
+    </tr>
+    <tr>
+      <td>命令 » 文件 2&gt;&amp;1</td>
+      <td>标准输出重定向到文件，错误输出重定向到文件</td>
+    </tr>
+  </tbody>
+</table>
+
+<blockquote>
+  <p>命令 » 文件 2&gt;&amp;1 也可以写成： 命令 &amp;» 文件，表 stdout 和 stderr 都定向到文件
+命令 &gt; 文件，应该解读成 命令 1&gt;文件</p>
+</blockquote>
+
+<h1 id="6-管道符">6 管道符</h1>
+
+<p>把前面命令的输出内容导入后面的命令</p>
+
+<ol>
+  <li>统计未登陆用户
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="o">[</span>root@linuxprobe ~]# <span class="nb">grep</span> <span class="s2">"/sbin/nologin"</span> /etc/passwd | <span class="nb">wc</span> <span class="nt">-l</span>
+ 33
+</code></pre></div>    </div>
+  </li>
+  <li>密码重置
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="o">[</span>root@linuxprobe ~]# <span class="nb">echo</span> <span class="s2">"linuxprobe"</span> | passwd <span class="nt">--stdin</span> root
+ Changing password <span class="k">for </span>user root.
+ passwd: all authentication tokens updated successfully.
+</code></pre></div>    </div>
+  </li>
+  <li>让用户一直输入内容，直到用户输入了其自定义的分界符时，才结束输入
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@linuxprobe ~]# mail <span class="nt">-s</span> <span class="s2">"Readme"</span> root@linuxprobe.com <span class="o">&lt;&lt;</span> <span class="no">over</span><span class="sh">
+&gt; I think linux is very practical
+&gt; I hope to learn more
+&gt; can you teach me ?
+&gt; over
+[root@linuxprobe ~]#
+</span></code></pre></div>    </div>
+  </li>
+</ol>
+
+<h1 id="7-通配符">7 通配符</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>通配符</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">*</code></td>
+      <td>匹配零个或多个字符</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">?</code></td>
+      <td>单个字符</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">[0-9]</code></td>
+      <td>0～9 之间的单个数字</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">[abc]</code></td>
+      <td>a、b、c 三个字符中的任意一个</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">[1,3,5]</code></td>
+      <td>三个指定数字中的一个</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="8-转义字符">8 转义字符</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>转义符</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="highlighter-rouge">\</code> 反斜杠</td>
+      <td>后面的一个变量变为单纯的字符</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">' '</code> 单引号</td>
+      <td>全局转义，所有变量转义为<strong>字符串</strong></td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">""</code> 双引号</td>
+      <td>保留其中的变量属性，不进行转义处理</td>
+    </tr>
+    <tr>
+      <td><code>``</code>反引号</td>
+      <td>把其中的命令执行后返回结果</td>
+    </tr>
+    <tr>
+      <td><code class="highlighter-rouge">$</code></td>
+      <td>提取变量</td>
+    </tr>
+  </tbody>
+</table>
+
+<blockquote>
+  <p><code class="highlighter-rouge">$$</code>：显示当前进程号
+DATE = <code class="highlighter-rouge">date</code>，则系统变量 DATE 保存 date 指令的打印结果</p>
+</blockquote>
+
+<h1 id="9-环境变量">9 环境变量</h1>
+
+<p>Linux 中变量是用于保存值的数据类型，一般约定用大写。环境变量是定义运行环境的一些参数，为用户提供了服务的工作运行环境。我们看一下在 Linux 系统中，执行一条指令的过程是怎样的：</p>
+
+<ol>
+  <li>是否以绝对路径或相对路径的方式输入命令（如 /bin/ls），如果是的话则直接执行</li>
+  <li>命令是否为“别名命令”</li>
+  <li>Bash 解释器判断<strong>内部</strong>还是<strong>外部</strong>命令。<strong>内部</strong>会被直接执行</li>
+  <li>外部命令则在 PATH 路径中查找命令程序，</li>
+</ol>
+
+<blockquote>
+  <ul>
+    <li>别名是通过 <code class="highlighter-rouge">alias 别名 = 命令</code> 创建，<code class="highlighter-rouge">unalias 别名</code> 取消</li>
+    <li><code class="highlighter-rouge">type 命令</code> 查看是内部命令还是外部命令</li>
+    <li>PATH 是系统路径，<code class="highlighter-rouge">PATH=$PATH:/root/bin</code> 增加路径</li>
+    <li><code class="highlighter-rouge">env</code> 可以查看所有环境变量</li>
+  </ul>
+</blockquote>
+
+<p><strong>为什么要用 <code class="highlighter-rouge">./ 命令</code> 来执行命令呢？</strong></p>
+
+<p>为防止黑客在比较常用的公共目录 /tmp 中存放了一个与 ls 或 cd 命令同名的木马文件，而用户又恰巧在公共目录中执行了这些命令，那么就极有可能中招了</p>
+
+<p>所以，作为一名态度谨慎、有经验的运维人员，时常查看 PATH 变量中是否有可疑的目录</p>
+
+<h2 id="91-10-个重要的环境变量">9.1 10 个重要的环境变量</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>变量</th>
+      <th>作用</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>HOME</td>
+      <td>用户的主目录（即家目录）</td>
+    </tr>
+    <tr>
+      <td>SHELL</td>
+      <td>用户在使用的 Shell 解释器名称</td>
+    </tr>
+    <tr>
+      <td>HISTSIZE</td>
+      <td>输出的历史命令记录条数</td>
+    </tr>
+    <tr>
+      <td>HISTFILESIZE</td>
+      <td>保存的历史命令记录条数</td>
+    </tr>
+    <tr>
+      <td>MAIL</td>
+      <td>邮件保存路径</td>
+    </tr>
+    <tr>
+      <td>LANG</td>
+      <td>系统语言、语系名称</td>
+    </tr>
+    <tr>
+      <td>RANDOM</td>
+      <td>生成一个随机数字</td>
+    </tr>
+    <tr>
+      <td>PS1</td>
+      <td>Bash 解释器的提示符</td>
+    </tr>
+    <tr>
+      <td>PATH</td>
+      <td>定义解释器搜索用户执行命令的路径</td>
+    </tr>
+    <tr>
+      <td>EDITOR</td>
+      <td>用户默认的文本编辑器</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>每个用户都有自己的环境变量，比如 <code class="highlighter-rouge">$HOME</code> 变量</li>
+  <li>通过 <code class="highlighter-rouge">WORKDIR=/home/workdir</code> 可以设置一个局部变量，仅用于当前用户</li>
+  <li>通过 <code class="highlighter-rouge">export WORKDIR</code> 升级为全局变量</li>
+</ul>
+
+<h1 id="10-配置系统">10 配置系统</h1>
+
+<h2 id="101-配置主机名">10.1 配置主机名</h2>
+
+<p>主机名大多保存在 /etc/hostname 文件中，修改文件内容即可</p>
+
+<p>通过 <code class="highlighter-rouge">hostname</code> 查看当前主机名</p>
+
+<h2 id="102-配置网卡">10.2 配置网卡</h2>
+
+<ul>
+  <li>在 Linux 中一切皆文件，所以配置网卡就是修改配置文件。</li>
+  <li>在 RHEL 5、RHEL 6 中，网卡配置文件的前缀为 eth，第 1 块网卡为 eth0，第 2 块网卡为 eth1</li>
+  <li>在 RHEL 7 中，网卡配置文件的前缀则以 ifcfg 开始，加上网卡名称共同组成了网卡配置文件的名字，例如 ifcfg-eno16777736</li>
+</ul>
+
+<p>现在有一个名为 ifcfg-eno16777736 的网卡设备 （通过 ifconfig 确认），我们将其配置为开机自启动，并且 IP 地址、子网、网关等信息由人工指定：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#  ubuntu: /etc/network/interfaces</span>
+<span class="nb">cd</span> /etc/sysconfig/network-scripts
+vim ifcfg-eno16777736
+<span class="nv">TYPE</span><span class="o">=</span>Ethernet
+<span class="nv">BOOTPROTO</span><span class="o">=</span>static
+<span class="nv">NAME</span><span class="o">=</span>eno16777736
+<span class="nv">ONBOOT</span><span class="o">=</span><span class="nb">yes
+</span><span class="nv">IPADDR</span><span class="o">=</span>192.168.10.10
+<span class="nv">NETMASK</span><span class="o">=</span>255.255.255.0
+<span class="nv">GATEWAY</span><span class="o">=</span>192.168.10.1
+<span class="nv">DNS1</span><span class="o">=</span>192.168.10.1
+</code></pre></div></div>
+
+<p>含义：</p>
+<ul>
+  <li>设备类型：TYPE=Ethernet</li>
+  <li>地址分配模式：BOOTPROTO=static</li>
+  <li>网卡名称：NAME=eno16777736</li>
+  <li>是否启动：ONBOOT=yes</li>
+  <li>IP 地址：IPADDR=192.168.10.10</li>
+  <li>子网掩码：NETMASK=255.255.255.0</li>
+  <li>网关地址：GATEWAY=192.168.10.1</li>
+  <li>DNS 地址：DNS1=192.168.10.1</li>
+</ul>
+
+<h2 id="103-配置-yum-仓库">10.3 配置 YUM 仓库</h2>
+
+<p>要使用 YUM 仓库，就要先把它搭建起来，然后将其配置规则确定好</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /etc/yum.repos.d/
+vim rhel7.repo  <span class="c"># 新建文件</span>
+<span class="o">[</span>rhel7]
+<span class="nv">name</span><span class="o">=</span>rhel7
+<span class="nv">baseurl</span><span class="o">=</span>file:///media/cdrom
+<span class="nv">enabled</span><span class="o">=</span>1
+<span class="nv">gpgcheck</span><span class="o">=</span>0
+</code></pre></div></div>
+
+<blockquote>
+  <ul>
+    <li>[rhel-media] ：Yum 软件仓库唯一标识符，避免与其他仓库冲突</li>
+    <li>name=linuxprobe：Yum 软件仓库的名称描述，易于识别仓库用处</li>
+    <li>baseurl=file:///media/cdrom：提供的方式包括 FTP(ftp://..)、HTTP(http://..)、本地 (file:///..)</li>
+    <li>enabled=1：设置此源是否可用；1 为可用，0 为禁用</li>
+    <li>gpgcheck=1：设置此源是否校验文件；1 为校验，0 为不校验</li>
+    <li>gpgkey=file:///media/cdrom/RPM-GPG-KEY-redhat-release：若上面参数开启校验，那么请指定公钥文件地址</li>
+  </ul>
+</blockquote>
+
+<p>按配置参数的路径挂载光盘，并把光盘挂载信息写入到 /etc/fstab 文件中，然后可能通过 <code class="highlighter-rouge">yum install httpd -y</code> 来测试仓库配置是否生效</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@linuxprobe yum.repos.d]# <span class="nb">mkdir</span> <span class="nt">-p</span> /media/cdrom
+<span class="o">[</span>root@linuxprobe yum.repos.d]# mount /dev/cdrom /media/cdrom
+mount: /dev/sr0 is write-protected, mounting read-only
+<span class="o">[</span>root@linuxprobe yum.repos.d]# vim /etc/fstab
+/dev/cdrom /media/cdrom iso9660 defaults 0 0
+<span class="o">[</span>root@linuxprobe ~]# yum <span class="nb">install </span>httpd
+</code></pre></div></div>
+
+:ET

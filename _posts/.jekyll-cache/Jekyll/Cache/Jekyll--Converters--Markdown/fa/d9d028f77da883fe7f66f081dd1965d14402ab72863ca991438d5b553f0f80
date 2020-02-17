@@ -1,0 +1,90 @@
+I"�<h1 id="下载-alexeyab-的-darknet">下载 AlexeyAB 的 darknet</h1>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/AlexeyAB/darknet.git
+</code></pre></div></div>
+
+<h1 id="满足依赖">满足依赖</h1>
+
+<p>依赖条件：</p>
+
+<ul>
+  <li>Windows or Linux</li>
+  <li>CMake &gt;= 3.8 for modern CUDA</li>
+</ul>
+
+<h2 id="升级-cmake">升级 Cmake</h2>
+
+<ol>
+  <li><a href="https://cmake.org/download/">下载源码</a></li>
+  <li>
+    <p>编译</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ./bootstrap <span class="o">&amp;&amp;</span> make <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>make <span class="nb">install</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h1 id="第一次尝试">第一次尝试</h1>
+
+<p>第一次打算使用 labelImg 标注后，再使用 darknet 训练数据。但在github上找到了由 AlexeyAB 实现的项目，可以在windows和linux平台上使用，于是打算转向AlexeyAB的项目，试试训练自己的数据集</p>
+
+<ol>
+  <li>
+    <p>下载图像标注工具 labelImg</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> git clone https://github.com/tzutalin/labelImg.git
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>安装 labelImg</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nb">sudo </span>apt-get <span class="nb">install </span>pyqt5-dev-tools
+ <span class="nb">sudo </span>pip3 <span class="nb">install</span> <span class="nt">-r</span> requirements/requirements-linux-python3.txt
+ make qt5py3
+</code></pre></div>    </div>
+    <p>在安装 <code class="highlighter-rouge">pyqt5</code> 的过程中，出现如下错误：</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Collecting sip&lt;4.20,&gt;<span class="o">=</span>4.19.4 <span class="o">(</span>from <span class="nv">pyqt5</span><span class="o">==</span>5.10.1-&gt;-r requirements/requirements-linux-python3.txt <span class="o">(</span>line 1<span class="o">))</span>
+ ERROR: Could not find a version that satisfies the requirement sip&lt;4.20,&gt;<span class="o">=</span>4.19.4 <span class="o">(</span>from <span class="nv">pyqt5</span><span class="o">==</span>5.10.1-&gt;-r requirements/requirements-linux-python3.txt <span class="o">(</span>line 1<span class="o">))</span> <span class="o">(</span>from versions: none<span class="o">)</span>
+ ERROR: No matching distribution found <span class="k">for </span>sip&lt;4.20,&gt;<span class="o">=</span>4.19.4 <span class="o">(</span>from <span class="nv">pyqt5</span><span class="o">==</span>5.10.1-&gt;-r requirements/requirements-linux-python3.txt <span class="o">(</span>line 1<span class="o">))</span>
+</code></pre></div>    </div>
+    <p>这个问题似乎是因为python版本导致的，参考<a href="https://stackoverflow.com/questions/47085598/how-do-i-install-pyqt5-with-python-3-7-0a2-on-windows-10">Stack Overflow</a>。我只能打开一个py3.6的虚拟环境来运行了。果然如此，我切换到py3.6环境之后，再运行一切正常。</p>
+  </li>
+  <li>
+    <p>标注</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> python3 labelImg.py
+ python3 labelImg.py <span class="o">[</span>IMAGE_PATH] <span class="o">[</span>PRE-DEFINED CLASS FILE]
+</code></pre></div>    </div>
+
+    <p>在运行 <code class="highlighter-rouge">python3 labelImg.py</code> 时，遇到了如下错误：</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> This application failed to start because it could not find or load the Qt platform plugin <span class="s2">"xcb"</span> <span class="k">in</span> <span class="s2">""</span><span class="nb">.</span>
+ Available platform plugins are: eglfs, linuxfb, minimal, minimalegl, offscreen, vnc, xcb.
+ Reinstalling the application may fix this problem.
+ <span class="o">[</span>1]    20833 abort <span class="o">(</span>core dumped<span class="o">)</span>  python labelImg.py
+</code></pre></div>    </div>
+
+    <p>原因是没有安装 Qt 软件，从 QT 网站上下载源码并编译安装</p>
+
+    <p>参考 <a href="https://stackoverflow.com/questions/30316880/how-to-build-qtwebengine-from-qt-5-5-git-source">stackover</a> 首先安装 QT 编译所需依赖：</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nb">sudo </span>apt-get <span class="nb">install </span>bison build-essential flex gperf gyp <span class="se">\</span>
+ libasound2-dev libbz2-dev libcap-dev libcups2-dev libdrm-dev <span class="se">\</span>
+ libegl1-mesa-dev libfontconfig1-dev libgcrypt11-dev <span class="se">\</span>
+ libglu1-mesa-dev libicu-dev libnss3-dev libpci-dev libpulse-dev <span class="se">\</span>
+ libssl-dev libudev-dev libxcomposite-dev libxcursor-dev <span class="se">\</span>
+ libxdamage-dev libxrandr-dev libxtst-dev ninja python ruby
+</code></pre></div>    </div>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nb">cd</span> &lt;path&gt;/&lt;source_package&gt;
+ ./configure <span class="nt">-release</span> <span class="nt">-opensource</span> <span class="nt">-confirm-license</span> <span class="nt">-shared</span> <span class="se">\</span>
+ <span class="nt">-no-sql-sqlite</span> <span class="nt">-qt-zlib</span> <span class="nt">-qt-libpng</span> <span class="nt">-qt-libjpeg</span> <span class="nt">-qt-freetype</span><span class="se">\</span>
+ <span class="nt">-icu</span> <span class="nt">-openssl</span> <span class="nt">-qt-xcb</span> <span class="nt">-opengl</span> <span class="nt">-gui</span> <span class="nt">-widgets</span> <span class="nt">-nomake</span> examples
+ make <span class="nt">-j</span> 4
+ make <span class="nb">install</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+:ET

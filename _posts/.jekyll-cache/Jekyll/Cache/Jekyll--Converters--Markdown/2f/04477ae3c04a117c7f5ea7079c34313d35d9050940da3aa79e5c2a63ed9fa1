@@ -1,0 +1,1017 @@
+I"��<!-- vim-markdown-toc GFM -->
+
+<ul>
+  <li><a href="#1-前言">1 前言</a>
+    <ul>
+      <li><a href="#11-本章概要">1.1 本章概要</a></li>
+      <li><a href="#12-目录">1.2 目录</a></li>
+    </ul>
+  </li>
+  <li><a href="#2-读书笔记">2 读书笔记</a>
+    <ul>
+      <li><a href="#21-逻辑回归模型">2.1 逻辑回归模型</a>
+        <ul>
+          <li><a href="#211-逻辑分布">2.1.1 逻辑分布</a></li>
+          <li><a href="#212-二项逻辑回归模型">2.1.2 二项逻辑回归模型</a>
+            <ul>
+              <li><a href="#几率">几率</a></li>
+            </ul>
+          </li>
+          <li><a href="#213-模型的参数估计">2.1.3 模型的参数估计</a></li>
+          <li><a href="#214-多项逻辑回归模型">2.1.4 多项逻辑回归模型</a></li>
+        </ul>
+      </li>
+      <li><a href="#22-最大熵模型">2.2 最大熵模型</a>
+        <ul>
+          <li><a href="#221-最大熵原理">2.2.1 最大熵原理</a></li>
+          <li><a href="#222-最大熵模型的定义">2.2.2 最大熵模型的定义</a></li>
+          <li><a href="#223-最大熵模型的学习">2.2.3 最大熵模型的学习</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#3-导读笔记">3 导读笔记</a>
+    <ul>
+      <li><a href="#31-逻辑回归模型">3.1 逻辑回归模型</a>
+        <ul>
+          <li><a href="#求解-w">求解 w</a></li>
+        </ul>
+      </li>
+      <li><a href="#32-最大熵模型">3.2 最大熵模型</a></li>
+      <li><a href="#32-拉格朗日对偶性">3.2 拉格朗日对偶性</a></li>
+    </ul>
+  </li>
+  <li><a href="#4-总结">4 总结</a>
+    <ul>
+      <li><a href="#41-什么是梯度下降">4.1 什么是梯度下降？</a></li>
+      <li><a href="#42-什么是-logistic-回归">4.2 什么是 Logistic 回归？</a></li>
+    </ul>
+  </li>
+</ul>
+
+<!-- vim-markdown-toc -->
+
+<h1 id="1-前言">1 前言</h1>
+
+<h2 id="11-本章概要">1.1 本章概要</h2>
+
+<ol>
+  <li>
+    <p>逻辑回归模型是用下面分布表示的模型，用于分类</p>
+
+    <script type="math/tex; mode=display">P(Y = k \mid x) = \dfrac{e^{w_k \cdot x}} {1 + \sum\limits_{k=1}^{K-1} e^{w_k \cdot x}}</script>
+
+    <script type="math/tex; mode=display">P(Y=K \mid x) = \dfrac{1}{1+\sum\limits_{k=1}^{K-1} e^{w_k \cdot x}}</script>
+
+    <p>其中
+$k = 1, 2, …, K-1$</p>
+
+    <blockquote>
+      <p>逻辑回归模型是用输入的线性函数表示输出的对数几率模型</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>最大熵模型是用下面分布表示的分类模型</p>
+
+    <script type="math/tex; mode=display">P_w(y \mid x) = \dfrac{1}{Z_w(x)} e ^{\sum\limits_{i=1}^{n} w_if_i(x, y)}</script>
+
+    <script type="math/tex; mode=display">Z_w(x) = \sum\limits_y e^{\sum\limits_{i=1}^{n}w_if_i(x, y)}</script>
+
+    <ul>
+      <li>$Z_w(x)$ 是归一化因子</li>
+      <li>$f_i$ 是特征函数</li>
+      <li>$w_i$ 特征权值</li>
+    </ul>
+  </li>
+  <li>
+    <p>最大熵原理认为在所有可能的概率模型（分布）的集合中，熵最大的模型是最好的模型</p>
+  </li>
+  <li>
+    <p>最大熵原理应用到分类模型学习中，有以下约束最优化问题：</p>
+
+    <script type="math/tex; mode=display">min\{-H(P)\} = \sum\limits_{(x, y)} \widetilde{P}(x)P(y \mid x)logP(y \mid x)</script>
+
+    <p>约束条件：</p>
+
+    <script type="math/tex; mode=display">P(f_i) - \widetilde{P}(f_i) = 0</script>
+
+    <script type="math/tex; mode=display">\sum\limits_{y} P(y \mid x) = 1</script>
+
+    <p>求解此优化问题的对偶问题得到最大熵模型</p>
+  </li>
+  <li>
+    <p>逻辑回归模型和最大熵模型都是对数线性模型</p>
+  </li>
+  <li>
+    <p>逻辑回归模型和最大熵模型一般用极大似然估计，或正则化的极大似然估计</p>
+  </li>
+  <li>
+    <p>求解最优化问题的算法有迭代尺度法、梯度下降法、拟牛顿法</p>
+  </li>
+</ol>
+
+<h2 id="12-目录">1.2 目录</h2>
+
+<ol>
+  <li>逻辑回归模型<br />
+1.1 逻辑分布<br />
+1.2 二项逻辑回归模型<br />
+1.3 模型参数估计<br />
+1.4 多项逻辑回归</li>
+  <li>最大熵模型<br />
+2.1 最大熵原理<br />
+2.2 最大熵模型的定义<br />
+2.3 最大熵模型的学习<br />
+2.4 极大似然估计</li>
+  <li>模型学习的最优化算法<br />
+3.1 改进的迭代尺度法<br />
+3.2 拟牛顿法</li>
+</ol>
+
+<hr />
+
+<h1 id="2-读书笔记">2 读书笔记</h1>
+
+<h2 id="21-逻辑回归模型">2.1 逻辑回归模型</h2>
+
+<h3 id="211-逻辑分布">2.1.1 逻辑分布</h3>
+
+<p>设 $X$ 是连续随机变量， $X$ 服从逻辑分布是指 $X$ 具有以下分布函数和密度函数：</p>
+
+<script type="math/tex; mode=display">F(x) = P(X \le x) = \dfrac{1}{1 + e^{-(x-\mu/\gamma)} }</script>
+
+<script type="math/tex; mode=display">f(x) = F'(x) = \dfrac{e^{-(x-\mu)/\gamma}}{\gamma\left[1+e^{-(x-\mu)/\gamma}\right]^2}</script>
+
+<p>式中， $\mu$ 为位置参数，$\gamma &gt; 0$ 为形状参数</p>
+
+<p>逻辑分布的密度函数和分布函数如下：</p>
+
+<p><img src="/assets/images/posts/2019-08-05-schap6/log.png" alt="logit" /></p>
+
+<h3 id="212-二项逻辑回归模型">2.1.2 二项逻辑回归模型</h3>
+
+<p>二项逻辑回归模型是如下的条件概率分布：</p>
+
+<script type="math/tex; mode=display">P(Y =1 \mid x) = \dfrac{e^{(w \cdot x _+ b)}}{1 + e^{(w \cdot x + b)}}</script>
+
+<script type="math/tex; mode=display">P(Y = 0 \mid x) = \dfrac{1} {1 + e^{w \cdot x + b}}</script>
+
+<p>对于新的输入 $x$，求出 $P(Y = 1 \mid x)$ 和 $P(Y = 0 \mid x)$，求实例 $x$ 分配到概率值大的一类</p>
+
+<h4 id="几率">几率</h4>
+
+<p>事件发生的概率与不发生概率的比值 $\dfrac{p}{1-p}$</p>
+
+<p>对数几率或 logit 函数是：</p>
+
+<script type="math/tex; mode=display">logit(p) = log \dfrac{p}{1-p}</script>
+
+<p>对数几率的线性模型表示为：</p>
+
+<script type="math/tex; mode=display">log \dfrac{P(Y=1 \mid x)}{1 - P(Y = 1 \mid x)} = w \cdot x</script>
+
+<p>由此可求出逻辑回归模型：</p>
+
+<script type="math/tex; mode=display">P(Y = 1 \mid x) = \dfrac{e^{w \cdot x}}{1 + e^{w \cdot x}}</script>
+
+<script type="math/tex; mode=display">P(Y = 0 \mid x) = \dfrac{1}{1 + e^{w \cdot x}}</script>
+
+<h3 id="213-模型的参数估计">2.1.3 模型的参数估计</h3>
+
+<p>极大似然估计法估计参数，对于 0-1 分布的样本，有</p>
+
+<script type="math/tex; mode=display">P(Y = 1 \mid x) = \pi(x)</script>
+
+<script type="math/tex; mode=display">P(Y = 0 \mid x) = 1 - \pi(x)</script>
+
+<p>对应的似然函数为：</p>
+
+<script type="math/tex; mode=display">L(w) = \prod\limits_{i=1}^N = [\pi(x_i)]^{y_i}[1 - \pi(x_i)]^{1-y_i}</script>
+
+<p>再求对数似然函数的极大值（梯度下降或拟牛顿法），可得 w 的估计值</p>
+
+<p>当求出 w 的极大似然估计值 $\hat{w}$ 后，逻辑回归模型为：</p>
+
+<p><script type="math/tex">P(Y = 1 \mid x) = \dfrac {e^{\hat{w} \cdot x}}{1+ e^{\hat{w} \cdot x}}</script><br />
+<script type="math/tex">P(Y = 0 \mid x) = \dfrac {1}{1+ e^{\hat{w} \cdot x}}</script></p>
+
+<h3 id="214-多项逻辑回归模型">2.1.4 多项逻辑回归模型</h3>
+
+<p>模型为：</p>
+
+<p><script type="math/tex">P(Y = k \mid x) = \dfrac {e^{w_k \cdot x}}{1+ \sum\limits_{k=1}^{K-1} e^{w_k \cdot x}}</script><br />
+<script type="math/tex">P(Y = K \mid x) = \dfrac {1}{1+ \sum\limits_{k=1}^{K-1} e^{w_k \cdot x}}</script></p>
+
+<h2 id="22-最大熵模型">2.2 最大熵模型</h2>
+
+<p>则最大熵原理推导</p>
+
+<h3 id="221-最大熵原理">2.2.1 最大熵原理</h3>
+
+<p>最大熵原理认为在所有可能的概率模型（分布）的集合中，熵最大的模型是最好的模型。约束条件确定概率模型的集合</p>
+
+<h3 id="222-最大熵模型的定义">2.2.2 最大熵模型的定义</h3>
+
+<p>假设满足所有的<strong>约束条件</strong>的模型集合为：</p>
+
+<script type="math/tex; mode=display">M = \{ P \in \Gamma \mid E_p(f_i) = E_{\widetilde{P}}(f_i) \}</script>
+
+<p>定义在条件概率分布 $P(Y \mid X)$ 上的条件熵为：</p>
+
+<script type="math/tex; mode=display">H(P) = - \sum\limits_{x, y} \widetilde{P}(x)P(y \mid x) logP(y \mid x)</script>
+
+<p>则模型集合 $M$ 中条件熵 $H(P)$ 最大的模型成为 <strong>最大熵模型</strong></p>
+
+<h3 id="223-最大熵模型的学习">2.2.3 最大熵模型的学习</h3>
+
+<p>最大熵模型的学习过程就是模型的求最优解过程。所以学习过程可以转化成约束最优化过程</p>
+
+<p>对于训练集 $T = {(x_1, y_1), (x_2, y_2), …, (x_N, y_N) } $ 以及特征函数 $ f_i(x, y)$，最大熵模型的学习等价于约束最优化问题：</p>
+
+<script type="math/tex; mode=display">\max\limits_{P \in M} H(P) = - \sum\limits_{x,y} \widetilde{P}(x)P(y \mid x)logP(y \mid x)</script>
+
+<p>约束条件：</p>
+
+<script type="math/tex; mode=display">E_P(f_i) = E_{\widetilde{P}}(f_i), i = 1, 2, ..., n</script>
+
+<script type="math/tex; mode=display">\sum\limits_y P(y \mid x) = 1</script>
+
+<p>按惯例转化为求最小值问题：</p>
+
+<script type="math/tex; mode=display">\min\limits_{P \in M} - H(P) = \sum\limits_{x,y} \widetilde{P}(x)P(y \mid x)logP(y \mid x)</script>
+
+<p>约束条件：</p>
+
+<script type="math/tex; mode=display">E_P(f_i) - E_{\widetilde{P}}(f_i) = 0, i = 1, 2, ..., n</script>
+
+<script type="math/tex; mode=display">\sum\limits_y P(y \mid x) = 1</script>
+
+<p>上面式子的解就是最大熵模型学习的解，其解为：</p>
+
+<script type="math/tex; mode=display">w* = arg\max\limits_w \Psi(w)</script>
+
+<p>这里：</p>
+
+<script type="math/tex; mode=display">\Psi(w) = \min\limits_{P \in M} L(P, w) = L(P_w, w)</script>
+
+<p>$L$ 是拉格朗日函数：</p>
+
+<script type="math/tex; mode=display">L(P, w) = -H(P) + w_0 \left( 1 - \sum\limits_yP(y \mid x) \right) + \sum\limits_{i=1}^n w_i (E_{\widetilde{P}}(f_i) - E_p(f_i))</script>
+
+<hr />
+
+<h1 id="3-导读笔记">3 导读笔记</h1>
+
+<h2 id="31-逻辑回归模型">3.1 逻辑回归模型</h2>
+
+<p>对数线性模型的形式为： $logP(y \mid x) = w \cdot x$</p>
+
+<p>对于给定的 $x$，我们希望把它的类别概率表示为 $P(y = 1 \mid x) = \pi(x)$，其中 $\pi(x) \in [0, 1]$</p>
+
+<p>为了用线性函数 $w \cdot x$ 来表示 $\pi(x)$ 的特征，需要一个变换，把 $(-\infty, +\infty) \to [0, 1]$，用到了 logit 变换：</p>
+
+<p><script type="math/tex">logit(\pi(x)) = log \dfrac{\pi(x)} {1 - \pi(x)} \in (-\infty, +\infty)</script>
+<script type="math/tex">log \dfrac{\pi(x)} {1 - \pi(x)} = w \cdot x</script></p>
+
+<p>反解出逻辑回归模型：</p>
+
+<p><script type="math/tex">\pi(x) = \dfrac{e^{wx}}{1 + e^{wx}} = P(Y = 1 \mid x)</script>
+<script type="math/tex">\pi(x) = \dfrac{1}{1 + e^{wx}} = P(Y = 0 \mid x)</script></p>
+
+<p>只需要求出 $w$ 就有了模型，然后对于新的 $x$，求出对应的 $P(Y=1 \mid x)$，当 $P(Y=1 \mid x) &gt; 0.5$ 时，判定分类为 1</p>
+
+<h3 id="求解-w">求解 w</h3>
+
+<p>用极大似然估计法求解 $w$：给定 w，求样本的联合概率密度，让它最大，即可求出 w</p>
+
+<p>对于 $y_i \in {0, 1}$，给定 $\pi(x)$ 后，$y$ 的概率分布为：</p>
+
+<script type="math/tex; mode=display">P_w(y \mid x) = \pi(x)^y [1 - \pi(x)]^{(1-y)}</script>
+
+<p>对于 N 个样本的极大似然估计函数 $L(w)$：</p>
+
+<script type="math/tex; mode=display">L(w) = \prod\limits_{i=1}^N \pi(x)^{y_i} [1 - \pi(x)]^{(1-y_i)}</script>
+
+<p>只要求 $\max logL(w)$ 的 $w$ 即可。一般用梯度下降法，给定一个初值 $w_0$ 即可找到 $w*$</p>
+
+<h2 id="32-最大熵模型">3.2 最大熵模型</h2>
+
+<p><strong>原理</strong>：在满足约束条件的模型集合中，选择熵最大的模型（混乱程度最大的模型）。因为在条件不足时，只能假设各种情况出现的概率相同</p>
+
+<p>例如：对于 $X \in {A, B, C, D, E}$，估计各值出现的概率。</p>
+
+<p>约束条件：</p>
+
+<script type="math/tex; mode=display">\sum\limits_1^5 P(x_i) = 1</script>
+
+<script type="math/tex; mode=display">P(x_i) \ge 0</script>
+
+<p>在满足约束的模型中找最乱的，所以各概率相同，所以有 $P(x_i) = 1/5$</p>
+
+<p>对于新的约束条件：</p>
+
+<script type="math/tex; mode=display">P(A) + P(B) = \dfrac{3}{10}</script>
+
+<p>如何找集合中熵最大的模型</p>
+
+<p>因为熵 $H(p) = - \sum p_i log p_i,\max H = \min [-H]$，所以：</p>
+
+<p>要求的模型等价于求最优问题：</p>
+
+<script type="math/tex; mode=display">\min[-H(p)] = \sum\limits_{i=1}^5 P(y_i) \log P(y_i)</script>
+
+<p>约束条件：</p>
+
+<script type="math/tex; mode=display">\sum\limits_1^5 P(x_i) = 1</script>
+
+<script type="math/tex; mode=display">P(x_i) \ge 0</script>
+
+<script type="math/tex; mode=display">P(A) + P(B) = \dfrac{3}{10}</script>
+
+<p>我们 $x$ 是已知的，如何把已知的 $x$ 信息加入来求 $p(y)$？</p>
+
+<p>用条件熵：</p>
+
+<script type="math/tex; mode=display">H(p) = -\sum\limits_{x, y} \widetilde{p}(x)p(y \mid x) \log P(y \mid x)</script>
+
+<p>因为熵 $H(p) = -\sum p_i \log p_i$</p>
+
+<script type="math/tex; mode=display">H(y \mid x) = - \sum p(y \mid x) \log p(y \mid x)</script>
+
+<p>所以：</p>
+
+<script type="math/tex; mode=display">H(p) = E_x H(y \mid x) = \sum\limits_{x, y} p(x) p(y \mid x) \log p(y \mid x)</script>
+
+<p>我们希望总体 $x$ 的分布用样本上的 $x$ 分布（也称经验分布）来代替，即</p>
+
+<script type="math/tex; mode=display">\sum\limits_{x, y} p(x) p(y \mid x) \log p(y \mid x) = \sum\limits_{x, y} \widetilde{p}(x)p(y \mid x) \log P(y \mid x)</script>
+
+<p>就要引入约束条件：</p>
+
+<script type="math/tex; mode=display">E_{p(x, y)} f_i(x, y) = E_{\widetilde{p}(x, y)}f_i(x, y)</script>
+
+<p>上式的 $p(x, y)$ 为联合概率分布，上式的含义是让每个特征在总体中出现的概率 = 样本中出现的概率</p>
+
+<p>其中 $f_i(x, y)$ 是特征函数，代表观察到的信息</p>
+
+<p>这样最大熵模型对应的最优化问题如下：</p>
+
+<script type="math/tex; mode=display">\max\limits_{p \in M} H(p) = - \sum\limits_{x, y} \widetilde{p}(x) p(y \mid x) \log p(y \mid x)</script>
+
+<p>约束条件 n+1 个：</p>
+
+<script type="math/tex; mode=display">E_p(f_i) = E_{\widetilde{p}}(f_i)</script>
+
+<script type="math/tex; mode=display">\sum\limits_y p(y \mid x) = 1</script>
+
+<p>其中：$i = 1, 2, …, n$</p>
+
+<p>最优问题的求解结果为：</p>
+
+<script type="math/tex; mode=display">P_w(y \mid x) = \dfrac{1}{Z_w(x)} e^{\sum\limits_{i=1}^n w_if_i}</script>
+
+<p>其中：</p>
+
+<script type="math/tex; mode=display">w = arg\max L_{\widetilde{p}} (P_w) = \log \pi(y \mid x)</script>
+
+<p>求解的流程：</p>
+
+<ol>
+  <li>给定一个 $x$，求 $y$ 取不同值时对应的概率分布</li>
+  <li>$(x, y)$ 满足 n 个 $f_i$ 的要求，$w_i$ 是特征 $f_i$ 的重要程度，当满足的特征越多且特征越重要，$P_w$ 值越大</li>
+  <li>求 $w$，代入 $P_w(y \mid x)$ 就得到模型</li>
+</ol>
+
+<h2 id="32-拉格朗日对偶性">3.2 拉格朗日对偶性</h2>
+
+<p>对于任意的优化问题，有一个优化的目标函数，记为 $f$，需要优化的变量记为 $x$，约束最优化问题一般形式为：</p>
+
+<script type="math/tex; mode=display">\min\limits_{x \in R^n} f(x)</script>
+
+<p>约束条件：</p>
+
+<script type="math/tex; mode=display">c_i(x) \le 0,  i = 1, 2, ..., k</script>
+
+<script type="math/tex; mode=display">h_j(x) = 0, j =1,2, ..., l</script>
+
+<p>$c_i$ 称为不等式约束，$h$ 称为等式约束</p>
+
+<p>以上的原始问题记为 $P$，它对应一个拉格朗日函数：</p>
+
+<script type="math/tex; mode=display">L(x, \alpha, \beta) = f(x) + \sum\limits_{i =1}^k \alpha_i c_i(x) + \sum\limits_{j=1}^l \beta_j h_j(x)</script>
+
+<p>其中：$\alpha$ 称为不等式约束因子，$\beta$ 称为等式约束因子，$\alpha_i$ 对应第 $i$ 个不等式约束，$\alpha_i \ge 0$，$\beta_j$ 不作要求。</p>
+
+<p>满足约束条件的 $x$ 的范围称为可行域，即把 $k+l$ 个集合求交集。</p>
+
+<p>优化问题就是在可行域中，找到 $x$ 使 $f$ 最小，对应的结果就是 $x<em>, P</em>$，用数学表达式写作：</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+P = \min\limits_x \max\limits_{\alpha, \beta} L(x, \alpha, \beta) = \left\{
+\begin{aligned}
+f(x) && c_i(x) \le 0, h_j(x) = 0 \\
+\infty && 其他 \\
+\end{aligned}
+\right. %]]></script>
+
+<p>也就是满足尽可能多的约束下，让 $f$ 取到最小值</p>
+
+<blockquote>
+  <ol>
+    <li>当 $c_i, h_j$ 无约束时，总可以让后面的部分为 $\infty$</li>
+    <li>当 $c_i(x) \le 0, h_j(x) = 0$ 时，$L$ 要最大，第 3 项为 0 第 2 项小于 0，所以最大为 $f(x)$</li>
+  </ol>
+</blockquote>
+
+<p>因此，原始问题等价于极小极大化 $L$ 函数，所以原始问题的对偶性问题可以写成：</p>
+
+<script type="math/tex; mode=display">\max\limits_{\alpha, \beta} \min\limits_x L</script>
+
+<p>首先求无约束问题，再求有约束最优问题</p>
+
+<p>因此，拉格朗日对偶问题为：</p>
+
+<script type="math/tex; mode=display">\max\limits_{\alpha, \beta} \min\limits_x L(x, \alpha, \beta)</script>
+
+<p>约束条件 $\alpha_i \ge 0$，最优解：$\alpha^<em>, \beta^</em>$，最优值 $d^*$</p>
+
+<p>下面再看 $P^<em>$ 和 $d^</em>$ 的关系</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned} d^* =\max\limits_{\alpha, \beta} \min\limits_x L(x, \alpha, \beta) &\le \max\limits_{\alpha, \beta} \min\limits_{x \in可行域} L(x, \alpha, \beta) \\ &\le \max\limits_{\alpha, \beta} \min\limits_{x \in可行域}f(x) = \min\limits_{x \in可行域}f(x) = P^*\end{aligned} %]]></script>
+
+<p>对偶问题的最优值给原始问题的最优值提供了下界，$P^* \ge d^*$</p>
+
+<p>什么时候 $P^* = d^*$ ? 当原始问题满足：</p>
+
+<hr />
+
+<h1 id="4-总结">4 总结</h1>
+
+<h2 id="41-什么是梯度下降">4.1 什么是梯度下降？</h2>
+
+<ol>
+  <li>
+    <p>梯度方向是函数增长最快的方向，负梯度是函数减小最快的方向</p>
+  </li>
+  <li>
+    <p>要求函数的最小值，可以从任意点 $X_0 = (x_1, x_2, …, x_n)$ 开始进行一个迭代过程</p>
+
+    <script type="math/tex; mode=display">x^{(i+1)}_1 = x^{(i)}_1 - lr * \frac{∂f}{∂x_1}</script>
+
+    <script type="math/tex; mode=display">x^{(i+1)}_2 = x^{(i)}_2 - lr * \frac{∂f}{∂x_2}</script>
+
+    <script type="math/tex; mode=display">... ...</script>
+
+    <script type="math/tex; mode=display">x^{(i+1)}_n = x^{(i)}_n - lr * \frac{∂f}{∂x_n}</script>
+
+    <p>一直到收敛条件满足</p>
+  </li>
+</ol>
+
+<h2 id="42-什么是-logistic-回归">4.2 什么是 Logistic 回归？</h2>
+
+<p>可以想成对数几率【拟合】，就是用线性函数 wx 去拟合对数几率</p>
+
+<ul>
+  <li>
+    <p>为什么是对数几率？</p>
+
+    <p>因为</p>
+
+    <p>$  wx = \log \frac{p}{1-p} &gt; log 1 = 0$</p>
+
+    <p>所以当 $wx &gt; 0$ 是可以知道 $\dfrac{p}{1-p} &gt; 1$，就说明样本 $x$ 是正样本</p>
+  </li>
+  <li>
+    <p>为什么 wx &gt; 0 时，x 是正样本？</p>
+
+    <p>因为 $wx = \log \dfrac{p}{1-p}$，这里 $p = p(Y=1 \mid x)$</p>
+
+    <p>那么当 $p&gt;0.5$ 时，$\dfrac{p}{1-p}&gt;1$ , $\log \dfrac{p}{1-p} &gt; 0$</p>
+  </li>
+  <li>
+    <p>什么是 Logistic 回归模型？</p>
+
+    <p>Logistic 回归是统计学习中的分类方法</p>
+
+    <ul>
+      <li>
+        <p>统计学习</p>
+
+        <p>计算机基于数据构建概率统计模型，并用模型对数据进行预测与分析的学科</p>
+      </li>
+      <li>
+        <p>统计学习的方法</p>
+
+        <p>在假设数据集是独立同分布产生的前提下，应用某个评价标准，从假设空间中根据最优算法选择一个最优的模型。统计学习方法的三要素：模型的假设空间、模型选择的标准、模型学习的算法</p>
+      </li>
+    </ul>
+
+    <p>Logistic 回归模型是利用 Logistic 回归方法得到的一个线性分类模型，这个线性模型的假设空间是线性空间 wx，这个线性模型的评价准则是极大似然估计，这个线性模型的最优算法是用梯度下降法</p>
+
+    <blockquote>
+      <p>假设空间是输入空间到输出空间的映射的集合</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>Logistic 回归的由来：</p>
+
+    <p>希望通过 wx 直接预测 x 属于正样本的概率。但 wx 值域无界，所以用 sigmoid 函数把 wx 映射到[0, 1]，所以有 $p(Y=1 \mid x) = sigmoid(x)$</p>
+  </li>
+  <li>
+    <p>极大似然估计</p>
+
+    <p>对参数的求解采用了极大似然估计，由数据集的分布</p>
+
+    <script type="math/tex; mode=display">p(y=1 \mid x) = sigmoid(x) = \dfrac{1}{1 + e^{-wx}}</script>
+
+    <script type="math/tex; mode=display">p(y=0 \mid x) = 1 - sigmoid(x) = \dfrac{e^{-wx}}{1 + e^{-wx}}</script>
+
+    <p>可以将分布统一写成：</p>
+
+    <script type="math/tex; mode=display">p(y \mid x, w) = h^y(x)(1-h(x))^{1-y}</script>
+
+    <p>那么对于训练样本 $D = {(x_1, y_1), (x_2, y_2), …, (x_n, y_n)}$，有极大似然函数：</p>
+
+    <script type="math/tex; mode=display">L(w) = \prod\limits_{i=1}^N \pi(x)^{y_i} [1 - \pi(x)]^{(1-y_i)}</script>
+
+    <p>其中：</p>
+
+    <script type="math/tex; mode=display">P(Y = 1 \mid x) = \pi(x)</script>
+
+    <p>所以它的对数似然估计就是：</p>
+
+    <script type="math/tex; mode=display">\log L(w) = \sum\limits_{i=1}^N (y_i \log h(x_i) + (1-y_i)\log (1-h(x_i)))</script>
+
+    <p>那么现在要求最大似然估计值，等价于求如下最小问题：</p>
+
+    <script type="math/tex; mode=display">\min\limits_w (-f(w))</script>
+
+    <p>这个就是学习方法的<strong>评价标准</strong></p>
+  </li>
+  <li>
+    <p>梯度下降法</p>
+
+    <p>这是最优算法，寻找最优模型。目标函数的梯度为：</p>
+
+    <script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned} - \nabla f(w) &= - \nabla \left(\sum\limits_{i=1}^N (y_i \log h(x_i) + (1-y_i)\log (1-h(x_i)))\right)  \\ &= \sum\limits_{i=1}^N \left(h(x_i) - y_i \right)x_i \end{aligned} %]]></script>
+
+    <p>得到梯度后，w 的更新公式：</p>
+
+    <script type="math/tex; mode=display">w_{k+1} = w_k - \alpha \sum\limits_{i=1}^N \left(h_w(x_i) - y_i \right)x_i</script>
+  </li>
+</ul>
+
+<h1 id="5-代码实践">5 代码实践</h1>
+
+<h2 id="51-生成数据">5.1 生成数据</h2>
+
+<p>从testSet.txt中读取测试数据</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">load_dataset</span><span class="p">():</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'testSet.txt'</span><span class="p">)</span> <span class="k">as</span> <span class="n">fr</span><span class="p">:</span>
+        <span class="n">data_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\t</span><span class="s">'</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fr</span><span class="o">.</span><span class="n">readlines</span><span class="p">()]</span>
+
+    <span class="n">dataset</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">1.0</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">data_list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dataset</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p><a href="/assets/images/posts/2019-08-05-schap6/testSet.txt">test</a></p>
+</blockquote>
+
+<h2 id="52-绘制数据">5.2 绘制数据</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">plot_dataset</span><span class="p">(</span><span class="n">data_list</span><span class="p">):</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data_list</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">'0'</span><span class="p">]</span>
+    <span class="n">y1</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data_list</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">'0'</span><span class="p">]</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data_list</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">'1'</span><span class="p">]</span>
+    <span class="n">y2</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data_list</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">'1'</span><span class="p">]</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"数据分布"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'deeppink'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'darkblue'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="c1"># plt.show()
+</span></code></pre></div></div>
+<p><img src="/assets/images/posts/2019-08-05-schap6/2.png" alt="" /></p>
+
+<h3 id="521-scatter-函数">5.2.1 scatter 函数</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">matplotlib</span><span class="o">.</span><span class="n">pyplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                            <span class="n">marker</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                            <span class="n">vmin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                            <span class="n">linewidths</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">verts</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                            <span class="n">hold</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>常用参数说明：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>参数</th>
+      <th>类型</th>
+      <th>说明</th>
+      <th>默认值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>x，y</td>
+      <td>array</td>
+      <td>表示 x 轴与 y 轴对应的数据；</td>
+      <td>无</td>
+    </tr>
+    <tr>
+      <td>s</td>
+      <td>数值或一维的array</td>
+      <td>表示散点图中点的大小，若是一维数组，则表示散点图中每个点的大小；</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>c</td>
+      <td>颜色或一维的array</td>
+      <td>表示散点图中点的颜色，若是一维数组，则表示散点图中每个点的颜色；</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td>marker</td>
+      <td>string</td>
+      <td>表示散点的类型；</td>
+      <td>o</td>
+    </tr>
+    <tr>
+      <td>alpha</td>
+      <td>0~1之间的小数</td>
+      <td>表示散点的透明度；</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>
+    <p><strong>x/y：数据</strong></p>
+
+    <p>都是向量，而且必须长度相等</p>
+  </li>
+  <li>
+    <p><strong>s：标记大小</strong></p>
+
+    <p>以平方磅为单位的标记面积，指定为下列形式之一：</p>
+
+    <ul>
+      <li>
+        <p><strong>数值标量</strong>： 以相同的大小绘制所有标记</p>
+      </li>
+      <li>
+        <p><strong>行或列向量</strong>： 使每个标记具有不同的大小。x、y 和 sz 中的相应元素确定每个标记的位置和面积。sz 的长度必须等于 x 和 y 的长度。</p>
+      </li>
+      <li>
+        <p><strong>[]</strong>： 使用 36 平方磅的默认面积。</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>C：标记颜色</strong></p>
+
+    <p>标记颜色，指定为下列形式之一：</p>
+
+    <ul>
+      <li>
+        <p>RGB 三元数或颜色名称 - 使用相同的颜色绘制所有标记。</p>
+      </li>
+      <li>
+        <p>由 RGB 三元数组成的三列矩阵 - 对每个标记使用不同的颜色。矩阵的每行为对应标记指定一种 RGB 三元数颜色。行数必须等于 x 和 y 的长度。</p>
+      </li>
+      <li>
+        <p>向量 - 对每个标记使用不同的颜色，并以线性方式将 c 中的值映射到当前颜色图中的颜色。c 的长度必须等于 x 和 y 的长度。要更改坐标区的颜色图，请使用 colormap 函数。</p>
+      </li>
+    </ul>
+
+    <p>如果散点图中有三个点，并且您希望这些颜色成为颜色图的索引，请以三元素列向量的形式指定 c。</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>选项</th>
+          <th>说明</th>
+          <th>对应的 RGB 三元数</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>‘red’ 或 ‘r’</td>
+          <td>红色</td>
+          <td>[1 0 0]</td>
+        </tr>
+        <tr>
+          <td>‘green’ 或 ‘g’</td>
+          <td>绿色</td>
+          <td>[0 1 0]</td>
+        </tr>
+        <tr>
+          <td>‘blue’ 或 ‘b’</td>
+          <td>蓝色</td>
+          <td>[0 0 1]</td>
+        </tr>
+        <tr>
+          <td>‘yellow’ 或 ‘y’</td>
+          <td>黄色</td>
+          <td>[1 1 0]</td>
+        </tr>
+        <tr>
+          <td>‘magenta’ 或 ‘m’</td>
+          <td>品红色</td>
+          <td>[1 0 1 ]</td>
+        </tr>
+        <tr>
+          <td>‘cyan’ 或 ‘c’</td>
+          <td>青蓝色</td>
+          <td>[0 1 1]</td>
+        </tr>
+        <tr>
+          <td>‘white’ 或 ‘w’</td>
+          <td>白色</td>
+          <td>[1 1 1]</td>
+        </tr>
+        <tr>
+          <td>‘black’ 或 ‘k’</td>
+          <td>黑色</td>
+          <td>[0 0 0]</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p><strong>marker: 标记样式</strong></p>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align: center">值</th>
+          <th style="text-align: center">说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: center">‘o’</td>
+          <td style="text-align: center">圆圈</td>
+        </tr>
+        <tr>
+          <td style="text-align: center">’+’</td>
+          <td style="text-align: center">加号</td>
+        </tr>
+        <tr>
+          <td style="text-align: center">’*’</td>
+          <td style="text-align: center">星号</td>
+        </tr>
+        <tr>
+          <td style="text-align: center">’.’</td>
+          <td style="text-align: center">点</td>
+        </tr>
+        <tr>
+          <td style="text-align: center">‘x’</td>
+          <td style="text-align: center">叉号</td>
+        </tr>
+        <tr>
+          <td style="text-align: center">‘square’ 或 ‘s’</td>
+          <td style="text-align: center">方形</td>
+        </tr>
+        <tr>
+          <td style="text-align: center">‘diamond’ 或 ‘d’</td>
+          <td style="text-align: center">菱形</td>
+        </tr>
+        <tr>
+          <td style="text-align: center">’^’</td>
+          <td style="text-align: center">上三角</td>
+        </tr>
+        <tr>
+          <td style="text-align: center">‘v’</td>
+          <td style="text-align: center">下三角</td>
+        </tr>
+        <tr>
+          <td style="text-align: center">’&gt;’</td>
+          <td style="text-align: center">右三角</td>
+        </tr>
+        <tr>
+          <td style="text-align: center">’&lt;’</td>
+          <td style="text-align: center">左三角</td>
+        </tr>
+        <tr>
+          <td style="text-align: center">‘pentagram’ 或 ‘p’</td>
+          <td style="text-align: center">五角星（五角形）</td>
+        </tr>
+        <tr>
+          <td style="text-align: center">‘hexagram’ 或 ‘h’</td>
+          <td style="text-align: center">六角星（六角形）</td>
+        </tr>
+        <tr>
+          <td style="text-align: center">‘none’</td>
+          <td style="text-align: center">无标记</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p><strong>edgecolors</strong>：轮廓颜色</p>
+
+    <p>如果无，则默认为’face’。如果’face’，边缘颜色将永远是相同的。如果它是’none’，补丁边界不会被画下来。</p>
+  </li>
+  <li>
+    <p><strong>alpha：透明度</strong></p>
+
+    <p>[0,1]：1不透明，0透明</p>
+  </li>
+  <li>
+    <p><strong>cmap：色彩盘</strong></p>
+
+    <p>可以使用默认的也可以使用自定义的，它实际上就是一个 三列的矩阵(或者说，shape 为 [N, 3]的 array )</p>
+
+    <ul>
+      <li>
+        <p>矩阵中的值 取值范围 为 [0. , 1.]</p>
+      </li>
+      <li>
+        <p>每一行代表一个颜色 (RGB)</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>linewidths：线宽</strong></p>
+
+    <p>标记边缘的宽度，默认是’face’</p>
+  </li>
+  <li>
+    <p>注意事项：</p>
+
+    <p>color、marker等不能同时作为一个参数，plt.scatter(x1, y1, ‘bo’, s=5)不合法。</p>
+  </li>
+</ul>
+
+<h3 id="522-基本用法">5.2.2 基本用法</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+ 
+<span class="n">datafile</span> <span class="o">=</span> <span class="s">u'D:</span><span class="se">\\</span><span class="s">pythondata</span><span class="se">\\</span><span class="s">learn</span><span class="se">\\</span><span class="s">matplotlib.xlsx'</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">datafile</span><span class="p">)</span>
+ 
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span><span class="c1">#设置画布的尺寸
+</span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Examples of scatter plots'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="c1">#标题，并设定字号大小
+</span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">u'x-year'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span><span class="c1">#设置x轴，并设定字号大小
+</span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">u'y-income'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span><span class="c1">#设置y轴，并设定字号大小
+</span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">'时间'</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="s">'收入_Jay'</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'deeppink'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s">'o'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">'时间'</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="s">'收入_JJ'</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'darkblue'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s">'+'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">'时间'</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="s">'收入_Jolin'</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'goldenrod'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s">'*'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s">'Jay income'</span><span class="p">,</span> <span class="s">'JJ income'</span><span class="p">,</span> <span class="s">'Jolin income'</span><span class="p">])</span><span class="c1">#标签
+</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span><span class="c1">#显示图像
+</span></code></pre></div></div>
+
+<p><img src="/assets/images/posts/2019-08-05-schap6/1.png" alt="" /></p>
+
+<h2 id="53-logistic-回归分类">5.3 Logistic 回归分类</h2>
+
+<h3 id="531-理论推导过程">5.3.1 理论推导过程</h3>
+
+<p>即 Logistic 拟合，也就是用 $wx$ 拟合对数几率值，用数学式表示为：$ w \cdot x = \log \dfrac{p}{1-p}$</p>
+
+<p>于是反解出 Logistic 回归模型：</p>
+
+<script type="math/tex; mode=display">p = \dfrac{e^{wx}}{1 + e^{wx}} = P(Y = 1 \mid x)</script>
+
+<script type="math/tex; mode=display">1 - p = \dfrac{1}{1 + e^{wx}} = P(Y = 0 \mid x)</script>
+
+<p>只要求出 $w$ 就有了模型，然后对于新的 $x$，求出对应的 $P(Y=1 \mid x)$，当 $P(Y=1 \mid x) &gt; 0.5$ 时，判定分类为 1</p>
+
+<p>要求出 $w$ ，我们引入了似然函数 $L(w \mid X)$，并使用极大似然估计准则选出 Logistic 回归模型的参数</p>
+
+<ul>
+  <li>
+    <p>似然函数：</p>
+
+    <script type="math/tex; mode=display">L(w) = \prod\limits_{i=1}^N \pi(x)^{y_i} [1 - \pi(x)]^{(1-y_i)}</script>
+  </li>
+  <li>
+    <p>对数似然函数：</p>
+
+    <script type="math/tex; mode=display">\log L(w) = \sum\limits_{i=1}^N (y_i \log h(x_i) + (1-y_i)\log (1-h(x_i)))</script>
+  </li>
+  <li>
+    <p>最大似然估计准则：</p>
+
+    <script type="math/tex; mode=display">\min\limits_w (-log L(w))</script>
+  </li>
+  <li>
+    <p>梯度下降</p>
+
+    <script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned} - \nabla f(w) &= - \nabla \left(\sum\limits_{i=1}^N (y_i \log h(x_i) + (1-y_i)\log (1-h(x_i)))\right)  \\ &= \sum\limits_{i=1}^N \left(h(x_i) - y_i \right)x_i  \\ w_{k+1} &= w_k - \alpha \sum\limits_{i=1}^N \left(h_w(x_i) - y_i \right)x_i  \end{aligned} %]]></script>
+  </li>
+</ul>
+
+<h3 id="532-估计模型参数">5.3.2 估计模型参数</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">pred</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    <span class="n">logit</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">logit</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="k">else</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">grad_descent</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">):</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">pred</span> <span class="o">-</span> <span class="n">labels</span> <span class="c1"># 公式求出
+</span>        <span class="n">grad</span> <span class="o">=</span> <span class="n">loss</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">w</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">grad</span>
+    <span class="k">return</span> <span class="n">w</span>
+
+<span class="k">def</span> <span class="nf">plot_line</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="o">-</span><span class="n">w</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">data_list</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">()</span>
+    <span class="n">plot_dataset</span><span class="p">(</span><span class="n">data_list</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">grad_descent</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="n">plot_line</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/posts/2019-08-05-schap6/3.png" alt="" /></p>
+
+<h3 id="532-预测新数据所属类别">5.3.2 预测新数据所属类别</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test_cls</span> <span class="o">=</span> <span class="n">pred</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h1 id="6-补充">6 补充</h1>
+
+<h2 id="61-什么是似然">6.1 什么是似然</h2>
+
+<p>似然是似然函数的简称</p>
+
+<ul>
+  <li>
+    <p>定义</p>
+
+    <p>设总体 X 服从分布 $P(x;θ)$（当X是连续型随机变量时为概率密度，当X为离散型随机变量时为概率分布），θ为待估参数，$X_1,X_2,…X_n$ 是来自于总体 X 的样本，$x_1,x_2…x_n$ 为样本 $X_1,X_2,…X_n$ 的一个观察值，则样本的联合分布（当X是连续型随机变量时为概率密度，当X为离散型随机变量时为概率分布）　$L(θ) = P(x_1,x_2,…,x_n;θ)= \prod P(x_i;θ) $ 称为似然函数，其中θ是一个列向量</p>
+  </li>
+  <li>
+    <p>百度</p>
+
+    <p>似然是对 likelihood 的翻译，即“可能性”</p>
+  </li>
+  <li>
+    <p>其他</p>
+
+    <ul>
+      <li>
+        <p>在频率推论中，似然函数（简称似然）是一个在给定了数据的情况下，关于模型参数的函数</p>
+      </li>
+      <li>
+        <p>在数理统计中，概率描述的是一个事件发生的可能性；似然描述的是给定了结果之后，模型参数为某个值的可能性。</p>
+      </li>
+      <li>
+        <p>$p(x \mid \theta)$ 是有着两个变量的函数，将 $\theta$ 设为常数就得到一个概率函数（关于 x 的函数）；将 x 设为常数，就得到似然函数（关于 $\theta$ 的函数）$L( \theta \mid x)$。当结果与参数相对应时，似然与概率在数值上是相等的</p>
+      </li>
+      <li>
+        <p>$p(x \mid \theta)$ 如果 $\theta$ 已知，则是概率函数，它描述的是对于不同的 x，出现的概率是多少；如果 $x$ 已知，$\theta$ 未知，则是似然函数，它描述的是在相同 x 下，所属不同 $\theta$ 的概率</p>
+      </li>
+      <li>
+        <p>概率和似然的区别:</p>
+
+        <ul>
+          <li>
+            <p>概率，是在已知概率分布参数的情况下，预测结果;</p>
+          </li>
+          <li>
+            <p>似然则是用于在已知结果时，对结果所属的概率分布的参数的估计</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>假设观察到 N 个数据 $X = {x_1, x_2, …, x_N}$，我们假设这些数据来源于<strong>正太分布</strong>，设定<strong>概率密度函数</strong>为 $f(x; \mu, \delta)$，那么这组~数据~在假设的概率分布中~出现的可能性~就是它们概率的乘积：$P(X \mid \mu, \delta) = \prod\limits_{i=1}^N P(x_i \mid \mu, \delta) = L(\mu, \delta \mid X) $，这里我们叫 $L(\mu, \delta \mid X)$ 为似然函数，含义是已知样本 $X$ 时，参数 $\mu, \delta$ 为各种值的可能性</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>总结</p>
+
+    <ul>
+      <li>
+        <p>似然也称似然函数，是给定样本 $X$ 后，模型参数取某个值的概率</p>
+      </li>
+      <li>
+        <p>似然函数写作：$ L(\theta \mid X)$</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+:ET

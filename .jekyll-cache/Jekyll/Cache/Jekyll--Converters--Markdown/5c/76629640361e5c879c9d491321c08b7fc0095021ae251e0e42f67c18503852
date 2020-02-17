@@ -1,0 +1,231 @@
+I"�!<p>本章说明什么是 Web 服务程序，并对比主流的 Web 服务。记录 httpd 服务中的“全局配置参数”、“区域配置参数”和“注释信息”。本章还包括 SELinux 服务以及多个基于 httpd 服务功能的部署实验。</p>
+
+<h2 id="网站服务程序">网站服务程序</h2>
+
+<p>我们平时访问的网站服务就是 Web 服务，它允许用户通过浏览器访问到互联网中各种资源，提供服务程序的 Web 服务器会通过 HTTP（超文本传输协议）或 HTTPS（安全超文本传输协议）把请求的内容传送给用户。</p>
+
+<p>目前能够提供 Web 网络服务的程序有：</p>
+
+<ul>
+  <li>IIS(Internet Information Services，互联网信息服务)
+是 Windows 系统中默认的 Web 服务程序，这是一款图形化的网站管理工具，但是，IIS 只能在 Windows 系统中使用</li>
+  <li>Nginx
+一款轻量级的网站服务软件</li>
+  <li>Apache
+目前拥有很高市场占有率的 Web 服务程序之一，支持基于 IP、域名及端口号的虚拟主机功能，支持多种认证方式，集成有代理服务器模块、安全 Socket 层（SSL），能够实时监视服务状态与定制日志消息，并有着各类丰富的模块支持</li>
+</ul>
+
+<p>我们可以通过 YUM 仓库安装 httpd 服务</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> yum <span class="nb">install </span>httpd
+<span class="o">&gt;&gt;&gt;</span> systemctl start httpd
+<span class="o">&gt;&gt;&gt;</span> systemctl <span class="nb">enable </span>httpd
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">ln</span> <span class="nt">-s</span> <span class="s1">'/usr/lib/systemd/system/httpd.service'</span> <span class="s1">'/etc/systemd/system/multi-user.target.wants/httpd.service'</span>
+</code></pre></div></div>
+
+<p>然后在浏览器中输入 <code class="highlighter-rouge">http://127.0.0.1</code> 就可以看到用于提供 Web 服务的 httpd 服务程序的默认页面了</p>
+
+<h2 id="配置服务文件参数">配置服务文件参数</h2>
+
+<h3 id="配置文件位置">配置文件位置</h3>
+
+<p>httpd 服务程序的主要配置文件及存放位置如表所示：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>配置文件</th>
+      <th>位置</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>服务目录</td>
+      <td><code class="highlighter-rouge">/etc/httpd</code></td>
+    </tr>
+    <tr>
+      <td>主配置文件</td>
+      <td><code class="highlighter-rouge">/etc/httpd/conf/httpd.conf</code></td>
+    </tr>
+    <tr>
+      <td>网站数据目录</td>
+      <td><code class="highlighter-rouge">/var/www/html</code></td>
+    </tr>
+    <tr>
+      <td>访问日志</td>
+      <td><code class="highlighter-rouge">/var/log/httpd/access_log</code></td>
+    </tr>
+    <tr>
+      <td>错误日志</td>
+      <td><code class="highlighter-rouge">/var/log/httpd/error_log</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="配置信息类别">配置信息类别</h3>
+
+<p>在 httpd 服务程序的主配置文件中，存在三种类型的信息：注释行信息、全局配置、区域配置</p>
+
+<p><img src="/assets/images/posts/2019-07-15-chap0910/httpd.png" alt="httpd" /></p>
+
+<ul>
+  <li>
+    <p>全局配置参数</p>
+
+    <p>作用于对所有的子站点</p>
+  </li>
+  <li>
+    <p>区域配置参数</p>
+
+    <p>单独针对于每个独立的子站点进行设置</p>
+  </li>
+</ul>
+
+<h3 id="httpd-常用的参数">httpd 常用的参数</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>参数</th>
+      <th>功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ServerRoot</td>
+      <td>服务目录</td>
+    </tr>
+    <tr>
+      <td>ServerAdmin</td>
+      <td>管理员邮箱</td>
+    </tr>
+    <tr>
+      <td>User</td>
+      <td>运行服务的用户</td>
+    </tr>
+    <tr>
+      <td>Group</td>
+      <td>运行服务的用户组</td>
+    </tr>
+    <tr>
+      <td>ServerName</td>
+      <td>网站服务器的域名</td>
+    </tr>
+    <tr>
+      <td>DocumentRoot</td>
+      <td>网站数据目录</td>
+    </tr>
+    <tr>
+      <td>Listen</td>
+      <td>监听的 IP 地址与端口号</td>
+    </tr>
+    <tr>
+      <td>DirectoryIndex</td>
+      <td>默认的索引页页面</td>
+    </tr>
+    <tr>
+      <td>ErrorLog</td>
+      <td>错误日志文件</td>
+    </tr>
+    <tr>
+      <td>CustomLog</td>
+      <td>访问日志文件</td>
+    </tr>
+    <tr>
+      <td>Timeout</td>
+      <td>网页超时时间，默认为 300 秒</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>DocumentRoot 定义网站数据的保存路径，向 <code class="highlighter-rouge">/var/www/html</code> 目录中写入一个 index 文件，替换掉 httpd 服务程序的默认首页面，该操作会立即生效</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">echo</span> <span class="s2">"Welcome To LinuxProbe.Com"</span> <span class="o">&gt;</span> /var/www/html/index.html
+<span class="o">&gt;&gt;&gt;</span> firefox
+</code></pre></div></div>
+
+<h3 id="修改保存网站数据的目录">修改保存网站数据的目录</h3>
+
+<ol>
+  <li>
+    <p>建立网站数据的保存目录，并创建首页文件</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">mkdir</span> /home/wwwroot
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">echo</span> <span class="s2">"The New Web Directory"</span> <span class="o">&gt;</span> /home/wwwroot/index.html
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>修改 httpd 主配置文件</p>
+
+    <ul>
+      <li>将约第 119 行用于定义网站数据保存路径的参数 DocumentRoot 修改为/home/wwwroot，</li>
+      <li>将约第 124 行用于定义目录权限的参数 Directory 后面的路径也修改为/home/wwwroot</li>
+    </ul>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> vim /etc/httpd/conf/httpd.conf
+………………省略部分输出信息………………
+113
+114 <span class="c">#</span>
+115 <span class="c"># DocumentRoot: The directory out of which you will serve your</span>
+116 <span class="c"># documents. By default, all requests are taken from this directory, bu t</span>
+117 <span class="c"># symbolic links and aliases may be used to point to other locations.</span>
+118 <span class="c">#</span>
+119 DocumentRoot <span class="s2">"/home/wwwroot"</span>
+120
+121 <span class="c">#</span>
+122 <span class="c"># Relax access to content within /var/www.</span>
+123 <span class="c">#</span>
+124 &lt;Directory <span class="s2">"/home/wwwroot"</span><span class="o">&gt;</span>
+125 AllowOverride None
+126 <span class="c"># Allow open access:</span>
+127 Require all granted
+128 &lt;/Directory&gt;
+………………省略部分输出信息………………
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>重新启动 httpd 服务</p>
+  </li>
+</ol>
+
+<h2 id="selinnux-安全子系统">SELinnux 安全子系统</h2>
+
+<p>SELinux（Security-Enhanced Linux）是美国国家安全局开发的一个强制访问控制（MAC，Mandatory Access Control）的安全子系统。RHEL 7 系统使用 SELinux 技术的目的是为了让各个服务进程都受到约束，使其仅获取到本应获取的资源。</p>
+
+<p>SELinux 从多方面监控违法行为：对服务程序的功能进行限制（SELinux 域限制可以确保服务程序做不了出格的事情）；对文件资源的访问限制（SELinux 安全上下文确保文件资源只能被其所属的服务程序进行访问）。</p>
+
+<h3 id="selinux-的三种配置模式">SELinux 的三种配置模式</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>模式</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>enforcing</td>
+      <td>强制启用安全策略模式，将拦截服务的不合法请求</td>
+    </tr>
+    <tr>
+      <td>permissive</td>
+      <td>遇到服务越权访问时，只发出警告而不强制拦截</td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td>对于越权的行为不警告也不拦截</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="虚拟网站主机功能">虚拟网站主机功能</h2>
+
+<h3 id="基于-ip-地址">基于 IP 地址</h3>
+
+<h3 id="基于主机域名">基于主机域名</h3>
+
+<h3 id="基于端口号">基于端口号</h3>
+
+<h2 id="apache-的访问控制">Apache 的访问控制</h2>
+:ET

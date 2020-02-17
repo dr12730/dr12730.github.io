@@ -1,0 +1,281 @@
+I"�A<p>vim 是一个优秀的文本编辑器，它可以在手不离开键盘的条件下完成大部分的工作，而且在没有图形界面的服务器端也可以使用。这篇博文主要记录在 linux 环境下 vim 的安装与配置。</p>
+
+<h1 id="1-安装">1. 安装</h1>
+
+<p>按照 vim <a href="https://www.vim.org/download.php">官方网站</a> 的说明，可以从 vim 的 git 官方下载、编译安装，方法如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/vim/vim.git
+<span class="nb">cd </span>vim/src
+make distclean
+make
+</code></pre></div></div>
+
+<p>但在实践中，却会出现问题，原因是我们使用的是中文系统，因此用的是下面的方法：</p>
+
+<h2 id="11-彻底卸载操作系统自带的-vim">1.1 彻底卸载操作系统自带的 vim</h2>
+
+<ul>
+  <li>查看系统中安装的 vim 组件：
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dpkg <span class="nt">-l</span> | <span class="nb">grep </span>vim
+</code></pre></div>    </div>
+    <p>如果 vim 是通过 dpkg 安装的话，会列出相应的 vim 组件</p>
+  </li>
+  <li>删除对应的 vim
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get remove <span class="nt">--purge</span> vim vim-tiny vim-runtime vim-common
+vsudo apt-get remove <span class="nt">--purge</span> vim-doc vim-scripts
+vsudo apt-get remove <span class="nt">--purge</span> gvim vim-gui-common
+<span class="nb">sudo </span>apt-get clean
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="12-安装编译所需依赖库">1.2 安装编译所需依赖库</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> libncurses5-dev libgnome2-dev libgnomeui-dev libgtk2.0-dev <span class="se">\</span>
+libatk1.0-dev libbonoboui2-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev <span class="se">\</span>
+python-dev python3-dev ruby-dev lua5.1 liblua5.1-dev libperl-dev git
+</code></pre></div></div>
+<blockquote>
+  <p>也许还有一些依赖，在编译时根据当时的提示择情安装</p>
+</blockquote>
+
+<h2 id="13-获取源代码并编译">1.3 获取源代码并编译</h2>
+<p>按照下面的步骤依次执行</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 下载 vim 源码</span>
+git clone https://github.com/vim/vim.git
+
+<span class="c"># 进入源码目录</span>
+<span class="nb">cd </span>vim/src
+
+<span class="c"># 清理编译环境</span>
+distclean
+
+<span class="c"># 配置编译选项</span>
+./configure <span class="nt">--with-features</span><span class="o">=</span>huge <span class="se">\</span>
+<span class="nt">--enable-multibyte</span> <span class="se">\</span>
+<span class="nt">--enable-python3interp</span><span class="o">=</span><span class="nb">yes</span> <span class="se">\</span>
+<span class="nt">--with-python3-config-dir</span><span class="o">=</span>/usr/local/lib/python3.7/config-3.7m-x86_64-linux-gnu/ <span class="se">\</span>
+<span class="nt">--enable-gui</span><span class="o">=</span>gtk2 <span class="se">\</span>
+<span class="nt">--enable-cscope</span>
+
+<span class="c"># 开始编译</span>
+make
+
+<span class="c"># 编译成功后，安装</span>
+<span class="nb">sudo </span>make <span class="nb">install</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>其中参数说明如下：<br />
+–with-features = huge：支持最大特性<br />
+–enable-multibyte：多字节支持可以在 Vim 中输入中文<br />
+–enable-rubyinterp：启用 Vim 对 ruby 编写的插件的支持<br />
+–enable-pythoninterp：启用 Vim 对 python2 编写的插件的支持<br />
+–enable-python3interp: 启用 Vim 对 python3 编写的插件的支持<br />
+–enable-luainterp：启用 Vim 对于 lua 编写的插件的支持<br />
+–enable-perlinterp：启用 Vim 对 perl 编写的插件的支持<br />
+–enable-cscope：Vim 对 cscope 支持<br />
+–with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu : 指定 python 路径<br />
+–enable-gui = gtk2：gtk2 支持，也可以使用 gnome，表示生成 gvim<br />
+-prefix = / usr：编译安装路径</p>
+</blockquote>
+
+<p>至此，vim 安装完成，在终端输入 <code class="highlighter-rouge">vim</code> 验证安装是否完整，也可以执行 <code class="highlighter-rouge">vim --version</code> 查看它的版本号</p>
+
+<h1 id="14-插件管理器">1.4 插件管理器</h1>
+
+<h2 id="141-vundle-插件管理器">1.4.1 vundle 插件管理器</h2>
+<p>vim 有许多好用的插件，这些插件的管理和安装可以通过 vundle 来完成；而 vim 自身的各种特性，则由 <code class="highlighter-rouge">~/.vimrc</code> 来配置</p>
+
+<p>关于插件的安装，推荐直接下载 <a href="https://github.com/wkevin/DotVim">wKevin</a> 的配置，很方便，执行如下命令：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 下载 DotVim 配置
+</span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">wkevin</span><span class="o">/</span><span class="n">DotVim</span><span class="o">.</span><span class="n">git</span>
+
+<span class="n">cd</span> <span class="n">DotVim</span>
+
+<span class="c1"># 执行部署命令
+</span><span class="n">sh</span> <span class="n">deploy</span><span class="o">.</span><span class="n">sh</span>
+</code></pre></div></div>
+
+<p>下面，我们对这个部署命令 <code class="highlighter-rouge">deploy.sh</code> 的内容进行一下说明，因为有几个命令我稍作了修改，所以和 <code class="highlighter-rouge">deploy.sh</code> 有点区别：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">git</span> <span class="n">clone</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">gmarik</span><span class="o">/</span><span class="n">vundle</span><span class="o">.</span><span class="n">git</span> <span class="o">~/.</span><span class="n">vim</span><span class="o">/</span><span class="n">bundle</span><span class="o">/</span><span class="n">vundle</span>
+<span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="err">$</span><span class="n">PWD</span><span class="o">/.</span><span class="n">vimrc</span> <span class="o">~/</span>
+<span class="n">vim</span> <span class="o">+</span><span class="n">BundleInstall</span> <span class="o">+</span><span class="n">BundleClean</span><span class="err">!</span> <span class="o">+</span><span class="n">qa</span>
+<span class="c1"># cp -r snippets/ ~/.vim/snippets/
+</span><span class="n">cp</span> <span class="o">-</span><span class="n">r</span> <span class="n">colors</span><span class="o">/</span> <span class="o">~/</span><span class="n">DotVim</span><span class="o">/</span><span class="n">colors</span><span class="o">/</span>
+<span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="err">$</span><span class="n">PWD</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">callgraph</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span>
+<span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="err">$</span><span class="n">PWD</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">tree2dotx</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span>
+</code></pre></div></div>
+
+<p><strong>说明</strong>：</p>
+
+<ol>
+  <li>从 github 下载 vundle 插件管理器</li>
+  <li>将 vim 的配置文件软连接为 DotVim 目录下的 .vimrc 配置文件
+ <code class="highlighter-rouge">.vimrc</code> 是 vim 的配置文件，里面设置了 vim 的各类属性，比如字体、主题、自定义快捷键等等</li>
+  <li>启动 vim，并执行 BundleInstall 指令，通过 vundle 安装 .vimrc 中要求安装的插件
+ 要安装的插件，写在 <code class="highlighter-rouge">.vimrc</code> 的 Plugin 后</li>
+  <li>colors 是各类主题颜色， snippets 是一些常用代码，因为 bundle 也会安装相关的 snipptes，所以可以不用执行它的拷贝</li>
+  <li>callpraph 和 tree2dotx 可以链接到 /usr/local/bin 下</li>
+</ol>
+
+<p>这样再进入 vim 就与之前不一样了</p>
+
+<h3 id="142-vim-plug-插件管理器">1.4.2 vim-plug 插件管理器</h3>
+
+<p>vim-plug 是新一代的插件管理器，现在大有超越 vundle 的趋势</p>
+
+<ul>
+  <li>vim
+    <ul>
+      <li>安装
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  curl <span class="nt">-fLo</span> ~/.vim/autoload/plug.vim <span class="nt">--create-dirs</span> <span class="se">\</span>
+  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+</code></pre></div>        </div>
+      </li>
+      <li>管理插件<br />
+  在. vimrc 中写入要安装的插件名称
+        <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  call plug#begin<span class="o">(</span><span class="s1">'~/.vim/plugged'</span><span class="o">)</span>
+  Plug <span class="s1">'vim-airline/vim-airline'</span>
+  call plug#end<span class="o">()</span>
+</code></pre></div>        </div>
+      </li>
+      <li>安装插件<br />
+  保存 <code class="highlighter-rouge">.vimrc</code> 后，重进 vim，再执行 <code class="highlighter-rouge">:PlugInstall</code> 安装插件</li>
+    </ul>
+  </li>
+  <li>Neovim
+    <ul>
+      <li>安装
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="15-主题设置">1.5 主题设置</h3>
+
+<p>通过修改 <code class="highlighter-rouge">.vimrc</code> 中的 <code class="highlighter-rouge">colorscheme</code> 可以修改主题，修改的部分如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">set </span><span class="nv">background</span><span class="o">=</span>dark
+colorscheme herald
+</code></pre></div></div>
+
+<p><strong>herald 主题</strong></p>
+
+<p><img src="/assets/images/posts/2019-06-16-vim-install/herald.png" alt="herald" /></p>
+
+<p><strong>zellner 主题</strong></p>
+
+<p><img src="/assets/images/posts/2019-06-16-vim-install/zellner.png" alt="zellner" /></p>
+
+<p><strong>lucius 主题</strong></p>
+
+<p><img src="/assets/images/posts/2019-06-16-vim-install/lucius.png" alt="lucius" /></p>
+
+<p><strong>moria 主题</strong></p>
+
+<p><img src="/assets/images/posts/2019-06-16-vim-install/moria.png" alt="moria" /></p>
+
+<h3 id="16-安装-vim8-的中文手册">1.6 安装 vim8 的中文手册</h3>
+<p>感谢 yianwillis 对 vim 手册的翻译，我们可以在他的 <a href="https://github.com/yianwillis/vimcdoc">github</a> 上找到对应的中文文档源文件</p>
+
+<p>也可以通过 vundle 直接安装，方法是在 <code class="highlighter-rouge">.vimrc</code> 中添加：</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Plugin <span class="s2">"yianwillis/vimcdoc"</span>
+</code></pre></div></div>
+
+<p>重启 Vim 后执行 <code class="highlighter-rouge">:PluginInstall</code></p>
+
+<p>也可以进入 yianwillis 的 <a href="http://yianwillis.github.io/vimcdoc/doc/help.html">网站</a> 直接阅读手册。</p>
+
+<p>现在 vim 的基本安装和配置就完成了</p>
+
+<h1 id="2-vim-的配置">2 vim 的配置</h1>
+
+<p>通过对 vim 的配置，可以打开许多 vim 特有的功能，让使用更加方便。vimrc 是 vim 的配置文件，再它打开之前，会先加载这个文件，根据 vimrc 决定编译器自身各类属性的设置以及各种功能的开启和关闭。</p>
+
+<p>vim 的配置文件 vimrc 基本内容就是设置选项的开关状态或数值，还有自定义操作的映射，以及之后安装的各类插件的设置三大部分。</p>
+
+<p>那么，现在我们来看看这个 vimrc 怎么编写。</p>
+
+<p>首先，在 Linux 下 vimrc 的存放路径是 <code class="highlighter-rouge">~/.vimrc</code> 或者 <code class="highlighter-rouge">~/.vim/vimrc</code>，如果没有就自行创建一个</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mkdir</span> <span class="o">~/.</span><span class="n">vim</span>      <span class="c1"># 创建.vim 目录
+</span><span class="n">vim</span> <span class="o">~/.</span><span class="n">vim</span><span class="o">/</span><span class="n">vimrc</span>  <span class="c1"># 打开空的 vimrc 文件
+</span></code></pre></div></div>
+
+<p>这样就通过 vim 打开了一个 vimrc 配置文件，下面是一个配置的部分示例：</p>
+
+<pre><code class="language-vimrc">
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+" =&gt;  Vim/NeoVim 编辑器设置
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 打开文件类型识别
+filetype on
+" 根据文件类型设置缩进
+filetype indent on
+filetype plugin on
+filetype plugin indent on
+
+set encoding=utf-8
+
+" 空格 + 回车，取消搜索高亮
+noremap &lt;LEADER&gt;&lt;CR&gt; :nohlsearch&lt;CR&gt;
+" 保存文件
+noremap &lt;leader&gt;w :w&lt;cr&gt;
+map R :source ~/.config/nvim/init.vim&lt;CR&gt;
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+" =&gt;  Vim/NeoVim 其他设置
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+</code></pre>
+
+<h4 id="基本映射-map">基本映射 map</h4>
+
+<p>我们在上面的 vimrc中看到了<strong>状态开关</strong>、<strong>状态值</strong>和<strong>自定义映射</strong>三类设置方式，这里介绍一下 vim 映射的概念。</p>
+
+<p>映射就是为一些操作创建新的快捷方式，它的格式为：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>map 新操作 旧操作
+map jj &lt;Esc&gt; # 把 Esc 映射为 jj
+</code></pre></div></div>
+
+<ul>
+  <li>用 nmap/vmap/imap 定义只在 normal/visual/insert 模式下有效的映射</li>
+  <li><code class="highlighter-rouge">:vmap \ U</code> 在 visual 模式下把选中的文本进行大小写转换 (u/U 转换大小写)</li>
+  <li><code class="highlighter-rouge">:imap &lt;c-d&gt; &lt;esc&gt;ddi</code> 在 insert 模式下删除一行</li>
+</ul>
+
+<h4 id="递归与非递归映射">递归与非递归映射</h4>
+
+<p>使用 <code class="highlighter-rouge">map</code> 进行的映射会有递归映射的问题：</p>
+
+<ol>
+  <li><code class="highlighter-rouge">map</code> 是递归映射，比如 <code class="highlighter-rouge">map - dd</code> 和 <code class="highlighter-rouge">map \ -</code>，使用 <code class="highlighter-rouge">\</code> 后会删除一行</li>
+  <li>多个插件间的映射会混乱</li>
+</ol>
+
+<p>解决方法：</p>
+
+<p>使用非递归映射，<code class="highlighter-rouge">nnoremap/vnoremap/inoremap</code>，所以为了自己和插件作者，<strong>我们在任何时候都应该使用非递归映射 <code class="highlighter-rouge">noremap</code></strong></p>
+
+<p>推荐一本书：<a href="https://www.kancloud.cn/kancloud/learn-vimscript-the-hard-way/49321">《笨方法学 VimScript》</a></p>
+
+<p>了解了 vimrc 的映射，我们就可以自己编写 vimrc 的配置了，也可以参考各个大神写的配置文件，拿来自己用。</p>
+
+<h1 id="vim-的高阶配置">Vim 的高阶配置</h1>
+
+<div class="language-vim highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">" 总是显示屏幕最下面的5行</span>
+<span class="k">set</span> scrolloff<span class="p">=</span><span class="m">5</span>
+</code></pre></div></div>
+:ET

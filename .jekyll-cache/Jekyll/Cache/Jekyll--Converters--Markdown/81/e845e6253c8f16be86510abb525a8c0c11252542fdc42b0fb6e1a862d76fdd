@@ -1,0 +1,696 @@
+I"t<!-- vim-markdown-toc GFM -->
+
+<ul>
+  <li><a href="#磁盘阵列-raid">磁盘阵列 RAID</a>
+    <ul>
+      <li><a href="#raid-类别">RAID 类别</a>
+        <ul>
+          <li><a href="#raid-0">RAID 0</a></li>
+          <li><a href="#raid-1">RAID 1</a></li>
+          <li><a href="#raid-5">RAID 5</a></li>
+          <li><a href="#raid-10">RAID 10</a></li>
+        </ul>
+      </li>
+      <li><a href="#部署磁盘阵列">部署磁盘阵列</a>
+        <ul>
+          <li><a href="#阵列管理器-mdadm">阵列管理器 mdadm</a>
+            <ul>
+              <li><a href="#创建-raid-10-磁盘阵列">创建 RAID 10 磁盘阵列</a></li>
+            </ul>
+          </li>
+          <li><a href="#磁盘阵列损坏及修复">磁盘阵列损坏及修复</a></li>
+          <li><a href="#磁盘阵列--备份盘">磁盘阵列 + 备份盘</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#逻辑卷管理器-lvm">逻辑卷管理器 LVM</a>
+    <ul>
+      <li><a href="#部署逻辑卷">部署逻辑卷</a>
+        <ul>
+          <li><a href="#常用-lvm-部署命令">常用 LVM 部署命令</a></li>
+          <li><a href="#部署流程">部署流程</a></li>
+          <li><a href="#扩容逻辑卷-lvextend">扩容逻辑卷 lvextend</a></li>
+          <li><a href="#缩小逻辑卷-lvreduce">缩小逻辑卷 lvreduce</a></li>
+          <li><a href="#逻辑卷快照">逻辑卷快照</a></li>
+          <li><a href="#删除逻辑卷">删除逻辑卷</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<!-- vim-markdown-toc -->
+
+<p>RAID - Redundant Array of Independent Disks，独立冗余磁盘阵列，是为了满足生产环境对硬盘的 IO 读写速度和备份机制的需求而产生的技术。再考虑到动态调整存储资源，还将介绍 LVM(Logical Volume Manager，逻辑卷管理器)的部署。</p>
+
+<h1 id="磁盘阵列-raid">磁盘阵列 RAID</h1>
+
+<p>RAID 通过把多个硬盘设备组合成一个容量更大、速度更快、安全性更好的磁盘阵列，并把数据切割成多个区段后放在不同的物理硬盘上，通过分散读写技术提高阵列性能；又把重要数据的副本同步到不同物理硬盘上，实现了数据备份的功能。</p>
+
+<p>目前已有的 RAID 技术有十几种之多，本章记录 RAID0、RAID1、RAID5 和 RAID10 方案。</p>
+
+<h2 id="raid-类别">RAID 类别</h2>
+
+<h3 id="raid-0">RAID 0</h3>
+
+<p><img src="/assets/images/posts/2019-07-06-chap78/raid0.png" alt="raid0" /></p>
+
+<p>把多块硬盘设备串联成一个卷组，把数据依次写入各物理硬盘中，实现读写速度数倍提升，但一块硬盘故障将导致整个数据被破坏。</p>
+
+<h3 id="raid-1">RAID 1</h3>
+
+<p><img src="/assets/images/posts/2019-07-06-chap78/raid1.jpg" alt="raid1" /></p>
+
+<p>把两块以上硬盘并联，将数据同时写入多块硬盘，当某块硬盘发生故障时，立即自动热交换恢复数据。</p>
+
+<p>虽然安全性提高，但可用率降低，两块硬盘组成的 RAID1 可用率为 50%，三块为 33%</p>
+
+<h3 id="raid-5">RAID 5</h3>
+
+<p><img src="/assets/images/posts/2019-07-06-chap78/raid5.png" alt="raid5" /></p>
+
+<p>RAID5 是把硬盘数据奇偶校验信息保存到了其他硬盘，当任何一个硬盘故障时，通过奇偶校验信息来尝试重建数据</p>
+
+<h3 id="raid-10">RAID 10</h3>
+
+<p><img src="/assets/images/posts/2019-07-06-chap78/raid10.png" alt="raid10" /></p>
+
+<p>RAID 10 是 RAID0 + RAID1 的组合。它至少需要 4 块硬盘组建。其中两两组建成 RAID1 阵列，以保证数据安全；再将两个 RIAD1 阵列组成 RAID0 阵列，以提高读写速度。RAID10 在不考虑成本的情况下，性能超过了 RAID5，当前已成为广泛使用的存储技术</p>
+
+<h2 id="部署磁盘阵列">部署磁盘阵列</h2>
+
+<p>我们可以虚拟几块硬盘设备，通过 udev 的监控，会在 <code class="highlighter-rouge">/dev/</code> 目录有所有体现，现假定有 4 块硬盘设备，分别为：<code class="highlighter-rouge">/dev/sda, /dev/sdb, /dev/sdc, /dev/sde</code>，后面我们将用它们来部署 RAID 磁盘阵列</p>
+
+<h3 id="阵列管理器-mdadm">阵列管理器 mdadm</h3>
+
+<p>用于管理 Linux 系统的 RAID 磁盘阵列的程序是 mdadm，其命令格式如下：</p>
+
+<p><code class="highlighter-rouge">mdadm [模式] &lt;RAID设备名称&gt; [选项] [成员设备名称]</code></p>
+
+<p>参数：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>参数</th>
+      <th>作用</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>-a</td>
+      <td>检测设备名称</td>
+    </tr>
+    <tr>
+      <td>-n</td>
+      <td>指定设备数量</td>
+    </tr>
+    <tr>
+      <td>-l</td>
+      <td>指定 RAID 级别</td>
+    </tr>
+    <tr>
+      <td>-C</td>
+      <td>创建</td>
+    </tr>
+    <tr>
+      <td>-v</td>
+      <td>显示过程</td>
+    </tr>
+    <tr>
+      <td>-f</td>
+      <td>模拟设备损坏</td>
+    </tr>
+    <tr>
+      <td>-r</td>
+      <td>移除设备</td>
+    </tr>
+    <tr>
+      <td>-Q</td>
+      <td>查看摘要信息</td>
+    </tr>
+    <tr>
+      <td>-D</td>
+      <td>查看详细信息</td>
+    </tr>
+    <tr>
+      <td>-S</td>
+      <td>停止 RAID 磁盘阵列</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="创建-raid-10-磁盘阵列">创建 RAID 10 磁盘阵列</h4>
+
+<p>我们用 <code class="highlighter-rouge">mdadm</code> 命令创建 RAID 10 阵列，名称为 <code class="highlighter-rouge">/dev/md0</code></p>
+
+<ol>
+  <li>
+    <p>创建磁盘阵列设备</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> mdadm <span class="nt">-Cv</span> /dev/md0 <span class="nt">-a</span> <span class="nb">yes</span> <span class="nt">-n</span> 4 <span class="nt">-l</span> 10 /dev/sdb /dev/sdc /dev/sdd /dev/sde
+mdadm: layout defaults to n2
+mdadm: layout defaults to n2
+mdadm: chunk size defaults to 512K
+mdadm: size <span class="nb">set </span>to 20954624K
+mdadm: Defaulting to version 1.2 metadata
+mdadm: array /dev/md0 started.
+</code></pre></div>    </div>
+
+    <p>其中：</p>
+
+    <ul>
+      <li><code class="highlighter-rouge">-C</code>：代表创建一个 RAID 阵列卡</li>
+      <li><code class="highlighter-rouge">-v</code>：显示创建的过程</li>
+      <li><code class="highlighter-rouge">/dev/md0</code>：磁盘阵列名称</li>
+      <li><code class="highlighter-rouge">-a yes</code>：自动创建设备文件</li>
+      <li><code class="highlighter-rouge">-n 4</code>：使用 4 块硬盘组成阵列</li>
+      <li><code class="highlighter-rouge">-l 10</code>：选择 RAID 10 方案</li>
+    </ul>
+  </li>
+  <li>
+    <p>将阵列格式化为 ext4 格式</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> mkfs.ext4 /dev/md0
+mke2fs 1.42.9 <span class="o">(</span>28-Dec-2013<span class="o">)</span>
+Filesystem <span class="nv">label</span><span class="o">=</span>
+OS <span class="nb">type</span>: Linux
+Block <span class="nv">size</span><span class="o">=</span>4096 <span class="o">(</span><span class="nv">log</span><span class="o">=</span>2<span class="o">)</span>
+Fragment <span class="nv">size</span><span class="o">=</span>4096 <span class="o">(</span><span class="nv">log</span><span class="o">=</span>2<span class="o">)</span>
+<span class="nv">Stride</span><span class="o">=</span>128 blocks, Stripe <span class="nv">width</span><span class="o">=</span>256 blocks
+2621440 inodes, 10477312 blocks
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>挂载格式化好的存储设备</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">mkdir</span> /RAID
+<span class="o">&gt;&gt;&gt;</span> mount /dev/md0 /RAID
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">df</span> <span class="nt">-h</span>
+Filesystem Size Used Avail Use% Mounted on
+/dev/mapper/rhel-root 18G 3.0G 15G 17% /
+devtmpfs 905M 0 905M 0% /dev
+/dev/md0 40G 49M 38G 1% /RAID
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>查看阵列详细信息，并实现自动挂载</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> mdadm <span class="nt">-D</span> /dev/md0
+/dev/md0:
+Version : 1.2
+Creation Time : Tue May 5 07:43:26 2017
+Raid Level : raid10
+Array Size : 41909248 <span class="o">(</span>39.97 GiB 42.92 GB<span class="o">)</span>
+...
+Number Major Minor RaidDevice State
+0 8 16 0 active <span class="nb">sync</span> /dev/sdb
+1 8 32 1 active <span class="nb">sync</span> /dev/sdc
+2 8 48 2 active <span class="nb">sync</span> /dev/sdd
+3 8 64 3 active <span class="nb">sync</span> /dev/sde
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">echo</span> <span class="s2">"/dev/md0 /RAID ext4 defaults 0 0"</span> <span class="o">&gt;&gt;</span> /etc/fstab
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="磁盘阵列损坏及修复">磁盘阵列损坏及修复</h3>
+
+<p>当硬盘损坏之后，使用 <code class="highlighter-rouge">mdadm</code> 移除设备</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 报告设备损坏</span>
+<span class="o">&gt;&gt;&gt;</span> mdadm /dev/md0 <span class="nt">-f</span> /dev/sdb
+mdadm: <span class="nb">set</span> /dev/sdb faulty <span class="k">in</span> /dev/md0
+
+<span class="o">&gt;&gt;&gt;</span> mdadm <span class="nt">-D</span> /dev/md0
+/dev/md0:
+Version : 1.2
+Creation Time : Fri May 8 08:11:00 2017
+Raid Level : raid10
+Array Size : 41909248 <span class="o">(</span>39.97 GiB 42.92 GB<span class="o">)</span>
+...
+Active Devices : 3
+Working Devices : 3
+Failed Devices : 1
+Spare Devices : 0
+...
+1 8 32 1 active <span class="nb">sync</span> /dev/sdc
+2 8 48 2 active <span class="nb">sync</span> /dev/sdd
+3 8 64 3 active <span class="nb">sync</span> /dev/sde
+0 8 16 - faulty /dev/sdb
+</code></pre></div></div>
+
+<p>硬盘损坏不会影响数据，现在更换新的硬盘后，再通过 <code class="highlighter-rouge">mdadm</code> 替换</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> umount /RAID
+<span class="c"># 添加新的硬盘，udev 监控并命名为 /dev/sdb</span>
+<span class="o">&gt;&gt;&gt;</span> mdadm /dev/md0 <span class="nt">-a</span> /dev/sdb
+<span class="o">&gt;&gt;&gt;</span> mdadm <span class="nt">-D</span> /dev/md0
+/dev/md0:
+Version : 1.2
+Creation Time : Mon Jan 30 00:08:56 2017
+Raid Level : raid10
+Array Size : 41909248 <span class="o">(</span>39.97 GiB 42.92 GB<span class="o">)</span>
+Used Dev Size : 20954624 <span class="o">(</span>19.98 GiB 21.46 GB<span class="o">)</span>
+...
+Number Major Minor RaidDevice State
+4 8 16 0 active <span class="nb">sync</span> /dev/sdb
+1 8 32 1 active <span class="nb">sync</span> /dev/sdc
+2 8 48 2 active <span class="nb">sync</span> /dev/sdd
+3 8 64 3 active <span class="nb">sync</span> /dev/sde
+
+<span class="o">&gt;&gt;&gt;</span> mount <span class="nt">-a</span>
+</code></pre></div></div>
+
+<h3 id="磁盘阵列--备份盘">磁盘阵列 + 备份盘</h3>
+
+<p>为了防止 RAID 10 中的 RAID1 同时两块硬盘故障的情况，我们可以再加入一块热备份盘，这块硬盘平时处于闲置状态，当磁盘阵列中有硬盘故障后，它会自动替换。这里通过 RAID 5 来演示</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> mdadm <span class="nt">-Cv</span> /dev/md0 <span class="nt">-n</span> 3 <span class="nt">-l</span> 5 <span class="nt">-x</span> 1 /dev/sdb /dev/sdc /dev/sde
+mdadm: layout defaults to left-symmetric
+mdadm: layout defaults to left-symmetric
+mdadm: chunk size defaults to 51
+...
+
+<span class="o">&gt;&gt;&gt;</span> mdadm <span class="nt">-D</span> /dev/md0
+/dev/md0:
+Version : 1.2
+Creation Time : Fri May 8 09:20:35 2017
+Raid Level : raid5
+Array Size : 41909248 <span class="o">(</span>39.97 GiB 42.92 GB<span class="o">)</span>
+Used Dev Size : 20954624 <span class="o">(</span>19.98 GiB 21.46 GB<span class="o">)</span>
+Raid Devices : 3
+Total Devices : 4
+...
+Number Major Minor RaidDevice State
+0 8 16 0 active <span class="nb">sync</span> /dev/sdb
+1 8 32 1 active <span class="nb">sync</span> /dev/sdc
+4 8 48 2 active <span class="nb">sync</span> /dev/sdd
+3 8 64 - spare /dev/sde
+
+<span class="c"># 将阵列格式化为 ext4</span>
+<span class="o">&gt;&gt;&gt;</span> mkfs.ext4 /dev/md0
+mke2fs 1.42.9 <span class="o">(</span>28-Dec-2013<span class="o">)</span>
+Filesystem <span class="nv">label</span><span class="o">=</span>
+OS <span class="nb">type</span>: Linux
+Block <span class="nv">size</span><span class="o">=</span>4096 <span class="o">(</span><span class="nv">log</span><span class="o">=</span>2<span class="o">)</span>
+Fragment <span class="nv">size</span><span class="o">=</span>4096 <span class="o">(</span><span class="nv">log</span><span class="o">=</span>2<span class="o">)</span>
+...
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">echo</span> <span class="s2">"/dev/md0 /RAID ext4 defaults 0 0"</span> <span class="o">&gt;&gt;</span> /etc/fstab
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">mkdir</span> /RAID
+<span class="o">&gt;&gt;&gt;</span> mount <span class="nt">-a</span>
+</code></pre></div></div>
+
+<p>然后我们把 <code class="highlighter-rouge">/dev/sdb</code> 移出阵列，这时备份盘会自动替换并开始数据同步：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> mdadm /dev/md0 <span class="nt">-f</span> /dev/sdb
+mdadm: <span class="nb">set</span> /dev/sdb faulty <span class="k">in</span> /dev/md0
+<span class="o">&gt;&gt;&gt;</span> mdadm <span class="nt">-D</span> /dev/md0
+/dev/md0:
+Version : 1.2
+Creation Time : Fri May 8 09:20:35 2017
+...
+Number Major Minor RaidDevice State
+3 8 64 0 spare rebuilding /dev/sde
+1 8 32 1 active <span class="nb">sync</span> /dev/sdc
+4 8 48 2 active <span class="nb">sync</span> /dev/sdd
+0 8 16 - faulty /dev/sdb
+</code></pre></div></div>
+
+<h1 id="逻辑卷管理器-lvm">逻辑卷管理器 LVM</h1>
+
+<p>当我们把硬盘分好区或部署成磁盘阵列时，再想修改硬盘分区大小就很难了，这里就可以用硬盘设备资源管理技术—— LVM（逻辑卷管理器），它可以允许用户对硬盘资源进行动态调整。</p>
+
+<p><img src="/assets/images/posts/2019-07-06-chap78/lvm.png" alt="lvm" /></p>
+
+<p>LVM 是在硬盘分区和文件系统之间加了一个逻辑层，可以把多个硬盘进行卷组合并。相当于把面粉（物理卷[PV，Physical Volume]）揉成一个大面团（卷组[VG，Volume Group]），然后再把这个大面团分割成一个个小馒头（逻辑卷[LV，Logical Volume]），而且每个小馒头的重量必须是每勺面粉（基本单元[PE，Physical Extent]）的倍数。</p>
+
+<h2 id="部署逻辑卷">部署逻辑卷</h2>
+
+<p>在生产环境中无法精确地评估每个硬盘分区在日后的使用情况，因此会导致原先分配的硬盘分区不够用。比如，伴随着业务量的增加，用于存放交易记录的数据库目录的体积也随之增加；因为分析并记录用户的行为从而导致日志目录的体积不断变大，这些都会导致原有的硬盘分区在使用上捉襟见肘。而且，还存在对较大的硬盘分区进行精简缩容的情况。</p>
+
+<p>我们可以通过部署 LVM 来解决上述问题。部署 LVM 时，需要逐个配置物理卷、卷组和逻辑卷。</p>
+
+<h3 id="常用-lvm-部署命令">常用 LVM 部署命令</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>命令</th>
+      <th>物理卷管理</th>
+      <th>卷组管理</th>
+      <th>逻辑卷管理</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>扫描</td>
+      <td>pvscan</td>
+      <td>vgscan</td>
+      <td>lvscan</td>
+    </tr>
+    <tr>
+      <td>建立</td>
+      <td>pvcreate</td>
+      <td>vgcreate</td>
+      <td>lvcreate</td>
+    </tr>
+    <tr>
+      <td>显示</td>
+      <td>pvdisplay</td>
+      <td>vgdisplay</td>
+      <td>lvdisplay</td>
+    </tr>
+    <tr>
+      <td>删除</td>
+      <td>pvremove</td>
+      <td>vgremove</td>
+      <td>lvremove</td>
+    </tr>
+    <tr>
+      <td>扩展</td>
+      <td> </td>
+      <td>vgextend</td>
+      <td>lvextend</td>
+    </tr>
+    <tr>
+      <td>缩小</td>
+      <td> </td>
+      <td>vgreduce</td>
+      <td>lvreduce</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="部署流程">部署流程</h3>
+
+<ol>
+  <li>
+    <p>在硬盘中创建物理卷</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> pvcreate /dev/sdb /dev/sdc
+cal volume <span class="s2">"/dev/sdb"</span> successfully created
+Physical volume <span class="s2">"/dev/sdc"</span> successfully created
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>把两块硬盘设备加入卷组 storage 中</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> vgcreate storage /dev/sdb /dev/sdc
+Volume group <span class="s2">"storage"</span> successfully created
+
+<span class="o">&gt;&gt;&gt;</span>vgdisplay
+<span class="nt">---</span> Volume group <span class="nt">---</span>
+VG Name storage
+System ID
+Format lvm2
+Metadata Areas 2
+Metadata Sequence No 1
+VG Access <span class="nb">read</span>/write
+VG Status resizable
+MAX LV 0
+Cur LV 0
+Open LV 0
+Max PV 0
+Cur PV 2
+Act PV 2
+VG Size 39.99 GiB
+PE Size 4.00 MiB
+Total PE 10238
+Alloc PE / Size 0 / 0  Free PE / Size 10238 / 39.99 GiB
+VG UUID KUeAMF-qMLh-XjQy-ArUo-LCQI-YF0o-pScxm1
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>划出 150MB 的逻辑卷设备</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> lvcreate <span class="nt">-n</span> logic_volumn <span class="nt">-l</span> 38 storage
+Logical volume <span class="s2">"logic_volumn"</span> created
+<span class="o">&gt;&gt;&gt;</span> lvdisplay
+gical volume <span class="nt">---</span>
+LV Path /dev/storage/logic_volumn
+LV Name logic_volumn
+VG Name storage
+...
+LV Size 148.00 MiB
+...
+</code></pre></div>    </div>
+
+    <blockquote>
+      <p>注意：</p>
+
+      <ul>
+        <li>逻辑卷最小单位：4MB</li>
+        <li><code class="highlighter-rouge">-l</code>：以 4MB 为计数单位</li>
+        <li><code class="highlighter-rouge">-L</code>：生成指定大小的逻辑卷</li>
+      </ul>
+    </blockquote>
+  </li>
+  <li>
+    <p>格式化逻辑卷设备</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> mkfs.ext4 /dev/storage/logic_volumn
+mke2fs 1.42.9 <span class="o">(</span>28-Dec-2013<span class="o">)</span>
+Filesystem <span class="nv">label</span><span class="o">=</span>
+OS <span class="nb">type</span>: Linux
+...
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">mkdir</span> /volumn
+<span class="o">&gt;&gt;&gt;</span> mount /dev/storage/logic_volumn /volume
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>查看状态</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">df</span> <span class="nt">-h</span>
+Filesystem Size Used Avail Use% Mounted on
+/dev/mapper/rhel-root 18G 3.0G 15G 17% /
+...
+/dev/mapper/storage-logic_volumn 145M 7.6M 138M 6% /volume
+<span class="o">&gt;&gt;&gt;</span> ehco <span class="s2">"/dev/storage/logic_volumn /volume ext4 defaults 0 0"</span> <span class="o">&gt;&gt;</span> /etc/fstab
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="扩容逻辑卷-lvextend">扩容逻辑卷 lvextend</h3>
+
+<ol>
+  <li>
+    <p>卸载设备</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> umount /Volumes
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>扩容至 290 MB</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> lvextend <span class="nt">-L</span> 290MB /dev/storage/logic_volumn
+Rounding size to boundary between physical extents: 292.00 MiB
+Extending logical volume vo to 292.00 MiB
+Logical volume vo successfully resized
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>检查磁盘，并通知内核更新磁盘容量</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> e2fsck <span class="nt">-f</span> /dev/storage/logic_volumn
+e2fsck 1.42.9 <span class="o">(</span>28-Dec-2013<span class="o">)</span>
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+/dev/storage/vo: 11/38000 files <span class="o">(</span>0.0% non-contiguous<span class="o">)</span>, 10453/151552 blocks
+
+<span class="o">&gt;&gt;&gt;</span> resize2fs /dev/storage/logic_volumn
+resize2fs 1.42.9 <span class="o">(</span>28-Dec-2013<span class="o">)</span>
+Resizing the filesystem on /dev/storage/vo to 299008 <span class="o">(</span>1k<span class="o">)</span> blocks.
+The filesystem on /dev/storage/vo is now 299008 blocks long.
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>重新挂载硬盘</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> mount <span class="nt">-a</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">df</span> <span class="nt">-h</span>
+Filesystem Size Used Avail Use% Mounted on
+/dev/mapper/rhel-root 18G 3.0G 15G 17% /
+devtmpfs 985M 0 985M 0% /dev
+tmpfs 994M 80K 994M 1% /dev/shm
+tmpfs 994M 8.8M 986M 1% /run
+tmpfs 994M 0 994M 0% /sys/fs/cgroup
+/dev/sr0 3.5G 3.5G 0 100% /media/cdrom
+/dev/sda1 497M 119M 379M 24% /boot
+/dev/mapper/storage-logic_volumn 279M 2.1M 259M 1% /volume
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="缩小逻辑卷-lvreduce">缩小逻辑卷 lvreduce</h3>
+
+<p>在缩小之前，先备份数据，并检查磁盘</p>
+
+<ol>
+  <li>
+    <p>卸载设备</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> umount /Volume
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>检查磁盘</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> e2fsck <span class="nt">-f</span> /dev/storage/logic_volumn
+e2fsck 1.42.9 <span class="o">(</span>28-Dec-2013<span class="o">)</span>
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+/dev/storage/logic_volumn: 11/74000 files <span class="o">(</span>0.0% non-contiguous<span class="o">)</span>, 15507/299008 blocks
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>缩小逻辑卷到 120MB</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> resize2fs /dev/storage/logic_volumn 120M
+resize2fs 1.42.9 <span class="o">(</span>28-Dec-2013<span class="o">)</span>
+Resizing the filesystem on /dev/storage/vo to 122880 <span class="o">(</span>1k<span class="o">)</span> blocks.
+The filesystem on /dev/storage/vo is now 122880 blocks long.
+<span class="o">&gt;&gt;&gt;</span> lvreduce <span class="nt">-L</span> 120M /dev/storage/logic_volumn
+WARNING: Reducing active logical volume to 120.00 MiB
+THIS MAY DESTROY YOUR DATA <span class="o">(</span>filesystem etc.<span class="o">)</span>
+Do you really want to reduce vo? <span class="o">[</span>y/n]: y
+Reducing logical volume vo to 120.00 MiB
+Logical volume vo successfully resized
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="逻辑卷快照">逻辑卷快照</h3>
+
+<p>LVM 有快照功能，特点：</p>
+
+<ul>
+  <li>快照卷的容量必须与逻辑卷容量相同</li>
+  <li>快照卷仅一次有效，一旦执行还原后立即删除</li>
+</ul>
+
+<ol>
+  <li>
+    <p>查看卷组信息</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> vgdisplay
+<span class="nt">---</span> Volume group <span class="nt">---</span>
+VG Name storage
+System ID
+Format lvm2
+...
+<span class="c"># 分配PE 30个，120MB，空闲39G</span>
+Alloc PE / Size 30 / 120.00 MiB Free PE / Size 10208 / 39.88 GiB
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>生成快照卷</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># -s：生成快照卷</span>
+<span class="o">&gt;&gt;&gt;</span> lvcreate <span class="nt">-L</span> 120M <span class="nt">-s</span> <span class="nt">-n</span> SNAP /dev/storage/logic_volumn
+Logical volume <span class="s2">"SNAP"</span> created
+<span class="o">&gt;&gt;&gt;</span> lvdisplay
+<span class="nt">---</span> Logical volume <span class="nt">---</span>
+LV Path /dev/storage/SNAP
+LV Name SNAP
+VG Name storage
+LV UUID BC7WKg-fHoK-Pc7J-yhSd-vD7d-lUnl-TihKlt
+LV Write Access <span class="nb">read</span>/write
+LV Creation host, <span class="nb">time </span>localhost.localdomain, 2017-02-01 07:42:31 <span class="nt">-0500</span>
+LV snapshot status active destination <span class="k">for </span>logic_volumn
+LV Status available
+<span class="c"># open 0</span>
+LV Size 120.00 MiB
+Current LE 30
+COW-table size 120.00 MiB
+COW-table LE 30
+Allocated to snapshot 0.01%
+Snapshot chunk size 4.00 KiB
+...
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在逻辑卷中创建 100MB 文件，查看快照卷，它的存储空间也上升了</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">dd </span><span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/logic_volumn/files <span class="nv">count</span><span class="o">=</span>1 <span class="nv">bs</span><span class="o">=</span>100M
+1+0 records <span class="k">in
+</span>1+0 records out
+104857600 bytes <span class="o">(</span>105 MB<span class="o">)</span> copied, 3.35432 s, 31.3 MB/s <span class="o">&gt;&gt;&gt;</span> lvdisplay
+<span class="nt">---</span> Logical volume <span class="nt">---</span>
+LV Path /dev/storage/SNAP
+LV Name SNAP
+VG Name storage
+LV UUID BC7WKg-fHoK-Pc7J-yhSd-vD7d-lUnl-TihKlt
+LV Write Access <span class="nb">read</span>/write
+LV Creation host, <span class="nb">time </span>localhost.localdomain, 2017-02-01 07:42:31 <span class="nt">-0500</span>
+LV snapshot status active destination <span class="k">for </span>vo
+LV Status available <span class="c"># open 0</span>
+LV Size 120.00 MiB
+Current LE 30
+COW-table size 120.00 MiB
+COW-table LE 30
+<span class="c"># 快照卷容量也上升了</span>
+Allocated to snapshot 83.71%
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>用快照卷还原逻辑卷 <code class="highlighter-rouge">logic_volumn</code></p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 首先要卸载要还原的lv</span>
+<span class="o">&gt;&gt;&gt;</span> umount /logic_volumn
+<span class="o">&gt;&gt;&gt;</span> lvconvert <span class="nt">--merge</span> /dev/storage/SNAP
+ Merging of volume SNAP started.
+vo: Merged: 21.4%
+vo: Merged: 100.0%
+Merge of snapshot into logical volume vo has finished.
+Logical volume <span class="s2">"SNAP"</span> successfully removed
+</code></pre></div>    </div>
+
+    <p>完成还原后，快照卷被删除</p>
+  </li>
+</ol>
+
+<h3 id="删除逻辑卷">删除逻辑卷</h3>
+
+<p>当生产环境需要重新布置 LVM 或不再需要使用 LVM 时，需要执行删除操作。为此要备份好数据，然后依次删除逻辑卷、卷组、物理卷。</p>
+
+<ol>
+  <li>
+    <p>取消挂载</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> umount /logic_volumn
+<span class="o">&gt;&gt;&gt;</span> vim /etc/fstab
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>删除逻辑卷设备</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lvremove /dev/storage/logic_volumn
+Do you really want to remove active logical volume vo? <span class="o">[</span>y/n]: y
+Logical volume <span class="s2">"vo"</span> successfully removed
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>删除卷组</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> vgremove storage
+Volume group <span class="s2">"storage"</span> successfully removed
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>删除物理卷设备</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> pvremove /dev/sdb /dev/sdc
+ Labels on physical volume <span class="s2">"/dev/sdb"</span> successfully wiped
+Labels on physical volume <span class="s2">"/dev/sdc"</span> successfully wiped
+</code></pre></div>    </div>
+  </li>
+</ol>
+:ET
