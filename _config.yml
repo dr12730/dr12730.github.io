@@ -26,7 +26,7 @@ description: > # this means to ignore newlines until "Language & timezone"
 
 ## => Language and Timezone
 ##############################
-lang: zh-CN # the language of your site, default as "en"
+lang: zh # the language of your site, default as "en"
 timezone: Asia/Shanghai # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for the available values
 
 
@@ -36,7 +36,7 @@ author:
   type      : # "person" (default), "organization"
   name      : Rayn Miller
   url       : http://www.wilson-blog.cn
-  avatar    : assets/avatar.jpg # path or url of avatar image (square)
+  avatar    : /assets/avatar.jpg # path or url of avatar image (square)
   bio       : 活出真实的自己
   email     : dr12730@163.com
   facebook  : # "user_name" the last part of your profile url, e.g. https://www.facebook.com/user_name
@@ -96,7 +96,7 @@ chart: # false (default), true
 
 ## => Paginate
 ##############################
-paginate: 8
+paginate: 10
 paginate_path: /page:num # don't change this unless for special need
 
 
@@ -127,8 +127,8 @@ comments:
   ## Gitalk
   # please refer to https://github.com/gitalk/gitalk for more info.
   gitalk:
-    clientID    : e63f0e8d032ce105aa85 # GitHub Application Client ID
-    clientSecret: 16d079223a870f8120d07d01ebd8a27078fb5834 # GitHub Application Client Secret
+    clientID    : 0b35333d6a2de601442e # GitHub Application Client ID
+    clientSecret: a009a51b0adc3a6cf38f3460dc38df6d78018bf7 # GitHub Application Client Secret
     repository  : dr12730.github.io # GitHub repo
     owner       : dr12730 # GitHub repo owner
     admin: # GitHub repo owner and collaborators, only these guys can initialize GitHub issues, IT IS A LIST.
@@ -137,8 +137,8 @@ comments:
   ## Valine
   # please refer to https://valine.js.org/en/ for more info.
   valine:
-    app_id      : # LeanCloud App id
-    app_key     : # LeanCloud App key
+    app_id      : xHJthJ5MfmhgjaIWMAvR5tIl-gzGzoHsz # LeanCloud App id
+    app_key     : VIElmQHDLiHdv43CazVGQJbp # LeanCloud App key
     placeholder : # Prompt information
     visitor     : # false (default)
     meta        : # "[nick, mail, link]" (default) nickname, E-mail, Personal-site
@@ -147,13 +147,13 @@ comments:
 ## => Pageview
 ##############################
 pageview:
-  provider: false # false (default), "leancloud", "custom"
+  provider: leancloud # false (default), "leancloud", "custom"
 
   ## Leancloud
   leancloud:
-    app_id    : # LeanCloud App id
-    app_key   : # LeanCloud App key
-    app_class : # LeanCloud App class
+    app_id    : xHJthJ5MfmhgjaIWMAvR5tIl-gzGzoHsz # LeanCloud App id
+    app_key   : VIElmQHDLiHdv43CazVGQJbp # LeanCloud App key
+    app_class : view_counter # LeanCloud App class
 
 
 ## => Search
@@ -209,24 +209,16 @@ defaults:
     values:
       layout: article
       sharing: true
+      show_edit_on_github: true
+      pageview: true
+      comment: true
+      lightbox: true
       show_author_profile: true
       license: true
       category: post
       aside:
         toc: true
-      show_edit_on_github: true
       show_subscribe: true
-      pageview: true
-      lightbox: true
-      author: {{site.author}}
-      #  - 
-      #    scope:
-      #      path: ""
-      #      type: pages
-      #    values:
-      #      layout: home
-      #      articles:
-      #        excerpt_type: html
 
 
 ## => Plugins

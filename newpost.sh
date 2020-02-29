@@ -17,7 +17,6 @@ pic=$picname
 if [ ! -f $fn ]; then
     touch $fn
     echo "---">>$fn
-    echo "layout: article">>$fn
     echo "title: $name">>$fn
     echo "date: "`date +'%Y-%m-%d %H:%M:%S'`" +0800" >>$fn
     echo "key: "$date-$name >>$fn

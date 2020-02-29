@@ -2,19 +2,19 @@
 title: Matplotlib 使用笔记
 mode: immersive
 date: 2020-01-14 13:35:19 +0800
-key: matplotlib
+key: matplotlib-2020-01-14
 layout: article
 cover: /assets/images/posts/2020-01-14-matplotlib/cover.jpg
 header:
   theme: dark
   background: 'linear-gradient(135deg, rgb(34, 139, 87), rgb(139, 34, 139))'
 article_header:
+  show_cover: true
   type: overlay
   theme: dark
   background_image:
     gradient: 'linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0))'
     src: /assets/images/posts/2020-01-14-matplotlib/post-web.jpg
- 
 tags: [绘图, matplotlib]
 ---
 
