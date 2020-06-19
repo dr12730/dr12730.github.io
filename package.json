@@ -59,6 +59,7 @@
     }
   },
   "dependencies": {
-    "source-code-pro": "git://github.com/adobe-fonts/source-code-pro.git#release"
+    "source-code-pro": "git://github.com/adobe-fonts/source-code-pro.git#release",
+    "valine": "^1.4.14"
   }
 }
