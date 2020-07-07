@@ -142,6 +142,7 @@ comments:
     placeholder : # Prompt information
     visitor     : # false (default)
     meta        : # "[nick, mail, link]" (default) nickname, E-mail, Personal-site
+    avatar      : robohash
 
 
 ## => Pageview
